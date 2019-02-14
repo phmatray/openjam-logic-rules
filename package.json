@@ -1,0 +1,87 @@
+{
+  "name": "@openjam/logic-rules",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "dependencies": {
+    "axios": "^0.18.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.3",
+    "@types/jest-diff": "^20.0.0",
+    "jest": "^23.6.0",
+    "make-error": "^1.3.5",
+    "nodemon": "^1.18.10",
+    "rimraf": "^2.6.3",
+    "ts-jest": "^23.10.5",
+    "ts-lint": "^4.5.1",
+    "ts-node": "^8.0.2",
+    "tslint": "^5.12.1",
+    "tslint-consistent-codestyle": "^1.15.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "tsutils": "^2.29.0",
+    "typescript": "^3.2.4",
+    "vrsource-tslint-rules": "^6.0.0"
+  },
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "clean-coverage": "rimraf coverage",
+    "dev": "tsc",
+    "start": "nodemon --watch ./src/ -e ts --exec \"npm run dev\"",
+    "pretest": "tslint --project ./tsconfig.json --config ./tslint.json",
+    "test": "npm run clean-coverage && jest --coverage",
+    "test-dev": "jest --watch",
+    "test-dev-coverage": "rimraf coverage && jest --watchAll --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openjam-eu/openjam-logic-rules.git"
+  },
+  "keywords": [],
+  "author": "@phmatray <pm@techmedev.eu>",
+  "bugs": {
+    "url": "https://github.com/openjam-eu/openjam-logic-rules/issues"
+  },
+  "homepage": "https://github.com/openjam-eu/openjam-logic-rules#readme",
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "diagnostics": {
+          "warnOnly": true
+        }
+      }
+    },
+    "transform": {
+      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/showroom/",
+      "/dist/"
+    ],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 60,
+        "functions": 60,
+        "lines": 60,
+        "statements": 60
+      }
+    }
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "dist/*",
+      "node_modules/*",
+      "showroom/*"
+    ]
+  }
+}
