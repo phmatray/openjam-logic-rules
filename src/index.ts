@@ -9,12 +9,12 @@ const axiosDefaultConfig = {
   }
 };
 
-interface ILogic {
+interface IOpenJam {
   artistExposer: IArtistExposer;
   postExposer: IPostExposer;
 }
 
-class Logic implements ILogic {
+class OpenJam implements IOpenJam {
   constructor(private _baseUrl = baseURL) {}
 
   get artistExposer() {
@@ -24,11 +24,13 @@ class Logic implements ILogic {
   get postExposer() {
     return postExposer;
   }
+
+  public getArtists = () => artistExposer.artists;
 }
 
 export { IArtist } from './entities/Artist';
 export { IPost } from './entities/Post';
 
-export { ILogic, IArtistExposer, IPostExposer };
+export { IOpenJam, IArtistExposer, IPostExposer };
 
-export default Logic;
+export default OpenJam;
