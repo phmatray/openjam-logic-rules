@@ -50,7 +50,10 @@ export class Artist implements IArtist {
    * @returns boolean
    */
   public isValid(): boolean {
-    if (this._validName) {
+    if (
+      this._validName ||
+      (this._validName === undefined && this._validateName())
+    ) {
       return true;
     }
 
