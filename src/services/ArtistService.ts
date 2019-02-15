@@ -13,15 +13,14 @@ export interface IArtistService {
 
 export class ArtistService implements IArtistService {
   public async getArtists(): Promise<IArtist[]> {
-    const query = queryBuilder.getUrl(collectionName);
+    const query = queryBuilder.buildQueryForCollection(collectionName);
     const response = await httpClient.get<IResponse<IArtist>>(query);
     return response.docs;
   }
 
   public async createArtist(data: IArtist): Promise<IArtist> {
-    const query = queryBuilder.getUrl(collectionName);
     const { type, name, images, genres } = data;
-    const response = await httpClient.post<IArtist>(query, {
+    const response = await httpClient.post<IArtist>('/artist', {
       type,
       name,
       images,

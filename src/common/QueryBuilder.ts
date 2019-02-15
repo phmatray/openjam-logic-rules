@@ -64,16 +64,23 @@ export interface IQueryParameters {
 export interface IQueryBuilder {
   /**
    * Create a get query with pagination
+   * @param collection - Collection name
    * @param params - Query parameters
    */
-  getUrl: (collection: string, params?: IQueryParameters) => string;
+  buildQueryForCollection: (
+    collection: string,
+    params?: IQueryParameters
+  ) => string;
 }
 
 /**
  * A singleton for build queries
  */
 export class QueryBuilder implements IQueryBuilder {
-  public getUrl(collection: string, queryParameters: IQueryParameters = {}) {
+  public buildQueryForCollection(
+    collection: string,
+    queryParameters: IQueryParameters = {}
+  ) {
     if (collection === null || collection === undefined) {
       throw Error('collection cannot be null');
     }

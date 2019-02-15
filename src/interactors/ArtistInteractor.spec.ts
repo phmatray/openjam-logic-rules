@@ -82,6 +82,8 @@ describe('ArtistInteractor', () => {
     const data: IArtist = new Artist();
     data.name = 'Lorem ipsum dolor';
     data.type = 'artist';
+    data.images = [];
+    data.genres = [];
 
     const artist = await interactor.createArtist(data);
 
