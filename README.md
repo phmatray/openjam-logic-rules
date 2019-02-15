@@ -2,8 +2,6 @@
 
 **openjam-logic-rules** provides a higher-level wrapper around OpenJam's API and encapsulates all the business logic related to the OpenJam front-end.
 
-https://img.shields.io/npm/v/@openjam/logic-rules.svg?style=flat
-
 [![npm (scoped)](https://img.shields.io/npm/v/@openjam/logic-rules.svg?style=flat)](https://www.npmjs.com/package/@openjam/logic-rules)
 
 _This package is inspired from the article [Front End Architecture — Making rebuild from scratch not so painful](https://medium.com/car2godevs/front-end-architecture-making-rebuild-from-scratch-not-so-painful-7b2232dc1666)._
@@ -32,20 +30,16 @@ We are now ready to expose our package to applications. The reasons to use expos
 
 # How to use?
 
-## Scripts
-
 ```ts
 import OpenJam from '@openjam/logic-rules';
 
 const oj = new OpenJam();
-const artists: IArtist[] = oj.getArtists();
+const artists = oj.getArtists();
 
 // now, we have the artists from OpenJam <3
 ```
 
 # How to contribute?
-
-## Scripts
 
 ```bash
 # Install dependencies
@@ -66,3 +60,9 @@ npm test
 # Build package
 npm run build
 ```
+
+# Todo
+
+- [ ] Fix a bunch of unit tests
+- [ ] Add track entity
+- [ ] Add user entity

@@ -6,12 +6,19 @@ import { IResponse } from './base/types';
 const collectionName = 'artist';
 
 export interface IArtistService {
+  getArtist: (id: string) => Promise<IArtist>;
   getArtists: () => Promise<IArtist[]>;
   createArtist: (data: IArtist) => Promise<IArtist>;
   saveArtist: (data: IArtist) => Promise<IArtist>;
 }
 
 export class ArtistService implements IArtistService {
+  public async getArtist(id: string): Promise<IArtist> {
+    const query = queryBuilder.buildQueryForSingle(collectionName, id);
+    const response = await httpClient.get<IArtist>(query);
+    return response;
+  }
+
   public async getArtists(): Promise<IArtist[]> {
     const query = queryBuilder.buildQueryForCollection(collectionName);
     const response = await httpClient.get<IResponse<IArtist>>(query);

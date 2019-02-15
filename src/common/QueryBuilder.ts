@@ -1,4 +1,16 @@
-export interface IQueryParameters {
+export interface IQueryParamsGetOne {
+  /**
+   * A list of basic fields to be included in each resource.
+   */
+  select?: string[];
+
+  /**
+   * A set of associations to populate.
+   */
+  embed?: string[];
+}
+
+export interface IQueryParamsGetCollection extends IQueryParamsGetOne {
   /**
    * The number of records to skip in the database.
    * This is typically used in pagination.
@@ -16,11 +28,6 @@ export interface IQueryParameters {
    * This is typically used in pagination.
    */
   limit?: number;
-
-  /**
-   * A list of basic fields to be included in each resource.
-   */
-  select?: string[];
 
   /**
    * A set of fields to sort by.Including field name indicates it should be sorted ascending,
@@ -51,11 +58,6 @@ export interface IQueryParameters {
   searchFields?: string[];
 
   /**
-   * A set of associations to populate.
-   */
-  embed?: string[];
-
-  /**
    * If set to true, only a count of the query results will be returned.
    */
   count?: boolean;
@@ -63,13 +65,22 @@ export interface IQueryParameters {
 
 export interface IQueryBuilder {
   /**
-   * Create a get query with pagination
+   * Create a GET query for a single record
+   */
+  buildQueryForSingle: (
+    collection: string,
+    id: string,
+    params?: IQueryParamsGetOne
+  ) => string;
+
+  /**
+   * Create a GET query with pagination for a records collection
    * @param collection - Collection name
    * @param params - Query parameters
    */
   buildQueryForCollection: (
     collection: string,
-    params?: IQueryParameters
+    params?: IQueryParamsGetCollection
   ) => string;
 }
 
@@ -77,12 +88,28 @@ export interface IQueryBuilder {
  * A singleton for build queries
  */
 export class QueryBuilder implements IQueryBuilder {
-  public buildQueryForCollection(
+  public buildQueryForSingle(
     collection: string,
-    queryParameters: IQueryParameters = {}
+    id: string,
+    queryParameters: IQueryParamsGetCollection = {}
   ) {
     if (collection === null || collection === undefined) {
       throw Error('collection cannot be null');
+    }
+
+    if (id === null || id === undefined) {
+      throw Error('id cannot be null or undefined');
+    }
+
+    return `/${collection}/${id}${this.extractSegments(queryParameters)}`;
+  }
+
+  public buildQueryForCollection(
+    collection: string,
+    queryParameters: IQueryParamsGetCollection = {}
+  ) {
+    if (collection === null || collection === undefined) {
+      throw Error('collection cannot be null or undefined');
     }
 
     this.validateQueryParameters(queryParameters);
@@ -90,7 +117,7 @@ export class QueryBuilder implements IQueryBuilder {
     return `/${collection}${this.extractSegments(queryParameters)}`;
   }
 
-  private validateQueryParameters(queryParameters: IQueryParameters) {
+  private validateQueryParameters(queryParameters: IQueryParamsGetCollection) {
     const throwIfNegative = (parameter: any, name: string) => {
       if (parameter && parameter < 0) {
         throw Error(`${name} cannot be negative`);
@@ -102,7 +129,7 @@ export class QueryBuilder implements IQueryBuilder {
     throwIfNegative(queryParameters.limit, 'collection.limit');
   }
 
-  private extractSegments(queryParameters: IQueryParameters) {
+  private extractSegments(queryParameters: IQueryParamsGetCollection) {
     const segments: string[] = [];
 
     const pushSegmentIfExist = (parameter: any, name: string) => {
