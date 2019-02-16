@@ -34,6 +34,11 @@ We are now ready to expose our package to applications. The reasons to use expos
 import OpenJam from '@openjam/logic-rules';
 
 const oj = new OpenJam();
+
+// GET one artist
+const artist = oj.getArtist('ID00001');
+
+// GET all artists
 const artists = oj.getArtists();
 
 // now, we have the artists from OpenJam <3

@@ -7,12 +7,14 @@ export class ArtistService {
       {
         id: 'id001',
         name: 'Lorem ipsum',
-        type: 'artist'
+        type: 'artist',
+        genres: ['electro', 'rock']
       },
       {
         id: 'id002',
         name: 'Lorem ipsum dolor',
-        type: 'artist'
+        type: 'artist',
+        genres: ['electro', 'psytrance']
       }
     ];
   }

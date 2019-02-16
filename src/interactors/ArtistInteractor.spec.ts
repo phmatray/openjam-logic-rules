@@ -145,7 +145,7 @@ describe('ArtistInteractor', () => {
 
   it('should save a new artist', async () => {
     const data: IArtist = new Artist();
-    data.id = 'id1';
+    data.id = 'id003';
     data.type = 'artist';
     data.name = 'Lorem ipsum';
     data.images = [];
@@ -154,8 +154,7 @@ describe('ArtistInteractor', () => {
     const artist = await interactor.saveArtist(data);
 
     expect(artist).toBeDefined();
-    expect(artist.id).toBe(3);
-    expect(artist.name).toEqual(data.name);
+    expect(artist.id).toBe('id003');
     expect(artist.name).toEqual(data.name);
   });
 
