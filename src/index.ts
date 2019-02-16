@@ -2,12 +2,6 @@ import { artistExposer, IArtistExposer } from './exposers/ArtistExposer';
 import { postExposer, IPostExposer } from './exposers/PostExposer';
 
 const baseURL = 'http://localhost:5000';
-const axiosDefaultConfig = {
-  baseURL,
-  headers: {
-    'Content-Type': 'application/json'
-  }
-};
 
 interface IOpenJam {
   artistExposer: IArtistExposer;
