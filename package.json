@@ -1,6 +1,6 @@
 {
   "name": "@openjam/logic-rules",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A higher-level wrapper around OpenJam's API",
   "license": "MIT",
   "main": "./dist/index.js",
