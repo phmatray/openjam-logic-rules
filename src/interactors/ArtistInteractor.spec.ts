@@ -25,11 +25,9 @@ describe('ArtistInteractor', () => {
   });
 
   it('should get a list of artists', async () => {
-    ArtistService.prototype.getArtists = jest
-      .fn()
-      .mockImplementationOnce(() => {
-        return getArtists();
-      });
+    ArtistService.prototype.getArtists = jest.fn().mockImplementationOnce(() => {
+      return getArtists();
+    });
 
     const artists = await interactor.getArtists();
 
@@ -43,11 +41,9 @@ describe('ArtistInteractor', () => {
   });
 
   it('should return the existing artists list', async () => {
-    ArtistService.prototype.getArtists = jest
-      .fn()
-      .mockImplementationOnce(() => {
-        throw new Error();
-      });
+    ArtistService.prototype.getArtists = jest.fn().mockImplementationOnce(() => {
+      throw new Error();
+    });
     const artists = await interactor.getArtists();
 
     const spy = jest.spyOn(ArtistService.prototype, 'getArtists');
@@ -62,11 +58,9 @@ describe('ArtistInteractor', () => {
   it('should reset the instance and throw an error while fetching artists', async () => {
     ArtistInteractor.resetInstance();
     interactor = ArtistInteractor.getInstance();
-    ArtistService.prototype.getArtists = jest
-      .fn()
-      .mockImplementationOnce(() => {
-        throw new Error();
-      });
+    ArtistService.prototype.getArtists = jest.fn().mockImplementationOnce(() => {
+      throw new Error();
+    });
 
     let error;
     try {
@@ -123,11 +117,9 @@ describe('ArtistInteractor', () => {
   });
 
   it('should throw a service error when creating a artist', async () => {
-    ArtistService.prototype.createArtist = jest
-      .fn()
-      .mockImplementationOnce(() => {
-        throw new Error();
-      });
+    ArtistService.prototype.createArtist = jest.fn().mockImplementationOnce(() => {
+      throw new Error();
+    });
     let error;
     const data: IArtist = new Artist();
     data.name = 'Lorem ipsum dolor';

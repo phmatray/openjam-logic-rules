@@ -37,8 +37,7 @@ export class Artist implements IArtist {
    * @returns boolean
    */
   public isValidName(validator?: (value: string) => boolean): boolean {
-    this._validName =
-      this._validateName() && (!validator ? true : validator(this.name));
+    this._validName = this._validateName() && (!validator ? true : validator(this.name));
     return this._validName;
   }
 
@@ -50,10 +49,7 @@ export class Artist implements IArtist {
    * @returns boolean
    */
   public isValid(): boolean {
-    if (
-      this._validName ||
-      (this._validName === undefined && this._validateName())
-    ) {
+    if (this._validName || (this._validName === undefined && this._validateName())) {
       return true;
     }
 

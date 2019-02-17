@@ -1,14 +1,12 @@
-.DS_Store
 node_modules
-npm-debug.log
-/dist/
-*.tgz
 coverage
-
-# Editor directories and files
-.idea
+.nyc_output
+.DS_Store
+*.log
 .vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
+.idea
+dist
+compiled
+.awcache
+.rpt2_cache
+docs

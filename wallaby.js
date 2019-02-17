@@ -11,6 +11,10 @@ module.exports = function(wallaby) {
 
     testFramework: 'jest',
 
+    compilers: {
+      '**/*.ts?(x)': wallaby.compilers.typeScript({ module: 'commonjs' })
+    },
+
     preprocessors: {
       '**/*.js?(x)': file =>
         require('@babel/core').transform(file.content, {

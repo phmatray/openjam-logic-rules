@@ -31,8 +31,7 @@ export class Post implements IPost {
    * @returns boolean
    */
   public isValidTitle(validator?: (value: string) => boolean): boolean {
-    this._validTitle =
-      this._validateTitle() && (!validator ? true : validator(this.title));
+    this._validTitle = this._validateTitle() && (!validator ? true : validator(this.title));
     return this._validTitle;
   }
 
@@ -44,8 +43,7 @@ export class Post implements IPost {
    * @returns boolean
    */
   public isValidBody(validator?: (value: string) => boolean): boolean {
-    this._validBody =
-      this._validateBody() && (!validator ? true : validator(this.body));
+    this._validBody = this._validateBody() && (!validator ? true : validator(this.body));
     return this._validBody;
   }
 
@@ -59,12 +57,8 @@ export class Post implements IPost {
   public isValid(): boolean {
     if (
       (this._validTitle && this._validBody) ||
-      (this._validTitle &&
-        this._validBody === undefined &&
-        this._validateBody()) ||
-      (this._validTitle === undefined &&
-        this._validateTitle() &&
-        this._validBody) ||
+      (this._validTitle && this._validBody === undefined && this._validateBody()) ||
+      (this._validTitle === undefined && this._validateTitle() && this._validBody) ||
       (this._validTitle === undefined &&
         this._validBody === undefined &&
         this._validateTitle() &&

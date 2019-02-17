@@ -29,6 +29,4 @@ class PostExposer implements IPostExposer {
 }
 
 /* tslint:disable:no-unused */
-export const postExposer: IPostExposer = new PostExposer(
-  PostInteractor.getInstance()
-);
+export const postExposer: IPostExposer = new PostExposer(PostInteractor.getInstance());

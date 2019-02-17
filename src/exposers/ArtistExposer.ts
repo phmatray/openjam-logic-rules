@@ -1,6 +1,4 @@
-import ArtistInteractor, {
-  IArtistInteractor
-} from '../interactors/ArtistInteractor';
+import ArtistInteractor, { IArtistInteractor } from '../interactors/ArtistInteractor';
 import { IArtist } from '../entities/Artist';
 
 export interface IArtistExposer {
@@ -31,6 +29,4 @@ class ArtistExposer implements IArtistExposer {
 }
 
 /* tslint:disable:no-unused */
-export const artistExposer: IArtistExposer = new ArtistExposer(
-  ArtistInteractor.getInstance()
-);
+export const artistExposer: IArtistExposer = new ArtistExposer(ArtistInteractor.getInstance());

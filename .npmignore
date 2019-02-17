@@ -21,9 +21,6 @@ tslint.json
 coverage
 coverage_server.js
 
-# showroom
-./showroom/
-
 # Editor directories and files
 .idea
 .vscode

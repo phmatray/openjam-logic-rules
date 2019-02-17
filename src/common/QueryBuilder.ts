@@ -67,21 +67,14 @@ export interface IQueryBuilder {
   /**
    * Create a GET query for a single record
    */
-  buildQueryForSingle: (
-    collection: string,
-    id: string,
-    params?: IQueryParamsGetOne
-  ) => string;
+  buildQueryForSingle: (collection: string, id: string, params?: IQueryParamsGetOne) => string;
 
   /**
    * Create a GET query with pagination for a records collection
    * @param collection - Collection name
    * @param params - Query parameters
    */
-  buildQueryForCollection: (
-    collection: string,
-    params?: IQueryParamsGetCollection
-  ) => string;
+  buildQueryForCollection: (collection: string, params?: IQueryParamsGetCollection) => string;
 }
 
 /**
@@ -138,10 +131,7 @@ export class QueryBuilder implements IQueryBuilder {
       }
     };
 
-    const pushSegmentsIfCollectionExist = (
-      parameter: any[] | undefined,
-      name: string
-    ) => {
+    const pushSegmentsIfCollectionExist = (parameter: any[] | undefined, name: string) => {
       if (parameter) {
         parameter.forEach(element => {
           pushSegmentIfExist(element, name);

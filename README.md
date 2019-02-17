@@ -3,7 +3,12 @@
 **openjam-logic-rules** provides a higher-level wrapper around OpenJam's API and encapsulates all the business logic related to the OpenJam front-end.
 
 [![npm (scoped)](https://img.shields.io/npm/v/@openjam/logic-rules.svg?style=flat)](https://www.npmjs.com/package/@openjam/logic-rules)
-[![Coverage Status](https://coveralls.io/repos/github/openjam-eu/openjam-logic-rules/badge.svg?branch=master)](https://coveralls.io/github/openjam-eu/openjam-logic-rules?branch=master)
+[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+[![Coverage Status](https://img.shields.io/coveralls/openjam-eu/openjam-logic-rules.svg)](https://coveralls.io/github/openjam-eu/openjam-logic-rules)
+
+[![Travis](https://img.shields.io/travis/openjam-eu/openjam-logic-rules.svg)](https://travis-ci.org/openjam-eu/openjam-logic-rules)
+[![ Dependencies](https://david-dm.org/openjam-eu/openjam-logic-rules.svg)](https://david-dm.org/openjam-eu/openjam-logic-rules)
+[![Dev Dependencies](https://david-dm.org/openjam-eu/openjam-logic-rules/dev-status.svg)](https://david-dm.org/openjam-eu/openjam-logic-rules?type=dev)
 
 _This package is inspired from the article [Front End Architecture — Making rebuild from scratch not so painful](https://medium.com/car2godevs/front-end-architecture-making-rebuild-from-scratch-not-so-painful-7b2232dc1666)._
 

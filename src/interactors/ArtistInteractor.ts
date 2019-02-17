@@ -9,9 +9,7 @@ export interface IArtistInteractor {
 }
 
 export default class ArtistInteractor implements IArtistInteractor {
-  private static _instance: IArtistInteractor = new ArtistInteractor(
-    new ArtistService()
-  );
+  private static _instance: IArtistInteractor = new ArtistInteractor(new ArtistService());
 
   public static getInstance(): IArtistInteractor {
     return this._instance;
