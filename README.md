@@ -11,7 +11,10 @@
 [![ Dependencies](https://david-dm.org/openjam-eu/openjam-logic-rules.svg)](https://david-dm.org/openjam-eu/openjam-logic-rules)
 [![Dev Dependencies](https://david-dm.org/openjam-eu/openjam-logic-rules/dev-status.svg)](https://david-dm.org/openjam-eu/openjam-logic-rules?type=dev)
 
-_This package is inspired from the article [Front End Architecture — Making rebuild from scratch not so painful](https://medium.com/car2godevs/front-end-architecture-making-rebuild-from-scratch-not-so-painful-7b2232dc1666)._
+### Notes
+
+- _This package is inspired from the article [Front End Architecture — Making rebuild from scratch not so painful](https://medium.com/car2godevs/front-end-architecture-making-rebuild-from-scratch-not-so-painful-7b2232dc1666)._
+- _It also use [TypeScript library starter](https://travis-ci.org/alexjoverm/typescript-library-starter) to bootstrap this libray._
 
 # Folders
 
@@ -51,30 +54,34 @@ const artists = oj.getArtists();
 // now, we have the artists from OpenJam <3
 ```
 
-# How to contribute?
+# NPM scripts
 
 ```bash
-# Install dependencies
-npm install
 
-# Start development
-npm start
+ # Run test suite
+ npm t
 
-# Develop tests
-npm run test-dev
+ # Run `npm run build` in watch mode
+ npm start
 
-# Develop tests and check coverage
-npm run test-dev-coverage
+ # Run test suite in [interactive watch mode](http://facebook.github.io/jest/docs/cli.html#watch)
+ npm run test:watch
 
-# Run tests and check coverage
-npm test
+ # Run linting and generate coverage
+ npm run test:prod
 
-# Build package
-npm run build
+ # Generate bundles and typings, create docs
+ npm run build
+
+ # Lints code
+ npm run lint
+
+ # Commit using conventional commit style ([husky](https://github.com/typicode/husky) will tell you to use it if you haven't :wink:)
+ npm run commit
 ```
 
 # Todo
 
-- [ ] Fix a bunch of unit tests
 - [ ] Add track entity
 - [ ] Add user entity
+- [ ] Add axios config override to the entry point

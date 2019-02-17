@@ -1,6 +1,6 @@
 {
   "name": "@openjam/logic-rules",
-  "version": "0.0.7",
+  "version": "0.0.0-development",
   "license": "MIT",
   "description": "A higher-level wrapper around OpenJam's API",
   "keywords": [
@@ -17,7 +17,7 @@
   "author": "Philippe Matray <pm@techmedev.eu>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/openjam-eu/openjam-logic-rules.git"
+    "url": "https://github.com/openjam-eu/openjam-logic-rules.git"
   },
   "bugs": {
     "url": "https://github.com/openjam-eu/openjam-logic-rules/issues"
