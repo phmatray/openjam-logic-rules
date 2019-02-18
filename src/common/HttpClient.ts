@@ -11,7 +11,7 @@ class HttpClient implements IHttpClient {
 
   constructor() {
     this._http = axios.create({
-      baseURL: 'http://localhost:5000',
+      baseURL: 'https://api.openjam.eu',
       headers: {
         'Content-Type': 'application/json'
       }
