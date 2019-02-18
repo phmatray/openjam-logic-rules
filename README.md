@@ -11,6 +11,10 @@
 [![ Dependencies](https://david-dm.org/openjam-eu/openjam-logic-rules.svg)](https://david-dm.org/openjam-eu/openjam-logic-rules)
 [![Dev Dependencies](https://david-dm.org/openjam-eu/openjam-logic-rules/dev-status.svg)](https://david-dm.org/openjam-eu/openjam-logic-rules?type=dev)
 
+### Documentation
+
+- https://openjam-eu.github.io/openjam-logic-rules/
+
 ### Notes
 
 - _This package is inspired from the article [Front End Architecture — Making rebuild from scratch not so painful](https://medium.com/car2godevs/front-end-architecture-making-rebuild-from-scratch-not-so-painful-7b2232dc1666)._
