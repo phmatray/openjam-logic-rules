@@ -2,14 +2,17 @@
 
 **openjam-logic-rules** provides a higher-level wrapper around OpenJam's API and encapsulates all the business logic related to the OpenJam front-end.
 
-[![npm (scoped)](https://img.shields.io/npm/v/@openjam/logic-rules.svg?style=flat)](https://www.npmjs.com/package/@openjam/logic-rules)
-[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-[![Coverage Status](https://img.shields.io/coveralls/openjam-eu/openjam-logic-rules.svg)](https://coveralls.io/github/openjam-eu/openjam-logic-rules)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 [![Travis](https://img.shields.io/travis/openjam-eu/openjam-logic-rules.svg)](https://travis-ci.org/openjam-eu/openjam-logic-rules)
+[![Coverage Status](https://img.shields.io/coveralls/openjam-eu/openjam-logic-rules.svg)](https://coveralls.io/github/openjam-eu/openjam-logic-rules)
+
+[![npm (scoped)](https://img.shields.io/npm/v/@openjam/logic-rules.svg?style=flat)](https://www.npmjs.com/package/@openjam/logic-rules)
 [![ Dependencies](https://david-dm.org/openjam-eu/openjam-logic-rules.svg)](https://david-dm.org/openjam-eu/openjam-logic-rules)
 [![Dev Dependencies](https://david-dm.org/openjam-eu/openjam-logic-rules/dev-status.svg)](https://david-dm.org/openjam-eu/openjam-logic-rules?type=dev)
+
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/openjam-eu/openjam-logic-rules/issues)
+[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 ### Documentation
 
