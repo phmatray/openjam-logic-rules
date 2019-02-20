@@ -80,12 +80,50 @@ describe('Test Track entity', () => {
     ).toBeTruthy();
   });
 
+  it('should return popularity is invalid for numbers lower than 0', () => {
+    track.popularity = -1;
+    expect(track.isValidPopularity()).toBeFalsy();
+  });
+
+  it('should return popularity is invalid for numbers greater than 100', () => {
+    track.popularity = 101;
+    expect(track.isValidPopularity()).toBeFalsy();
+  });
+
+  it('should return popularity is invalid using additional validation', () => {
+    track.popularity = 49;
+    expect(
+      track.isValidPopularity(
+        (popularity: number): boolean => {
+          return popularity >= 50;
+        }
+      )
+    ).toBeFalsy();
+  });
+
+  it('should return popularity is valid', () => {
+    track.popularity = 80;
+    expect(track.isValidPopularity()).toBeTruthy();
+  });
+
+  it('should return popularity is valid using additional validation', () => {
+    track.popularity = 50;
+    expect(
+      track.isValidPopularity(
+        (popularity: number): boolean => {
+          return popularity >= 50;
+        }
+      )
+    ).toBeTruthy();
+  });
+
   it('should return track is invalid without previous validation', () => {
     expect(track.isValid()).toBeFalsy();
   });
 
   it('should return track is valid without previous validation', () => {
     track.title = 'Lorem ipsum dolor sit amet';
+    track.popularity = 80;
 
     expect(track.isValid()).toBeTruthy();
   });
@@ -102,5 +140,83 @@ describe('Test Track entity', () => {
     ).toBeFalsy();
 
     expect(track.isValid()).toBeFalsy();
+  });
+
+  it('should return track is invalid with previous popularity validation', () => {
+    track.title = 'Lorem ipsum dolor';
+    track.popularity = -1;
+
+    expect(
+      track.isValidPopularity(
+        (popularity: number): boolean => {
+          return popularity >= 0 && popularity <= 100;
+        }
+      )
+    ).toBeFalsy();
+
+    expect(track.isValid()).toBeFalsy();
+  });
+
+  it('should return track is invalid with previous title and popularity validation, title is valid', () => {
+    track.title = 'Lorem ipsum dolor';
+    track.popularity = -1;
+
+    expect(track.isValidTitle()).toBeTruthy();
+    expect(
+      track.isValidPopularity(
+        (popularity: number): boolean => {
+          return popularity >= 0 && popularity <= 100;
+        }
+      )
+    ).toBeFalsy();
+
+    expect(track.isValid()).toBeFalsy();
+  });
+
+  it('should return track is invalid with previous title and popularity validation, popularity is valid', () => {
+    track.title = 'Lorem ipsum dolor';
+    track.popularity = 50;
+
+    expect(
+      track.isValidTitle(
+        (title: string): boolean => {
+          return title.indexOf('dolor') < 0;
+        }
+      )
+    ).toBeFalsy();
+    expect(track.isValidPopularity()).toBeTruthy();
+
+    expect(track.isValid()).toBeFalsy();
+  });
+
+  it('should return track is valid with previous title validation', () => {
+    track.title = 'Lorem ipsum dolor';
+    track.popularity = 50;
+
+    expect(track.isValidTitle()).toBeTruthy();
+    expect(track.isValid()).toBeTruthy();
+  });
+
+  it('should return track is valid with previous popularity validation', () => {
+    track.title = 'Lorem ipsum dolor';
+    track.popularity = 50;
+
+    expect(track.isValidPopularity()).toBeTruthy();
+    expect(track.isValid()).toBeTruthy();
+  });
+
+  it('should return track is valid with previous title and popularity validation', () => {
+    track.title = 'Lorem ipsum';
+    track.popularity = 50;
+
+    expect(
+      track.isValidTitle(
+        (title: string): boolean => {
+          return title.indexOf('dolor') < 0;
+        }
+      )
+    ).toBeTruthy();
+    expect(track.isValidPopularity()).toBeTruthy();
+    expect(track.isValid()).toBeTruthy();
   });
 });

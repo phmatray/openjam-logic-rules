@@ -67,6 +67,13 @@ export class Track implements ITrack {
     return this._validTitle;
   }
 
+  /**
+   * Returns if popularity property is valid based on the internal validator
+   * and an optional extra validator
+   * @memberof Track
+   * @param validator Additional validation function
+   * @returns boolean
+   */
   public isValidPopularity(validator?: (value: number) => boolean): boolean {
     this._validPopularity =
       this._validatePopularity() && (!validator ? true : validator(this.popularity));
@@ -86,7 +93,15 @@ export class Track implements ITrack {
    * @returns boolean
    */
   public isValid(): boolean {
-    if (this._validTitle || (this._validTitle === undefined && this._validateTitle())) {
+    if (
+      (this._validTitle && this._validPopularity) ||
+      (this._validTitle && this._validPopularity === undefined && this._validatePopularity()) ||
+      (this._validTitle === undefined && this._validateTitle() && this._validPopularity) ||
+      (this._validTitle === undefined &&
+        this._validPopularity === undefined &&
+        this._validateTitle() &&
+        this._validatePopularity())
+    ) {
       return true;
     }
 
