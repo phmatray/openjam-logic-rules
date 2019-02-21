@@ -38,7 +38,7 @@ export class ArtistService implements IArtistService {
   }
 
   public async saveArtist(data: IArtist): Promise<IArtist> {
-    const { id, type, name, images, genres } = data;
+    const { _id: id, type, name, images, genres } = data;
     const response = await httpClient.patch<IArtist>(`/artist/${id}`, {
       id,
       type,

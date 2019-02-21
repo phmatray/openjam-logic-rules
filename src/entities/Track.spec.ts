@@ -28,7 +28,7 @@ describe('Test Track entity', () => {
     };
     track.copyData(data);
 
-    expect(track.id).toBe('id001');
+    expect(track._id).toBe('id001');
     expect(track.type).toBe('track');
     expect(track.type2).toBe('original');
     expect(track.title).toBe('title');

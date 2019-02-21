@@ -1,5 +1,5 @@
 export interface ILabel {
-  id: string;
+  _id: string;
   type: 'label';
   name: string;
   copyData?: (data: any) => void;
@@ -8,7 +8,7 @@ export interface ILabel {
 }
 
 export class Label implements ILabel {
-  public id: string = '';
+  public _id: string = '';
   public type: 'label' = 'label';
   public name: string = '';
 
@@ -55,7 +55,7 @@ export class Label implements ILabel {
   public copyData(data: any): void {
     const { id, type, name, images, genres } = data;
 
-    this.id = id;
+    this._id = id;
     this.type = type;
     this.name = name;
   }

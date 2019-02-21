@@ -13,7 +13,7 @@ export interface ITrackMeta {
 }
 
 export interface ITrack {
-  id: string;
+  _id: string;
   type: TrackType;
   type2: TrackType2;
   title: string;
@@ -33,7 +33,7 @@ export interface ITrack {
 }
 
 export class Track implements ITrack {
-  public id: string = '';
+  public _id: string = '';
   public type: TrackType = 'track';
   public type2: TrackType2 = 'original';
   public title: string = '';
@@ -130,7 +130,7 @@ export class Track implements ITrack {
       duration
     } = data;
 
-    this.id = id;
+    this._id = id;
     this.type = type;
     this.type2 = type2;
     this.title = title;

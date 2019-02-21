@@ -80,7 +80,7 @@ describe('LabelInteractor', () => {
     const label = await interactor.createLabel(data);
 
     expect(label).toBeDefined();
-    expect(label.id).toBe('id003');
+    expect(label._id).toBe('id003');
     expect(label.name).toEqual(data.name);
     expect(label.type).toEqual(data.type);
   });
@@ -135,20 +135,20 @@ describe('LabelInteractor', () => {
 
   it('should save a new label', async () => {
     const data: ILabel = new Label();
-    data.id = 'id003';
+    data._id = 'id003';
     data.type = 'label';
     data.name = 'Lorem ipsum';
 
     const label = await interactor.saveLabel(data);
 
     expect(label).toBeDefined();
-    expect(label.id).toBe('id003');
+    expect(label._id).toBe('id003');
     expect(label.name).toEqual(data.name);
   });
 
   it('should throw a service error when saving a label', async () => {
     const data: ILabel = new Label();
-    data.id = 'id1';
+    data._id = 'id1';
     data.type = 'label';
     data.name = 'Lorem ipsum';
 

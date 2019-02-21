@@ -19,7 +19,7 @@ describe('Test Post entity', () => {
     };
     post.copyData(data);
 
-    expect(post.id).toBe(1);
+    expect(post._id).toBe(1);
     expect(post.userId).toBe(3);
     expect(post.title).toBe('Copy');
     expect(post.body).toBe('Copied');

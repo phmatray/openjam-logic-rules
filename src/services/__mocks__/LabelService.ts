@@ -5,12 +5,12 @@ export class LabelService {
   public async getLabels(): Promise<ILabel[]> {
     return [
       {
-        id: 'id001',
+        _id: 'id001',
         name: 'Lorem ipsum',
         type: 'label'
       },
       {
-        id: 'id002',
+        _id: 'id002',
         name: 'Lorem ipsum dolor',
         type: 'label'
       }
@@ -20,17 +20,17 @@ export class LabelService {
   public async createLabel(data: ILabel): Promise<ILabel> {
     return {
       ...data,
-      id: 'id003'
+      _id: 'id003'
     };
   }
 
   public async saveLabel(data: ILabel): Promise<ILabel> {
-    if (data.id !== 'id003') {
+    if (data._id !== 'id003') {
       throw new Error();
     }
     return {
       ...data,
-      id: 'id003'
+      _id: 'id003'
     };
   }
 }

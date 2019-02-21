@@ -18,7 +18,7 @@ describe('Test Label entity', () => {
     };
     label.copyData(data);
 
-    expect(label.id).toBe(1);
+    expect(label._id).toBe(1);
     expect(label.type).toBe('label');
     expect(label.name).toBe('Copy');
   });

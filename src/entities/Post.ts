@@ -1,6 +1,6 @@
 export interface IPost {
   userId: number;
-  id: number;
+  _id: number;
   title: string;
   body: string;
   copyData?: (data: any) => void;
@@ -11,7 +11,7 @@ export interface IPost {
 
 export class Post implements IPost {
   public userId: number = 0;
-  public id: number = 0;
+  public _id: number = 0;
   public title: string = '';
   public body: string = '';
 
@@ -79,7 +79,7 @@ export class Post implements IPost {
   public copyData(data: any): void {
     const { id, userId, title, body } = data;
 
-    this.id = id;
+    this._id = id;
     this.userId = userId;
     this.title = title;
     this.body = body;

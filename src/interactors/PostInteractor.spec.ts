@@ -80,7 +80,7 @@ describe('PostInteractor', () => {
     const post = await interactor.createPost(data);
 
     expect(post).toBeDefined();
-    expect(post.id).toBe(3);
+    expect(post._id).toBe(3);
     expect(post.title).toEqual(data.title);
     expect(post.title).toEqual(data.title);
   });
@@ -136,14 +136,14 @@ describe('PostInteractor', () => {
   it('should save a new post', async () => {
     const data: IPost = new Post();
     data.userId = 1;
-    data.id = 3;
+    data._id = 3;
     data.title = 'Lorem ipsum dolor edited';
     data.body = 'Dolor sit amet';
 
     const post = await interactor.savePost(data);
 
     expect(post).toBeDefined();
-    expect(post.id).toBe(3);
+    expect(post._id).toBe(3);
     expect(post.title).toEqual(data.title);
     expect(post.title).toEqual(data.title);
   });
@@ -151,7 +151,7 @@ describe('PostInteractor', () => {
   it('should throw a service error when saving a post', async () => {
     const data: IPost = new Post();
     data.userId = 1;
-    data.id = 2;
+    data._id = 2;
     data.title = 'Lorem ipsum dolor edited';
     data.body = 'Dolor sit amet';
 

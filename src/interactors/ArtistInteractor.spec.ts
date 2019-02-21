@@ -82,7 +82,7 @@ describe('ArtistInteractor', () => {
     const artist = await interactor.createArtist(data);
 
     expect(artist).toBeDefined();
-    expect(artist.id).toBe('id003');
+    expect(artist._id).toBe('id003');
     expect(artist.name).toEqual(data.name);
     expect(artist.type).toEqual(data.type);
   });
@@ -137,7 +137,7 @@ describe('ArtistInteractor', () => {
 
   it('should save a new artist', async () => {
     const data: IArtist = new Artist();
-    data.id = 'id003';
+    data._id = 'id003';
     data.type = 'artist';
     data.name = 'Lorem ipsum';
     data.images = [];
@@ -146,13 +146,13 @@ describe('ArtistInteractor', () => {
     const artist = await interactor.saveArtist(data);
 
     expect(artist).toBeDefined();
-    expect(artist.id).toBe('id003');
+    expect(artist._id).toBe('id003');
     expect(artist.name).toEqual(data.name);
   });
 
   it('should throw a service error when saving a artist', async () => {
     const data: IArtist = new Artist();
-    data.id = 'id1';
+    data._id = 'id1';
     data.type = 'artist';
     data.name = 'Lorem ipsum';
     data.images = [];

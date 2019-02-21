@@ -21,7 +21,7 @@ export class PostService implements IPostService {
   }
 
   public async savePost(data: IPost): Promise<IPost> {
-    const { id, title, body } = data;
+    const { _id: id, title, body } = data;
     const response = await httpClient.patch<IPost>(`/posts/${id}`, {
       title,
       body

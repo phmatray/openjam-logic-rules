@@ -36,7 +36,7 @@ export class LabelService implements ILabelService {
   }
 
   public async saveLabel(data: ILabel): Promise<ILabel> {
-    const { id, type, name } = data;
+    const { _id: id, type, name } = data;
     const response = await httpClient.patch<ILabel>(`/label/${id}`, {
       id,
       type,

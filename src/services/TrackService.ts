@@ -39,7 +39,7 @@ export class TrackService implements ITrackService {
   }
 
   public async saveTrack(data: ITrack): Promise<ITrack> {
-    const { id, type, type2, title, audioUrl, coverUrl } = data;
+    const { _id: id, type, type2, title, audioUrl, coverUrl } = data;
     const response = await httpClient.patch<ITrack>(`/track/${id}`, {
       id,
       type,

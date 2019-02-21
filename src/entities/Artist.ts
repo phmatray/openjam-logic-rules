@@ -5,7 +5,7 @@ interface IImage {
 }
 
 export interface IArtist {
-  id: string;
+  _id: string;
   type: 'artist';
   name: string;
   images?: IImage[];
@@ -16,7 +16,7 @@ export interface IArtist {
 }
 
 export class Artist implements IArtist {
-  public id: string = '';
+  public _id: string = '';
   public type: 'artist' = 'artist';
   public name: string = '';
   public images: IImage[] = [];
@@ -65,7 +65,7 @@ export class Artist implements IArtist {
   public copyData(data: any): void {
     const { id, type, name, images, genres } = data;
 
-    this.id = id;
+    this._id = id;
     this.type = type;
     this.name = name;
     this.images = images;

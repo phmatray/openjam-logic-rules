@@ -5,13 +5,13 @@ export class ArtistService {
   public async getArtists(): Promise<IArtist[]> {
     return [
       {
-        id: 'id001',
+        _id: 'id001',
         name: 'Lorem ipsum',
         type: 'artist',
         genres: ['electro', 'rock']
       },
       {
-        id: 'id002',
+        _id: 'id002',
         name: 'Lorem ipsum dolor',
         type: 'artist',
         genres: ['electro', 'psytrance']
@@ -22,17 +22,17 @@ export class ArtistService {
   public async createArtist(data: IArtist): Promise<IArtist> {
     return {
       ...data,
-      id: 'id003'
+      _id: 'id003'
     };
   }
 
   public async saveArtist(data: IArtist): Promise<IArtist> {
-    if (data.id !== 'id003') {
+    if (data._id !== 'id003') {
       throw new Error();
     }
     return {
       ...data,
-      id: 'id003'
+      _id: 'id003'
     };
   }
 }

@@ -80,7 +80,7 @@ describe('TrackInteractor', () => {
     const track = await interactor.createTrack(data);
 
     expect(track).toBeDefined();
-    expect(track.id).toBe('id003');
+    expect(track._id).toBe('id003');
     expect(track.title).toEqual(data.title);
     expect(track.type).toEqual(data.type);
   });
@@ -135,20 +135,20 @@ describe('TrackInteractor', () => {
 
   it('should save a new track', async () => {
     const data: ITrack = new Track();
-    data.id = 'id003';
+    data._id = 'id003';
     data.type = 'track';
     data.title = 'Lorem ipsum';
 
     const track = await interactor.saveTrack(data);
 
     expect(track).toBeDefined();
-    expect(track.id).toBe('id003');
+    expect(track._id).toBe('id003');
     expect(track.title).toEqual(data.title);
   });
 
   it('should throw a service error when saving a track', async () => {
     const data: ITrack = new Track();
-    data.id = 'id1';
+    data._id = 'id1';
     data.type = 'track';
     data.title = 'Lorem ipsum';
 

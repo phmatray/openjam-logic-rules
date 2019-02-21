@@ -20,7 +20,7 @@ describe('Test Artist entity', () => {
     };
     artist.copyData(data);
 
-    expect(artist.id).toBe(1);
+    expect(artist._id).toBe(1);
     expect(artist.type).toBe('artist');
     expect(artist.name).toBe('Copy');
     expect(artist.images).toEqual([]);
