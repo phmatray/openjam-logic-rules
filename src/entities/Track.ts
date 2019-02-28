@@ -1,167 +1,328 @@
-export type TrackType = 'track';
-export type TrackType2 = 'original' | 'remix';
+import * as Joi from 'joi';
 
-export interface ICoverUrl {
-  w200: string;
-  w400: string;
-  w800: string;
-}
+import { IComment } from './Comment';
+import { ILabel } from './Label';
+import { ILike } from './Like';
+import { IPost } from './Post';
+import { IProfile } from './Profile';
 
-export interface ITrackMeta {
-  description?: string;
-  lyrics?: string;
-}
+export type TrackType = 'original' | 'remix';
 
 export interface ITrack {
-  _id: string;
-  type: TrackType;
-  type2: TrackType2;
-  title: string;
+  id?: string;
+  type?: TrackType;
+  title?: string;
   edit?: string;
-  audioUrl: string;
-  coverUrl: ICoverUrl;
-  licenceUrl?: string;
-  // label: ILabel;
-  meta?: ITrackMeta;
   explicit?: boolean;
-  popularity?: number;
-  duration?: number;
-  copyData?: (data: any) => void;
-  isValidTitle?: (additionalValidator?: (value: string) => boolean) => boolean;
-  isValidPopularity?: (additionalValidator?: (value: number) => boolean) => boolean;
-  isValid?: () => boolean;
+  description?: string;
+  profiles?: string[] | IProfile[];
+  createdAt?: Date;
+  updatedAt?: Date;
+  label?: string | ILabel;
+  likes?: string[] | ILike[];
+  posts?: string[] | IPost[];
+  comments?: string[] | IComment[];
+  audioUrl?: string;
+  coverUrl?: string;
 }
 
-export class Track implements ITrack {
-  public _id: string = '';
-  public type: TrackType = 'track';
-  public type2: TrackType2 = 'original';
-  public title: string = '';
-  public edit: string = '';
-  public audioUrl: string = '';
-  public coverUrl: ICoverUrl = { w200: '', w400: '', w800: '' };
-  public licenceUrl: string = '';
-  public downloadable: boolean = false;
-  public meta: ITrackMeta = {};
-  public explicit: boolean = false;
-  public popularity: number = 0;
-  public duration: number = 0;
+export interface ITrackEntity extends ITrack {
+  trackSchema: Joi.ObjectSchema;
+  copyData: (data: ITrack) => ITrackEntity;
+  getRaw: () => ITrack;
+  validate: (data: ITrack) => Joi.ValidationResult<ITrack>;
+  validateId: (id: string) => Joi.ValidationResult<string>;
+  validateType: (type: TrackType) => Joi.ValidationResult<TrackType>;
+  validateTitle: (title: string) => Joi.ValidationResult<string>;
+  validateEdit: (edit: string) => Joi.ValidationResult<string>;
+  validateExplicit: (explicit: boolean) => Joi.ValidationResult<boolean>;
+  validateDescription: (description: string) => Joi.ValidationResult<string>;
+  validateProfiles: (
+    profiles: string[] | IProfile[]
+  ) => Joi.ValidationResult<string[] | IProfile[]>;
+  validateCreatedAt: (createdAt: Date) => Joi.ValidationResult<Date>;
+  validateUpdatedAt: (updatedAt: Date) => Joi.ValidationResult<Date>;
+  validateLabel: (label: string | ILabel) => Joi.ValidationResult<string>;
+  validateLikes: (likes: string[] | ILike[]) => Joi.ValidationResult<string[] | ILike[]>;
+  validatePosts: (posts: string[] | IPost[]) => Joi.ValidationResult<string[] | IPost[]>;
+  validateComments: (
+    comments: string[] | IComment[]
+  ) => Joi.ValidationResult<string[] | IComment[]>;
+  validateAudioUrl: (audioUrl: string) => Joi.ValidationResult<string>;
+  validateCoverUrl: (coverUrl: string) => Joi.ValidationResult<string>;
+}
+
+export class Track implements ITrackEntity {
+  public id?: string | undefined;
+  public type?: TrackType | undefined;
+  public title?: string | undefined;
+  public edit?: string | undefined;
+  public explicit?: boolean | undefined;
+  public description?: string | undefined;
+  public profiles?: string[] | IProfile[] | undefined;
+  public createdAt?: Date | undefined;
+  public updatedAt?: Date | undefined;
+  public label?: string | ILabel | undefined;
+  public likes?: string[] | ILike[] | undefined;
+  public posts?: string[] | IPost[] | undefined;
+  public comments?: string[] | IComment[] | undefined;
+  public audioUrl?: string | undefined;
+  public coverUrl?: string | undefined;
+
+  private _validId = Joi.string();
+  private _validType = Joi.string();
+  private _validTitle = Joi.string();
+  private _validEdit = Joi.string();
+  private _validExplicit = Joi.bool();
+  private _validDescription = Joi.string();
+  private _validProfiles = Joi.array();
+  private _validCreatedAt = Joi.date();
+  private _validUpdatedAt = Joi.date();
+  private _validLabel = Joi.string();
+  private _validLikes = Joi.array();
+  private _validPosts = Joi.array();
+  private _validComments = Joi.array();
+  private _validAudioUrl = Joi.string();
+  private _validCoverUrl = Joi.string();
 
   /**
-   * Private properties to store validation states
-   * when the application validates fields separetely
-   * and/or use additional validations
-   */
-  private _validTitle: boolean | undefined;
-  private _validPopularity: boolean | undefined;
-
-  /**
-   * Returns if title property is valid based on the internal validator
-   * and an optional extra validator
+   * Joi Track Schema
+   * @type {Joi.ObjectSchema}
    * @memberof Track
-   * @param validator Additional validation function
-   * @returns boolean
    */
-  public isValidTitle(validator?: (value: string) => boolean): boolean {
-    this._validTitle = this._validateTitle() && (!validator ? true : validator(this.title));
-    return this._validTitle;
-  }
-
-  /**
-   * Returns if popularity property is valid based on the internal validator
-   * and an optional extra validator
-   * @memberof Track
-   * @param validator Additional validation function
-   * @returns boolean
-   */
-  public isValidPopularity(validator?: (value: number) => boolean): boolean {
-    this._validPopularity =
-      this._validatePopularity() && (!validator ? true : validator(this.popularity));
-    return this._validPopularity;
-  }
-
-  // title: { type: String, required: true, min: 5, max: 50 },
-  // audioUrl: { type: String, required: true },
-  // downloadable: { type: Boolean, default: false },
-  // popularity: { type: Number, min: 0, max: 100 },
-
-  /**
-   * Returns if the Track object is valid
-   * It should not use internal (private) validation methods
-   * if previous property validation methods were used
-   * @memberof Track
-   * @returns boolean
-   */
-  public isValid(): boolean {
-    if (
-      (this._validTitle && this._validPopularity) ||
-      (this._validTitle && this._validPopularity === undefined && this._validatePopularity()) ||
-      (this._validTitle === undefined && this._validateTitle() && this._validPopularity) ||
-      (this._validTitle === undefined &&
-        this._validPopularity === undefined &&
-        this._validateTitle() &&
-        this._validatePopularity())
-    ) {
-      return true;
-    }
-
-    return false;
-  }
+  public trackSchema: Joi.ObjectSchema = Joi.object()
+    .keys({
+      id: this._validId,
+      type: this._validType,
+      title: this._validTitle,
+      edit: this._validEdit,
+      explicit: this._validExplicit,
+      description: this._validDescription,
+      profiles: this._validProfiles,
+      createdAt: this._validCreatedAt,
+      updatedAt: this._validUpdatedAt,
+      label: this._validLabel,
+      likes: this._validLikes,
+      posts: this._validPosts,
+      comments: this._validComments,
+      audioUrl: this._validAudioUrl,
+      coverUrl: this._validCoverUrl
+    })
+    .with('id', ['createdAt', 'updatedAt']);
 
   /**
    * Copy properties from an object to instance properties
+   * @param {ITrack} data
+   * @returns {ITrackEntity}
    * @memberof Track
-   * @param data object
    */
-  public copyData(data: any): void {
-    const {
-      id,
-      type,
-      type2,
-      title,
-      edit,
-      audioUrl,
-      coverUrl,
-      licenceUrl,
-      downloadable,
-      meta,
-      explicit,
-      popularity,
-      duration
-    } = data;
+  public copyData(data: ITrack): ITrackEntity {
+    this.id = data.id;
+    this.type = data.type;
+    this.title = data.title;
+    this.edit = data.edit;
+    this.explicit = data.explicit;
+    this.description = data.description;
+    this.profiles = data.profiles;
+    this.createdAt = data.createdAt;
+    this.updatedAt = data.updatedAt;
+    this.label = data.label;
+    this.likes = data.likes;
+    this.posts = data.posts;
+    this.comments = data.comments;
+    this.audioUrl = data.audioUrl;
+    this.coverUrl = data.coverUrl;
 
-    this._id = id;
-    this.type = type;
-    this.type2 = type2;
-    this.title = title;
-    this.edit = edit;
-    this.audioUrl = audioUrl;
-    this.coverUrl = coverUrl;
-    this.licenceUrl = licenceUrl;
-    this.downloadable = downloadable;
-    this.meta = meta;
-    this.explicit = explicit;
-    this.popularity = popularity;
-    this.duration = duration;
+    return this;
+  }
+
+  /**
+   * Get the raw data of the object
+   * @returns {ITrack}
+   * @memberof Track
+   */
+  public getRaw(): ITrack {
+    return {
+      id: this.id,
+      type: this.type,
+      title: this.title,
+      edit: this.edit,
+      explicit: this.explicit,
+      description: this.description,
+      profiles: this.profiles,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+      label: this.label,
+      likes: this.likes,
+      posts: this.posts,
+      comments: this.comments,
+      audioUrl: this.audioUrl,
+      coverUrl: this.coverUrl
+    };
+  }
+
+  /**
+   * Returns if the Track object is valid
+   * @param {ITrack} data
+   * @returns {Joi.ValidationResult<ITrack>}
+   * @memberof Track
+   */
+  public validate(data: ITrack): Joi.ValidationResult<ITrack> {
+    return Joi.validate(data, this.trackSchema);
+  }
+
+  /**
+   * Validates id property
+   * @param {string} id
+   * @returns {Joi.ValidationResult<string>}
+   * @memberof Track
+   */
+  public validateId(id: string): Joi.ValidationResult<string> {
+    return Joi.validate(id, this._validId);
+  }
+
+  /**
+   * Validates type property
+   * @param {TrackType} type
+   * @returns {Joi.ValidationResult<TrackType>}
+   * @memberof Track
+   */
+  public validateType(type: TrackType): Joi.ValidationResult<TrackType> {
+    return Joi.validate(type, this._validType);
   }
 
   /**
    * Validates title property
-   * It should be not empty and should not have more than 256 characters
+   * @param {string} title
+   * @returns {Joi.ValidationResult<string>}
    * @memberof Track
-   * @returns boolean
    */
-  private _validateTitle(): boolean {
-    return this.title.trim() !== '' && this.title.trim().length < 256;
+  public validateTitle(title: string): Joi.ValidationResult<string> {
+    return Joi.validate(title, this._validTitle);
   }
 
   /**
-   * Validates popularity property
-   * It should be between 0 and 100
+   * Validates edit property
+   * @param {string} edit
+   * @returns {Joi.ValidationResult<string>}
    * @memberof Track
-   * @returns boolean
    */
-  private _validatePopularity(): boolean {
-    return this.popularity >= 0 && this.popularity <= 100;
+  public validateEdit(edit: string): Joi.ValidationResult<string> {
+    return Joi.validate(edit, this._validEdit);
+  }
+
+  /**
+   * Validates explicit property
+   * @param {boolean} explicit
+   * @returns {Joi.ValidationResult<boolean>}
+   * @memberof Track
+   */
+  public validateExplicit(explicit: boolean): Joi.ValidationResult<boolean> {
+    return Joi.validate(explicit, this._validExplicit);
+  }
+
+  /**
+   * Validates description property
+   * @param {string} description
+   * @returns {Joi.ValidationResult<string>}
+   * @memberof Track
+   */
+  public validateDescription(description: string): Joi.ValidationResult<string> {
+    return Joi.validate(description, this._validDescription);
+  }
+
+  /**
+   * Validates profiles property
+   * @param {string[] | IProfile[]} profiles
+   * @returns {Joi.ValidationResult<string[] | IProfile[]>}
+   * @memberof Track
+   */
+  public validateProfiles(
+    profiles: string[] | IProfile[]
+  ): Joi.ValidationResult<string[] | IProfile[]> {
+    return Joi.validate(profiles, this._validProfiles);
+  }
+
+  /**
+   * Validates createdAt property
+   * @param {Date} createdAt
+   * @returns {Joi.ValidationResult<Date>}
+   * @memberof Track
+   */
+  public validateCreatedAt(createdAt: Date): Joi.ValidationResult<Date> {
+    return Joi.validate(createdAt, this._validCreatedAt);
+  }
+
+  /**
+   * Validates updatedAt property
+   * @param {Date} updatedAt
+   * @returns {Joi.ValidationResult<Date>}
+   * @memberof Track
+   */
+  public validateUpdatedAt(updatedAt: Date): Joi.ValidationResult<Date> {
+    return Joi.validate(updatedAt, this._validUpdatedAt);
+  }
+
+  /**
+   * Validates label property
+   * @param {string | ILabel} label
+   * @returns {Joi.ValidationResult<string>}
+   * @memberof Track
+   */
+  public validateLabel(label: string | ILabel): Joi.ValidationResult<string> {
+    const id = typeof label !== 'string' && label.id ? label.id : (label as string);
+    return Joi.validate(id, this._validLabel);
+  }
+
+  /**
+   * Validates likes property
+   * @param {string[] | ILike[]} likes
+   * @returns {Joi.ValidationResult<string[] | ILike[]>}
+   * @memberof Track
+   */
+  public validateLikes(likes: string[] | ILike[]): Joi.ValidationResult<string[] | ILike[]> {
+    return Joi.validate(likes, this._validLikes);
+  }
+
+  /**
+   * Validates posts property
+   * @param {string[] | IPost[]} posts
+   * @returns {Joi.ValidationResult<string[] | IPost[]>}
+   * @memberof Track
+   */
+  public validatePosts(posts: string[] | IPost[]): Joi.ValidationResult<string[] | IPost[]> {
+    return Joi.validate(posts, this._validPosts);
+  }
+
+  /**
+   * Validates comments property
+   * @param {string[] | IComment[]} comments
+   * @returns {Joi.ValidationResult<string[] | IComment[]>}
+   * @memberof Track
+   */
+  public validateComments(
+    comments: string[] | IComment[]
+  ): Joi.ValidationResult<string[] | IComment[]> {
+    return Joi.validate(comments, this._validComments);
+  }
+
+  /**
+   * Validates audioUrl property
+   * @param {string} audioUrl
+   * @returns {Joi.ValidationResult<string>}
+   * @memberof Track
+   */
+  public validateAudioUrl(audioUrl: string): Joi.ValidationResult<string> {
+    return Joi.validate(audioUrl, this._validAudioUrl);
+  }
+
+  /**
+   * Validates coverUrl property
+   * @param {string} coverUrl
+   * @returns {Joi.ValidationResult<string>}
+   * @memberof Track
+   */
+  public validateCoverUrl(coverUrl: string): Joi.ValidationResult<string> {
+    return Joi.validate(coverUrl, this._validCoverUrl);
   }
 }

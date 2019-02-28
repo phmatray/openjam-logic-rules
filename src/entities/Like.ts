@@ -1,97 +1,81 @@
 import * as Joi from 'joi';
 
-import { IComment } from './Comment';
-import { ILike } from './Like';
 import { IProfile } from './Profile';
 import { ITrack } from './Track';
 
-export type PostType = 'text' | 'track';
-
-export interface IPost {
+export interface ILike {
   id?: string;
-  type?: string;
-  content?: string;
+  emotion?: string;
+  intensity?: number;
   createdAt?: Date;
   updatedAt?: Date;
   profile?: string | IProfile;
-  likes?: string[] | ILike[];
-  comments?: string[] | IComment[];
   track?: string | ITrack;
 }
 
-export interface IPostEntity extends IPost {
-  postSchema: Joi.ObjectSchema;
-  copyData: (data: IPost) => IPostEntity;
-  getRaw: () => IPost;
-  validate: (data: IPost) => Joi.ValidationResult<IPost>;
+export interface ILikeEntity extends ILike {
+  likeSchema: Joi.ObjectSchema;
+  copyData: (data: ILike) => ILikeEntity;
+  getRaw: () => ILike;
+  validate: (data: ILike) => Joi.ValidationResult<ILike>;
   validateId: (id: string) => Joi.ValidationResult<string>;
-  validateType: (type: string) => Joi.ValidationResult<string>;
-  validateContent: (content: string) => Joi.ValidationResult<string>;
+  validateEmotion: (emotion: string) => Joi.ValidationResult<string>;
+  validateIntensity: (intensity: number) => Joi.ValidationResult<number>;
   validateCreatedAt: (createdAt: Date) => Joi.ValidationResult<Date>;
   validateUpdatedAt: (updatedAt: Date) => Joi.ValidationResult<Date>;
   validateProfile: (profile: string | IProfile) => Joi.ValidationResult<string>;
-  validateLikes: (likes: string[] | ILike[]) => Joi.ValidationResult<string[] | ILike[]>;
-  validateComments: (
-    comments: string[] | IComment[]
-  ) => Joi.ValidationResult<string[] | IComment[]>;
   validateTrack: (track: string | ITrack) => Joi.ValidationResult<string>;
 }
 
-export class Post implements IPostEntity {
+export class Like implements ILikeEntity {
   public id?: string | undefined;
-  public type?: string | undefined;
-  public content?: string | undefined;
+  public emotion?: string | undefined;
+  public intensity?: number | undefined;
   public createdAt?: Date | undefined;
   public updatedAt?: Date | undefined;
   public profile?: string | IProfile | undefined;
-  public likes?: string[] | ILike[] | undefined;
-  public comments?: string[] | IComment[] | undefined;
   public track?: string | ITrack | undefined;
 
   private _validId = Joi.string();
-  private _validType = Joi.string();
-  private _validContent = Joi.string();
+  private _validEmotion = Joi.string();
+  private _validIntensity = Joi.number()
+    .min(0)
+    .max(10);
   private _validCreatedAt = Joi.date();
   private _validUpdatedAt = Joi.date();
   private _validProfile = Joi.string();
-  private _validLikes = Joi.array();
-  private _validComments = Joi.array();
   private _validTrack = Joi.string();
 
   /**
-   * Joi Post Schema
+   * Joi Like Schema
    * @type {Joi.ObjectSchema}
-   * @memberof Post
+   * @memberof Like
    */
-  public postSchema: Joi.ObjectSchema = Joi.object()
+  public likeSchema: Joi.ObjectSchema = Joi.object()
     .keys({
       id: this._validId,
-      type: this._validType,
-      content: this._validContent,
+      emotion: this._validEmotion,
+      intensity: this._validIntensity,
       createdAt: this._validCreatedAt,
       updatedAt: this._validUpdatedAt,
       profile: this._validProfile,
-      likes: this._validLikes,
-      comments: this._validComments,
       track: this._validTrack
     })
     .with('id', ['createdAt', 'updatedAt']);
 
   /**
    * Copy properties from an object to instance properties
-   * @param {IPost} data
-   * @returns {IPostEntity}
-   * @memberof Post
+   * @param {ILike} data
+   * @returns {ILikeEntity}
+   * @memberof Like
    */
-  public copyData(data: IPost): IPostEntity {
+  public copyData(data: ILike): ILikeEntity {
     this.id = data.id;
-    this.type = data.type;
-    this.content = data.content;
+    this.emotion = data.emotion;
+    this.intensity = data.intensity;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
     this.profile = data.profile;
-    this.likes = data.likes;
-    this.comments = data.comments;
     this.track = data.track;
 
     return this;
@@ -99,68 +83,66 @@ export class Post implements IPostEntity {
 
   /**
    * Get the raw data of the object
-   * @returns {IPost}
-   * @memberof Post
+   * @returns {ILike}
+   * @memberof Like
    */
-  public getRaw(): IPost {
+  public getRaw(): ILike {
     return {
       id: this.id,
-      type: this.type,
-      content: this.content,
+      emotion: this.emotion,
+      intensity: this.intensity,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
       profile: this.profile,
-      likes: this.likes,
-      comments: this.comments,
       track: this.track
     };
   }
 
   /**
-   * Returns if the Post object is valid
-   * @param {IPost} data
-   * @returns {Joi.ValidationResult<IPost>}
-   * @memberof Post
+   * Returns if the Like object is valid
+   * @param {ILike} data
+   * @returns {Joi.ValidationResult<ILike>}
+   * @memberof Like
    */
-  public validate(data: IPost): Joi.ValidationResult<IPost> {
-    return Joi.validate(data, this.postSchema);
+  public validate(data: ILike): Joi.ValidationResult<ILike> {
+    return Joi.validate(data, this.likeSchema);
   }
 
   /**
    * Validates id property
    * @param {string} id
    * @returns {Joi.ValidationResult<string>}
-   * @memberof Post
+   * @memberof Like
    */
   public validateId(id: string): Joi.ValidationResult<string> {
     return Joi.validate(id, this._validId);
   }
 
   /**
-   * Validates type property
-   * @param {string} type
+   * Validates emotion property
+   * @param {string} emotion
    * @returns {Joi.ValidationResult<string>}
-   * @memberof Post
+   * @memberof Like
    */
-  public validateType(type: string): Joi.ValidationResult<string> {
-    return Joi.validate(type, this._validType);
+  public validateEmotion(emotion: string): Joi.ValidationResult<string> {
+    return Joi.validate(emotion, this._validEmotion);
   }
 
   /**
-   * Validates content property
-   * @param {string} content
-   * @returns {Joi.ValidationResult<string>}
-   * @memberof Post
+   * Validates intensity property
+   * @param {number} intensity
+   * @returns {Joi.ValidationResult<number>}
+   * @memberof Like
    */
-  public validateContent(content: string): Joi.ValidationResult<string> {
-    return Joi.validate(content, this._validContent);
+  public validateIntensity(intensity: number): Joi.ValidationResult<number> {
+    return Joi.validate(intensity, this._validIntensity);
   }
 
   /**
    * Validates createdAt property
    * @param {Date} createdAt
    * @returns {Joi.ValidationResult<Date>}
-   * @memberof Post
+   * @memberof Like
    */
   public validateCreatedAt(createdAt: Date): Joi.ValidationResult<Date> {
     return Joi.validate(createdAt, this._validCreatedAt);
@@ -170,7 +152,7 @@ export class Post implements IPostEntity {
    * Validates updatedAt property
    * @param {Date} updatedAt
    * @returns {Joi.ValidationResult<Date>}
-   * @memberof Post
+   * @memberof Like
    */
   public validateUpdatedAt(updatedAt: Date): Joi.ValidationResult<Date> {
     return Joi.validate(updatedAt, this._validUpdatedAt);
@@ -180,7 +162,7 @@ export class Post implements IPostEntity {
    * Validates profile property
    * @param {string | IProfile} profile
    * @returns {Joi.ValidationResult<string>}
-   * @memberof Post
+   * @memberof Like
    */
   public validateProfile(profile: string | IProfile): Joi.ValidationResult<string> {
     const id = typeof profile !== 'string' && profile.id ? profile.id : (profile as string);
@@ -188,32 +170,10 @@ export class Post implements IPostEntity {
   }
 
   /**
-   * Validates likes property
-   * @param {string[] | ILike[]} likes
-   * @returns {Joi.ValidationResult<string[] | ILike[]>}
-   * @memberof Post
-   */
-  public validateLikes(likes: string[] | ILike[]): Joi.ValidationResult<string[] | ILike[]> {
-    return Joi.validate(likes, this._validLikes);
-  }
-
-  /**
-   * Validates comments property
-   * @param {string[] | IComment[]} comments
-   * @returns {Joi.ValidationResult<string[] | IComment[]>}
-   * @memberof Post
-   */
-  public validateComments(
-    comments: string[] | IComment[]
-  ): Joi.ValidationResult<string[] | IComment[]> {
-    return Joi.validate(comments, this._validComments);
-  }
-
-  /**
    * Validates track property
    * @param {string | ITrack} track
    * @returns {Joi.ValidationResult<string>}
-   * @memberof Post
+   * @memberof Like
    */
   public validateTrack(track: string | ITrack): Joi.ValidationResult<string> {
     const id = typeof track !== 'string' && track.id ? track.id : (track as string);
