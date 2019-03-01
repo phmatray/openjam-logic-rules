@@ -82,14 +82,32 @@ describe('Test Comment entity', () => {
     expect(validationResult.error).toBeNull();
   });
 
+  it('should return by (object) is valid', () => {
+    const by = { id: commentData.by as string };
+    const validationResult = comment.validateBy(by);
+    expect(validationResult.error).toBeNull();
+  });
+
   it('should return post is valid', () => {
     const post = commentData.post;
     const validationResult = comment.validatePost(post);
     expect(validationResult.error).toBeNull();
   });
 
+  it('should return post (object) is valid', () => {
+    const post = { id: commentData.post as string };
+    const validationResult = comment.validatePost(post);
+    expect(validationResult.error).toBeNull();
+  });
+
   it('should return track is valid', () => {
     const track = commentData.track;
+    const validationResult = comment.validateTrack(track);
+    expect(validationResult.error).toBeNull();
+  });
+
+  it('should return track (object) is valid', () => {
+    const track = { id: commentData.track as string };
     const validationResult = comment.validateTrack(track);
     expect(validationResult.error).toBeNull();
   });
