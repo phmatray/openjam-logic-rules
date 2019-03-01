@@ -8,6 +8,8 @@ export interface IUser {
   blocked?: boolean;
   username?: string;
   email?: string;
+  firstName?: string;
+  lastName?: string;
   provider?: string;
   role?: string;
   profiles?: string[] | IProfile[];
@@ -23,6 +25,8 @@ export interface IUserEntity extends IUser {
   validateBlocked: (blocked: boolean) => Joi.ValidationResult<boolean>;
   validateUsername: (username: string) => Joi.ValidationResult<string>;
   validateEmail: (email: string) => Joi.ValidationResult<string>;
+  validateFirstName: (firstName: string) => Joi.ValidationResult<string>;
+  validateLastName: (lastName: string) => Joi.ValidationResult<string>;
   validateProvider: (provider: string) => Joi.ValidationResult<string>;
   validateRole: (role: string) => Joi.ValidationResult<string>;
   validateProfiles: (
@@ -36,6 +40,8 @@ export class User implements IUserEntity {
   public blocked?: boolean | undefined;
   public username?: string | undefined;
   public email?: string | undefined;
+  public firstName?: string | undefined;
+  public lastName?: string | undefined;
   public provider?: string | undefined;
   public role?: string | undefined;
   public profiles?: string[] | IProfile[] | undefined;
@@ -49,6 +55,8 @@ export class User implements IUserEntity {
   private _validEmail = Joi.string()
     .email()
     .required();
+  private _validFirstName = Joi.string().max(30);
+  private _validLastName = Joi.string().max(30);
   private _validProvider = Joi.string().required();
   private _validRole = Joi.string().required();
   private _validProfiles = Joi.array();
@@ -65,6 +73,8 @@ export class User implements IUserEntity {
       blocked: this._validBlocked,
       username: this._validUsername,
       email: this._validEmail,
+      firstName: this._validFirstName,
+      lastName: this._validLastName,
       provider: this._validProvider,
       role: this._validRole,
       profiles: this._validProfiles
@@ -83,6 +93,8 @@ export class User implements IUserEntity {
     this.blocked = data.blocked;
     this.username = data.username;
     this.email = data.email;
+    this.firstName = data.firstName;
+    this.lastName = data.lastName;
     this.provider = data.provider;
     this.role = data.role;
     this.profiles = data.profiles;
@@ -101,6 +113,8 @@ export class User implements IUserEntity {
       confirmed: this.confirmed,
       blocked: this.blocked,
       username: this.username,
+      firstName: this.firstName,
+      lastName: this.lastName,
       email: this.email,
       provider: this.provider,
       role: this.role,
@@ -166,6 +180,26 @@ export class User implements IUserEntity {
    */
   public validateEmail(email: string): Joi.ValidationResult<string> {
     return Joi.validate(email, this._validEmail);
+  }
+
+  /**
+   * Validates firstName property
+   * @param {string} firstName
+   * @returns {Joi.ValidationResult<string>}
+   * @memberof User
+   */
+  public validateFirstName(firstName: string): Joi.ValidationResult<string> {
+    return Joi.validate(firstName, this._validFirstName);
+  }
+
+  /**
+   * Validates lastName property
+   * @param {string} lastName
+   * @returns {Joi.ValidationResult<string>}
+   * @memberof User
+   */
+  public validateLastName(lastName: string): Joi.ValidationResult<string> {
+    return Joi.validate(lastName, this._validLastName);
   }
 
   /**
