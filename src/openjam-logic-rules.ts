@@ -10,7 +10,7 @@ import { IStyle } from './entities/Style';
 import { ITrack } from './entities/Track';
 import { IUser } from './entities/User';
 
-interface IOpenJam {
+export interface IOpenJam {
   strapi: Strapi;
   baseURL: string;
   getComments: () => Promise<IComment[]>;
@@ -33,7 +33,7 @@ interface IOpenJam {
   createUser: (data: IUser) => Promise<IUser>;
 }
 
-export default class OpenJam implements IOpenJam {
+export class OpenJam implements IOpenJam {
   public strapi: Strapi;
   public baseURL: string;
 
@@ -134,4 +134,3 @@ export default class OpenJam implements IOpenJam {
 }
 
 export { IComment, ILabel, ILike, IMedia, IPost, IProfile, IStyle, ITrack, IUser };
-export { IOpenJam };
