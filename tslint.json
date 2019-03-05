@@ -1,7 +1,10 @@
 {
-  "extends": ["tslint-config-standard", "tslint-config-prettier"],
-  "exclude": ["node_modules"],
+  "extends": ["tslint:latest", "tslint-config-prettier"],
   "rules": {
-    "strict-type-predicates": false
+    "interface-name": [true, "never-prefix"],
+    "no-implicit-dependencies": [true, "dev"],
+    "strict-type-predicates": false,
+    "member-ordering": false,
+    "object-literal-sort-keys": false
   }
 }

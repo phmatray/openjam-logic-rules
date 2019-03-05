@@ -1,57 +1,41 @@
 import * as Joi from 'joi';
 
-import { ITrack } from './Track';
-import { IPost } from './Post';
-import { IProfile } from './Profile';
+import { Post } from './Post';
+import { Profile } from './Profile';
+import { Track } from './Track';
 
-export interface IComment {
+export interface Comment {
   id?: string;
   type?: string;
   text?: string;
-  by?: string | IProfile;
-  post?: string | IPost;
-  track?: string | ITrack;
+  by?: string | Profile;
+  post?: string | Post;
+  track?: string | Track;
   trackAt?: number;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-export interface ICommentEntity extends IComment {
-  commentSchema: Joi.ObjectSchema;
-  copyData: (data: IComment) => ICommentEntity;
-  getRaw: () => IComment;
-  validate: (data: IComment) => Joi.ValidationResult<IComment>;
-  validateId: (id: string) => Joi.ValidationResult<string>;
-  validateType: (type: string) => Joi.ValidationResult<string>;
-  validateText: (text: string) => Joi.ValidationResult<string>;
-  validateBy: (by: string | IProfile) => Joi.ValidationResult<string>;
-  validatePost: (post: string | IPost) => Joi.ValidationResult<string>;
-  validateTrack: (track: string | ITrack) => Joi.ValidationResult<string>;
-  validateTrackAt: (trackAt: number) => Joi.ValidationResult<number>;
-  validateCreatedAt: (createdAt: Date) => Joi.ValidationResult<Date>;
-  validateUpdatedAt: (updatedAt: Date) => Joi.ValidationResult<Date>;
-}
-
-export class Comment implements ICommentEntity {
+export class CommentEntity {
   public id?: string | undefined;
   public type?: string | undefined;
   public text?: string | undefined;
-  public by?: string | IProfile | undefined;
-  public post?: string | IPost | undefined;
-  public track?: string | ITrack | undefined;
+  public by?: string | Profile | undefined;
+  public post?: string | Post | undefined;
+  public track?: string | Track | undefined;
   public trackAt?: number | undefined;
   public createdAt?: Date | undefined;
   public updatedAt?: Date | undefined;
 
-  private _validId = Joi.string();
-  private _validType = Joi.string().valid('post', 'track');
-  private _validText = Joi.string();
-  private _validBy = Joi.string();
-  private _validPost = Joi.string();
-  private _validTrack = Joi.string();
-  private _validTrackAt = Joi.number();
-  private _validCreatedAt = Joi.date();
-  private _validUpdatedAt = Joi.date();
+  private validId = Joi.string();
+  private validType = Joi.string().valid('post', 'track');
+  private validText = Joi.string();
+  private validBy = Joi.string();
+  private validPost = Joi.string();
+  private validTrack = Joi.string();
+  private validTrackAt = Joi.number();
+  private validCreatedAt = Joi.date();
+  private validUpdatedAt = Joi.date();
 
   /**
    * Joi Comment Schema
@@ -60,25 +44,25 @@ export class Comment implements ICommentEntity {
    */
   public commentSchema: Joi.ObjectSchema = Joi.object()
     .keys({
-      id: this._validId,
-      type: this._validType,
-      text: this._validText,
-      by: this._validBy,
-      post: this._validPost,
-      track: this._validTrack,
-      trackAt: this._validTrackAt,
-      createdAt: this._validCreatedAt,
-      updatedAt: this._validUpdatedAt
+      id: this.validId,
+      type: this.validType,
+      text: this.validText,
+      by: this.validBy,
+      post: this.validPost,
+      track: this.validTrack,
+      trackAt: this.validTrackAt,
+      createdAt: this.validCreatedAt,
+      updatedAt: this.validUpdatedAt
     })
     .with('id', ['createdAt', 'updatedAt']);
 
   /**
    * Copy properties from an object to instance properties
-   * @param {IComment} data
-   * @returns {ICommentEntity}
+   * @param {Comment} data
+   * @returns {CommentEntity}
    * @memberof Comment
    */
-  public copyData(data: IComment): ICommentEntity {
+  public copyData(data: Comment): CommentEntity {
     this.id = data.id;
     this.type = data.type;
     this.text = data.text;
@@ -94,10 +78,10 @@ export class Comment implements ICommentEntity {
 
   /**
    * Get the raw data of the object
-   * @returns {IComment}
+   * @returns {Comment}
    * @memberof Comment
    */
-  public getRaw(): IComment {
+  public getRaw(): Comment {
     return {
       id: this.id,
       type: this.type,
@@ -113,11 +97,11 @@ export class Comment implements ICommentEntity {
 
   /**
    * Returns if the Comment object is valid
-   * @param {IComment} data
-   * @returns {Joi.ValidationResult<IComment>}
+   * @param {Comment} data
+   * @returns {Joi.ValidationResult<Comment>}
    * @memberof Comment
    */
-  public validate(data: IComment): Joi.ValidationResult<IComment> {
+  public validate(data: Comment): Joi.ValidationResult<Comment> {
     return Joi.validate(data, this.commentSchema);
   }
 
@@ -128,7 +112,7 @@ export class Comment implements ICommentEntity {
    * @memberof Comment
    */
   public validateId(id: string): Joi.ValidationResult<string> {
-    return Joi.validate(id, this._validId);
+    return Joi.validate(id, this.validId);
   }
 
   /**
@@ -138,7 +122,7 @@ export class Comment implements ICommentEntity {
    * @memberof Comment
    */
   public validateType(type: string): Joi.ValidationResult<string> {
-    return Joi.validate(type, this._validType);
+    return Joi.validate(type, this.validType);
   }
 
   /**
@@ -148,40 +132,40 @@ export class Comment implements ICommentEntity {
    * @memberof Comment
    */
   public validateText(text: string): Joi.ValidationResult<string> {
-    return Joi.validate(text, this._validText);
+    return Joi.validate(text, this.validText);
   }
 
   /**
    * Validates by property
-   * @param {string | IProfile} by
+   * @param {string | Profile} by
    * @returns {Joi.ValidationResult<string>}
    * @memberof Comment
    */
-  public validateBy(by: string | IProfile): Joi.ValidationResult<string> {
+  public validateBy(by: string | Profile): Joi.ValidationResult<string> {
     const id = typeof by !== 'string' && by.id ? by.id : (by as string);
-    return Joi.validate(id, this._validBy);
+    return Joi.validate(id, this.validBy);
   }
 
   /**
    * Validates post property
-   * @param {string | IPost} post
+   * @param {string | Post} post
    * @returns {Joi.ValidationResult<string>}
    * @memberof Comment
    */
-  public validatePost(post: string | IPost): Joi.ValidationResult<string> {
+  public validatePost(post: string | Post): Joi.ValidationResult<string> {
     const id = typeof post !== 'string' && post.id ? post.id : (post as string);
-    return Joi.validate(id, this._validPost);
+    return Joi.validate(id, this.validPost);
   }
 
   /**
    * Validates track property
-   * @param {string | ITrack} track
+   * @param {string | Track} track
    * @returns {Joi.ValidationResult<string>}
    * @memberof Comment
    */
-  public validateTrack(track: string | ITrack): Joi.ValidationResult<string> {
+  public validateTrack(track: string | Track): Joi.ValidationResult<string> {
     const id = typeof track !== 'string' && track.id ? track.id : (track as string);
-    return Joi.validate(id, this._validTrack);
+    return Joi.validate(id, this.validTrack);
   }
 
   /**
@@ -191,7 +175,7 @@ export class Comment implements ICommentEntity {
    * @memberof Comment
    */
   public validateTrackAt(trackAt: number): Joi.ValidationResult<number> {
-    return Joi.validate(trackAt, this._validTrackAt);
+    return Joi.validate(trackAt, this.validTrackAt);
   }
 
   /**
@@ -201,7 +185,7 @@ export class Comment implements ICommentEntity {
    * @memberof Comment
    */
   public validateCreatedAt(createdAt: Date): Joi.ValidationResult<Date> {
-    return Joi.validate(createdAt, this._validCreatedAt);
+    return Joi.validate(createdAt, this.validCreatedAt);
   }
 
   /**
@@ -211,6 +195,6 @@ export class Comment implements ICommentEntity {
    * @memberof Comment
    */
   public validateUpdatedAt(updatedAt: Date): Joi.ValidationResult<Date> {
-    return Joi.validate(updatedAt, this._validUpdatedAt);
+    return Joi.validate(updatedAt, this.validUpdatedAt);
   }
 }

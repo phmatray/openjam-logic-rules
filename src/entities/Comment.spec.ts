@@ -1,138 +1,152 @@
-import { Comment, IComment, ICommentEntity } from './Comment';
+import test from 'ava';
+import { Comment, CommentEntity } from './Comment';
 
-describe('Test Comment entity', () => {
-  const now = new Date(Date.now());
+const now = new Date(Date.now());
 
-  let comment: ICommentEntity;
-  let commentData: IComment;
+let comment: CommentEntity;
+let commentData: Comment;
 
-  beforeEach(() => {
-    comment = new Comment();
-    commentData = {
-      id: 'idComment1',
-      type: 'post',
-      text: 'This is a comment',
-      by: 'idProfile1',
-      post: 'idPost1',
-      track: 'idTrack1',
-      trackAt: 60000, // 1 minute
-      createdAt: now,
-      updatedAt: now
-    };
-  });
+test.beforeEach(() => {
+  comment = new CommentEntity();
+  commentData = {
+    id: 'idComment1',
+    type: 'post',
+    text: 'This is a comment',
+    by: 'idProfile1',
+    post: 'idPost1',
+    track: 'idTrack1',
+    trackAt: 60000, // 1 minute
+    createdAt: now,
+    updatedAt: now
+  };
+});
 
-  it('should copy an object data into a Comment instance', () => {
-    const data = commentData;
-    comment.copyData(data);
+test('should copy an object data into a Comment instance', t => {
+  const data = commentData;
+  comment.copyData(data);
 
-    expect(comment.id).toBe('idComment1');
-    expect(comment.type).toBe('post');
-    expect(comment.text).toBe('This is a comment');
-    expect(comment.by).toBe('idProfile1');
-    expect(comment.post).toBe('idPost1');
-    expect(comment.track).toBe('idTrack1');
-    expect(comment.trackAt).toBe(60000);
-    expect(comment.createdAt).toBe(now);
-    expect(comment.updatedAt).toBe(now);
-  });
+  t.is(comment.id, 'idComment1');
+  t.is(comment.type, 'post');
+  t.is(comment.text, 'This is a comment');
+  t.is(comment.by, 'idProfile1');
+  t.is(comment.post, 'idPost1');
+  t.is(comment.track, 'idTrack1');
+  t.is(comment.trackAt, 60000);
+  t.is(comment.createdAt, now);
+  t.is(comment.updatedAt, now);
+  t.pass();
+});
 
-  it('should return the raw data', () => {
-    const data = commentData;
-    comment.copyData(data);
+test('should return the raw data', t => {
+  const data = commentData;
+  comment.copyData(data);
 
-    const rawData = comment.getRaw();
+  const rawData = comment.getRaw();
 
-    expect(rawData.id).toBe('idComment1');
-    expect(rawData.type).toBe('post');
-    expect(rawData.text).toBe('This is a comment');
-    expect(rawData.by).toBe('idProfile1');
-    expect(rawData.post).toBe('idPost1');
-    expect(comment.track).toBe('idTrack1');
-    expect(comment.trackAt).toBe(60000);
-    expect(comment.createdAt).toBe(now);
-    expect(comment.updatedAt).toBe(now);
-  });
+  t.is(rawData.id, 'idComment1');
+  t.is(rawData.type, 'post');
+  t.is(rawData.text, 'This is a comment');
+  t.is(rawData.by, 'idProfile1');
+  t.is(rawData.post, 'idPost1');
+  t.is(comment.track, 'idTrack1');
+  t.is(comment.trackAt, 60000);
+  t.is(comment.createdAt, now);
+  t.is(comment.updatedAt, now);
+  t.pass();
+});
 
-  it('should return id is invalid for empty string', () => {
-    const validationResult = comment.validateId('Hello');
-    expect(validationResult.error);
-  });
+test('should return id is invalid for empty string', t => {
+  const validationResult = comment.validateId('');
+  t.truthy(validationResult.error);
+  t.pass();
+});
 
-  it('should return id is valid', () => {
-    const id = commentData.id;
-    const validationResult = comment.validateId(id);
-    expect(validationResult.error).toBeNull();
-  });
+test('should return id is valid', t => {
+  const id = commentData.id as string;
+  const validationResult = comment.validateId(id);
+  t.is(validationResult.error, null);
+  t.pass();
+});
 
-  it('should return type is valid', () => {
-    const type = commentData.type;
-    const validationResult = comment.validateType(type);
-    expect(validationResult.error).toBeNull();
-  });
+test('should return type is valid', t => {
+  const type = commentData.type as string;
+  const validationResult = comment.validateType(type);
+  t.is(validationResult.error, null);
+  t.pass();
+});
 
-  it('should return text is valid', () => {
-    const text = commentData.text;
-    const validationResult = comment.validateText(text);
-    expect(validationResult.error).toBeNull();
-  });
+test('should return text is valid', t => {
+  const text = commentData.text as string;
+  const validationResult = comment.validateText(text);
+  t.is(validationResult.error, null);
+  t.pass();
+});
 
-  it('should return by is valid', () => {
-    const by = commentData.by;
-    const validationResult = comment.validateBy(by);
-    expect(validationResult.error).toBeNull();
-  });
+test('should return by is valid', t => {
+  const by = commentData.by as string;
+  const validationResult = comment.validateBy(by);
+  t.is(validationResult.error, null);
+  t.pass();
+});
 
-  it('should return by (object) is valid', () => {
-    const by = { id: commentData.by as string };
-    const validationResult = comment.validateBy(by);
-    expect(validationResult.error).toBeNull();
-  });
+test('should return by (object) is valid', t => {
+  const by = { id: commentData.by as string };
+  const validationResult = comment.validateBy(by);
+  t.is(validationResult.error, null);
+  t.pass();
+});
 
-  it('should return post is valid', () => {
-    const post = commentData.post;
-    const validationResult = comment.validatePost(post);
-    expect(validationResult.error).toBeNull();
-  });
+test('should return post is valid', t => {
+  const post = commentData.post as string;
+  const validationResult = comment.validatePost(post);
+  t.is(validationResult.error, null);
+  t.pass();
+});
 
-  it('should return post (object) is valid', () => {
-    const post = { id: commentData.post as string };
-    const validationResult = comment.validatePost(post);
-    expect(validationResult.error).toBeNull();
-  });
+test('should return post (object) is valid', t => {
+  const post = { id: commentData.post as string };
+  const validationResult = comment.validatePost(post);
+  t.is(validationResult.error, null);
+  t.pass();
+});
 
-  it('should return track is valid', () => {
-    const track = commentData.track;
-    const validationResult = comment.validateTrack(track);
-    expect(validationResult.error).toBeNull();
-  });
+test('should return track is valid', t => {
+  const track = commentData.track as string;
+  const validationResult = comment.validateTrack(track);
+  t.is(validationResult.error, null);
+  t.pass();
+});
 
-  it('should return track (object) is valid', () => {
-    const track = { id: commentData.track as string };
-    const validationResult = comment.validateTrack(track);
-    expect(validationResult.error).toBeNull();
-  });
+test('should return track (object) is valid', t => {
+  const track = { id: commentData.track as string };
+  const validationResult = comment.validateTrack(track);
+  t.is(validationResult.error, null);
+  t.pass();
+});
 
-  it('should return trackAt is valid', () => {
-    const trackAt = commentData.trackAt;
-    const validationResult = comment.validateTrackAt(trackAt);
-    expect(validationResult.error).toBeNull();
-  });
+test('should return trackAt is valid', t => {
+  const trackAt = commentData.trackAt as number;
+  const validationResult = comment.validateTrackAt(trackAt);
+  t.is(validationResult.error, null);
+});
 
-  it('should return createdAt is valid', () => {
-    const createdAt = commentData.createdAt;
-    const validationResult = comment.validateCreatedAt(createdAt);
-    expect(validationResult.error).toBeNull();
-  });
+test('should return createdAt is valid', t => {
+  const createdAt = commentData.createdAt as Date;
+  const validationResult = comment.validateCreatedAt(createdAt);
+  t.is(validationResult.error, null);
+  t.pass();
+});
 
-  it('should return updatedAt is valid', () => {
-    const updatedAt = commentData.updatedAt;
-    const validationResult = comment.validateUpdatedAt(updatedAt);
-    expect(validationResult.error).toBeNull();
-  });
+test('should return updatedAt is valid', t => {
+  const updatedAt = commentData.updatedAt as Date;
+  const validationResult = comment.validateUpdatedAt(updatedAt);
+  t.is(validationResult.error, null);
+  t.pass();
+});
 
-  it('should validate', () => {
-    const data = commentData;
-    const validationResult = comment.validate(data);
-    expect(validationResult.error).toBeNull();
-  });
+test('should validate', t => {
+  const data = commentData;
+  const validationResult = comment.validate(data);
+  t.is(validationResult.error, null);
+  t.pass();
 });

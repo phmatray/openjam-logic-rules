@@ -1,6 +1,6 @@
 import * as Joi from 'joi';
 
-export interface IMedia {
+export interface Media {
   id?: string;
   name?: string;
   sha256?: string;
@@ -15,26 +15,7 @@ export interface IMedia {
   updatedAt?: Date;
 }
 
-export interface IMediaEntity extends IMedia {
-  mediaSchema: Joi.ObjectSchema;
-  copyData: (data: IMedia) => IMediaEntity;
-  getRaw: () => IMedia;
-  validate: (data: IMedia) => Joi.ValidationResult<IMedia>;
-  validateId: (id: string) => Joi.ValidationResult<string>;
-  validateName: (name: string) => Joi.ValidationResult<string>;
-  validateSha256: (sha256: string) => Joi.ValidationResult<string>;
-  validateHash: (hash: string) => Joi.ValidationResult<string>;
-  validateExt: (ext: string) => Joi.ValidationResult<string>;
-  validateMime: (mime: string) => Joi.ValidationResult<string>;
-  validateSize: (size: string) => Joi.ValidationResult<string>;
-  validateUrl: (url: string) => Joi.ValidationResult<string>;
-  validateProvider: (provider: string) => Joi.ValidationResult<string>;
-  validateRelated: (related: string[]) => Joi.ValidationResult<string[]>;
-  validateCreatedAt: (createdAt: Date) => Joi.ValidationResult<Date>;
-  validateUpdatedAt: (updatedAt: Date) => Joi.ValidationResult<Date>;
-}
-
-export class Media implements IMediaEntity {
+export class MediaEntity {
   public id?: string | undefined;
   public name?: string | undefined;
   public sha256?: string | undefined;
@@ -48,18 +29,18 @@ export class Media implements IMediaEntity {
   public createdAt?: Date | undefined;
   public updatedAt?: Date | undefined;
 
-  private _validId = Joi.string();
-  private _validName = Joi.string();
-  private _validSha256 = Joi.string();
-  private _validHash = Joi.string();
-  private _validExt = Joi.string();
-  private _validMime = Joi.string();
-  private _validSize = Joi.string();
-  private _validUrl = Joi.string();
-  private _validProvider = Joi.string();
-  private _validRelated = Joi.array();
-  private _validCreatedAt = Joi.date();
-  private _validUpdatedAt = Joi.date();
+  private validId = Joi.string();
+  private validName = Joi.string();
+  private validSha256 = Joi.string();
+  private validHash = Joi.string();
+  private validExt = Joi.string();
+  private validMime = Joi.string();
+  private validSize = Joi.string();
+  private validUrl = Joi.string();
+  private validProvider = Joi.string();
+  private validRelated = Joi.array();
+  private validCreatedAt = Joi.date();
+  private validUpdatedAt = Joi.date();
 
   /**
    * Joi Media Schema
@@ -68,28 +49,28 @@ export class Media implements IMediaEntity {
    */
   public mediaSchema: Joi.ObjectSchema = Joi.object()
     .keys({
-      id: this._validId,
-      name: this._validName,
-      sha256: this._validSha256,
-      hash: this._validHash,
-      ext: this._validExt,
-      mime: this._validMime,
-      size: this._validSize,
-      url: this._validUrl,
-      provider: this._validProvider,
-      related: this._validRelated,
-      createdAt: this._validCreatedAt,
-      updatedAt: this._validUpdatedAt
+      id: this.validId,
+      name: this.validName,
+      sha256: this.validSha256,
+      hash: this.validHash,
+      ext: this.validExt,
+      mime: this.validMime,
+      size: this.validSize,
+      url: this.validUrl,
+      provider: this.validProvider,
+      related: this.validRelated,
+      createdAt: this.validCreatedAt,
+      updatedAt: this.validUpdatedAt
     })
     .with('id', ['createdAt', 'updatedAt']);
 
   /**
    * Copy properties from an object to instance properties
-   * @param {IMedia} data
-   * @returns {IMediaEntity}
+   * @param {Media} data
+   * @returns {MediaEntity}
    * @memberof Media
    */
-  public copyData(data: IMedia): IMediaEntity {
+  public copyData(data: Media): MediaEntity {
     this.id = data.id;
     this.name = data.name;
     this.sha256 = data.sha256;
@@ -108,10 +89,10 @@ export class Media implements IMediaEntity {
 
   /**
    * Get the raw data of the object
-   * @returns {IMedia}
+   * @returns {Media}
    * @memberof Media
    */
-  public getRaw(): IMedia {
+  public getRaw(): Media {
     return {
       id: this.id,
       name: this.name,
@@ -130,11 +111,11 @@ export class Media implements IMediaEntity {
 
   /**
    * Returns if the Media object is valid
-   * @param {IMedia} data
-   * @returns {Joi.ValidationResult<IMedia>}
+   * @param {Media} data
+   * @returns {Joi.ValidationResult<Media>}
    * @memberof Media
    */
-  public validate(data: IMedia): Joi.ValidationResult<IMedia> {
+  public validate(data: Media): Joi.ValidationResult<Media> {
     return Joi.validate(data, this.mediaSchema);
   }
 
@@ -145,7 +126,7 @@ export class Media implements IMediaEntity {
    * @memberof Media
    */
   public validateId(id: string): Joi.ValidationResult<string> {
-    return Joi.validate(id, this._validId);
+    return Joi.validate(id, this.validId);
   }
 
   /**
@@ -155,7 +136,7 @@ export class Media implements IMediaEntity {
    * @memberof Media
    */
   public validateName(name: string): Joi.ValidationResult<string> {
-    return Joi.validate(name, this._validName);
+    return Joi.validate(name, this.validName);
   }
 
   /**
@@ -165,7 +146,7 @@ export class Media implements IMediaEntity {
    * @memberof Media
    */
   public validateSha256(sha256: string): Joi.ValidationResult<string> {
-    return Joi.validate(sha256, this._validSha256);
+    return Joi.validate(sha256, this.validSha256);
   }
 
   /**
@@ -175,7 +156,7 @@ export class Media implements IMediaEntity {
    * @memberof Media
    */
   public validateHash(hash: string): Joi.ValidationResult<string> {
-    return Joi.validate(hash, this._validHash);
+    return Joi.validate(hash, this.validHash);
   }
 
   /**
@@ -185,7 +166,7 @@ export class Media implements IMediaEntity {
    * @memberof Media
    */
   public validateExt(ext: string): Joi.ValidationResult<string> {
-    return Joi.validate(ext, this._validExt);
+    return Joi.validate(ext, this.validExt);
   }
 
   /**
@@ -195,7 +176,7 @@ export class Media implements IMediaEntity {
    * @memberof Media
    */
   public validateMime(mime: string): Joi.ValidationResult<string> {
-    return Joi.validate(mime, this._validMime);
+    return Joi.validate(mime, this.validMime);
   }
 
   /**
@@ -205,7 +186,7 @@ export class Media implements IMediaEntity {
    * @memberof Media
    */
   public validateSize(size: string): Joi.ValidationResult<string> {
-    return Joi.validate(size, this._validSize);
+    return Joi.validate(size, this.validSize);
   }
 
   /**
@@ -215,7 +196,7 @@ export class Media implements IMediaEntity {
    * @memberof Media
    */
   public validateUrl(url: string): Joi.ValidationResult<string> {
-    return Joi.validate(url, this._validUrl);
+    return Joi.validate(url, this.validUrl);
   }
 
   /**
@@ -225,7 +206,7 @@ export class Media implements IMediaEntity {
    * @memberof Media
    */
   public validateProvider(provider: string): Joi.ValidationResult<string> {
-    return Joi.validate(provider, this._validProvider);
+    return Joi.validate(provider, this.validProvider);
   }
 
   /**
@@ -235,7 +216,7 @@ export class Media implements IMediaEntity {
    * @memberof Media
    */
   public validateRelated(related: string[]): Joi.ValidationResult<string[]> {
-    return Joi.validate(related, this._validRelated);
+    return Joi.validate(related, this.validRelated);
   }
 
   /**
@@ -245,7 +226,7 @@ export class Media implements IMediaEntity {
    * @memberof Media
    */
   public validateCreatedAt(createdAt: Date): Joi.ValidationResult<Date> {
-    return Joi.validate(createdAt, this._validCreatedAt);
+    return Joi.validate(createdAt, this.validCreatedAt);
   }
 
   /**
@@ -255,6 +236,6 @@ export class Media implements IMediaEntity {
    * @memberof Media
    */
   public validateUpdatedAt(updatedAt: Date): Joi.ValidationResult<Date> {
-    return Joi.validate(updatedAt, this._validUpdatedAt);
+    return Joi.validate(updatedAt, this.validUpdatedAt);
   }
 }

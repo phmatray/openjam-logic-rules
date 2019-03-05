@@ -1,50 +1,36 @@
 import * as Joi from 'joi';
 
-import { IProfile } from './Profile';
-import { ITrack } from './Track';
+import { Profile } from './Profile';
+import { Track } from './Track';
 
-export interface ILike {
+export interface Like {
   id?: string;
   emotion?: string;
   intensity?: number;
   createdAt?: Date;
   updatedAt?: Date;
-  profile?: string | IProfile;
-  track?: string | ITrack;
+  profile?: string | Profile;
+  track?: string | Track;
 }
 
-export interface ILikeEntity extends ILike {
-  likeSchema: Joi.ObjectSchema;
-  copyData: (data: ILike) => ILikeEntity;
-  getRaw: () => ILike;
-  validate: (data: ILike) => Joi.ValidationResult<ILike>;
-  validateId: (id: string) => Joi.ValidationResult<string>;
-  validateEmotion: (emotion: string) => Joi.ValidationResult<string>;
-  validateIntensity: (intensity: number) => Joi.ValidationResult<number>;
-  validateCreatedAt: (createdAt: Date) => Joi.ValidationResult<Date>;
-  validateUpdatedAt: (updatedAt: Date) => Joi.ValidationResult<Date>;
-  validateProfile: (profile: string | IProfile) => Joi.ValidationResult<string>;
-  validateTrack: (track: string | ITrack) => Joi.ValidationResult<string>;
-}
-
-export class Like implements ILikeEntity {
+export class LikeEntity {
   public id?: string | undefined;
   public emotion?: string | undefined;
   public intensity?: number | undefined;
   public createdAt?: Date | undefined;
   public updatedAt?: Date | undefined;
-  public profile?: string | IProfile | undefined;
-  public track?: string | ITrack | undefined;
+  public profile?: string | Profile | undefined;
+  public track?: string | Track | undefined;
 
-  private _validId = Joi.string();
-  private _validEmotion = Joi.string();
-  private _validIntensity = Joi.number()
+  private validId = Joi.string();
+  private validEmotion = Joi.string();
+  private validIntensity = Joi.number()
     .min(0)
     .max(10);
-  private _validCreatedAt = Joi.date();
-  private _validUpdatedAt = Joi.date();
-  private _validProfile = Joi.string();
-  private _validTrack = Joi.string();
+  private validCreatedAt = Joi.date();
+  private validUpdatedAt = Joi.date();
+  private validProfile = Joi.string();
+  private validTrack = Joi.string();
 
   /**
    * Joi Like Schema
@@ -53,23 +39,23 @@ export class Like implements ILikeEntity {
    */
   public likeSchema: Joi.ObjectSchema = Joi.object()
     .keys({
-      id: this._validId,
-      emotion: this._validEmotion,
-      intensity: this._validIntensity,
-      createdAt: this._validCreatedAt,
-      updatedAt: this._validUpdatedAt,
-      profile: this._validProfile,
-      track: this._validTrack
+      id: this.validId,
+      emotion: this.validEmotion,
+      intensity: this.validIntensity,
+      createdAt: this.validCreatedAt,
+      updatedAt: this.validUpdatedAt,
+      profile: this.validProfile,
+      track: this.validTrack
     })
     .with('id', ['createdAt', 'updatedAt']);
 
   /**
    * Copy properties from an object to instance properties
-   * @param {ILike} data
-   * @returns {ILikeEntity}
+   * @param {Like} data
+   * @returns {LikeEntity}
    * @memberof Like
    */
-  public copyData(data: ILike): ILikeEntity {
+  public copyData(data: Like): LikeEntity {
     this.id = data.id;
     this.emotion = data.emotion;
     this.intensity = data.intensity;
@@ -83,10 +69,10 @@ export class Like implements ILikeEntity {
 
   /**
    * Get the raw data of the object
-   * @returns {ILike}
+   * @returns {Like}
    * @memberof Like
    */
-  public getRaw(): ILike {
+  public getRaw(): Like {
     return {
       id: this.id,
       emotion: this.emotion,
@@ -100,11 +86,11 @@ export class Like implements ILikeEntity {
 
   /**
    * Returns if the Like object is valid
-   * @param {ILike} data
-   * @returns {Joi.ValidationResult<ILike>}
+   * @param {Like} data
+   * @returns {Joi.ValidationResult<Like>}
    * @memberof Like
    */
-  public validate(data: ILike): Joi.ValidationResult<ILike> {
+  public validate(data: Like): Joi.ValidationResult<Like> {
     return Joi.validate(data, this.likeSchema);
   }
 
@@ -115,7 +101,7 @@ export class Like implements ILikeEntity {
    * @memberof Like
    */
   public validateId(id: string): Joi.ValidationResult<string> {
-    return Joi.validate(id, this._validId);
+    return Joi.validate(id, this.validId);
   }
 
   /**
@@ -125,7 +111,7 @@ export class Like implements ILikeEntity {
    * @memberof Like
    */
   public validateEmotion(emotion: string): Joi.ValidationResult<string> {
-    return Joi.validate(emotion, this._validEmotion);
+    return Joi.validate(emotion, this.validEmotion);
   }
 
   /**
@@ -135,7 +121,7 @@ export class Like implements ILikeEntity {
    * @memberof Like
    */
   public validateIntensity(intensity: number): Joi.ValidationResult<number> {
-    return Joi.validate(intensity, this._validIntensity);
+    return Joi.validate(intensity, this.validIntensity);
   }
 
   /**
@@ -145,7 +131,7 @@ export class Like implements ILikeEntity {
    * @memberof Like
    */
   public validateCreatedAt(createdAt: Date): Joi.ValidationResult<Date> {
-    return Joi.validate(createdAt, this._validCreatedAt);
+    return Joi.validate(createdAt, this.validCreatedAt);
   }
 
   /**
@@ -155,28 +141,28 @@ export class Like implements ILikeEntity {
    * @memberof Like
    */
   public validateUpdatedAt(updatedAt: Date): Joi.ValidationResult<Date> {
-    return Joi.validate(updatedAt, this._validUpdatedAt);
+    return Joi.validate(updatedAt, this.validUpdatedAt);
   }
 
   /**
    * Validates profile property
-   * @param {string | IProfile} profile
+   * @param {string | Profile} profile
    * @returns {Joi.ValidationResult<string>}
    * @memberof Like
    */
-  public validateProfile(profile: string | IProfile): Joi.ValidationResult<string> {
+  public validateProfile(profile: string | Profile): Joi.ValidationResult<string> {
     const id = typeof profile !== 'string' && profile.id ? profile.id : (profile as string);
-    return Joi.validate(id, this._validProfile);
+    return Joi.validate(id, this.validProfile);
   }
 
   /**
    * Validates track property
-   * @param {string | ITrack} track
+   * @param {string | Track} track
    * @returns {Joi.ValidationResult<string>}
    * @memberof Like
    */
-  public validateTrack(track: string | ITrack): Joi.ValidationResult<string> {
+  public validateTrack(track: string | Track): Joi.ValidationResult<string> {
     const id = typeof track !== 'string' && track.id ? track.id : (track as string);
-    return Joi.validate(id, this._validTrack);
+    return Joi.validate(id, this.validTrack);
   }
 }

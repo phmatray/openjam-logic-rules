@@ -1,51 +1,36 @@
 import * as Joi from 'joi';
 
-import { IProfile } from './Profile';
+import { Profile } from './Profile';
 
-export interface IStyle {
+export interface Style {
   id?: string;
   name?: string;
   description?: string;
   createdAt?: Date;
   updatedAt?: Date;
-  profiles?: string[] | IProfile[];
+  profiles?: string[] | Profile[];
 }
 
-export interface IStyleEntity extends IStyle {
-  styleSchema: Joi.ObjectSchema;
-  copyData: (data: IStyle) => IStyleEntity;
-  getRaw: () => IStyle;
-  validate: (data: IStyle) => Joi.ValidationResult<IStyle>;
-  validateId: (id: string) => Joi.ValidationResult<string>;
-  validateName: (name: string) => Joi.ValidationResult<string>;
-  validateDescription: (description: string) => Joi.ValidationResult<string>;
-  validateCreatedAt: (createdAt: Date) => Joi.ValidationResult<Date>;
-  validateUpdatedAt: (updatedAt: Date) => Joi.ValidationResult<Date>;
-  validateProfiles: (
-    profiles: string[] | IProfile[]
-  ) => Joi.ValidationResult<string[] | IProfile[]>;
-}
-
-export class Style implements IStyleEntity {
+export class StyleEntity {
   public id?: string | undefined;
   public name?: string | undefined;
   public description?: string | undefined;
   public createdAt?: Date | undefined;
   public updatedAt?: Date | undefined;
-  public profiles?: string[] | IProfile[] | undefined;
+  public profiles?: string[] | Profile[] | undefined;
 
-  private _validId = Joi.string();
-  private _validName = Joi.string()
+  private validId = Joi.string();
+  private validName = Joi.string()
     .alphanum()
     .min(2)
     .max(50)
     .required();
-  private _validDescription = Joi.string()
+  private validDescription = Joi.string()
     .alphanum()
     .max(2000);
-  private _validCreatedAt = Joi.date();
-  private _validUpdatedAt = Joi.date();
-  private _validProfiles = Joi.array();
+  private validCreatedAt = Joi.date();
+  private validUpdatedAt = Joi.date();
+  private validProfiles = Joi.array();
 
   /**
    * Joi Style Schema
@@ -54,22 +39,22 @@ export class Style implements IStyleEntity {
    */
   public styleSchema: Joi.ObjectSchema = Joi.object()
     .keys({
-      id: this._validId,
-      name: this._validName,
-      description: this._validDescription,
-      createdAt: this._validCreatedAt,
-      updatedAt: this._validUpdatedAt,
-      profiles: this._validProfiles
+      id: this.validId,
+      name: this.validName,
+      description: this.validDescription,
+      createdAt: this.validCreatedAt,
+      updatedAt: this.validUpdatedAt,
+      profiles: this.validProfiles
     })
     .with('id', ['createdAt', 'updatedAt']);
 
   /**
    * Copy properties from an object to instance properties
-   * @param {IStyle} data
-   * @returns {IStyleEntity}
+   * @param {Style} data
+   * @returns {StyleEntity}
    * @memberof Style
    */
-  public copyData(data: IStyle): IStyleEntity {
+  public copyData(data: Style): StyleEntity {
     this.id = data.id;
     this.name = data.name;
     this.description = data.description;
@@ -82,10 +67,10 @@ export class Style implements IStyleEntity {
 
   /**
    * Get the raw data of the object
-   * @returns {IStyle}
+   * @returns {Style}
    * @memberof Style
    */
-  public getRaw(): IStyle {
+  public getRaw(): Style {
     return {
       id: this.id,
       name: this.name,
@@ -98,11 +83,11 @@ export class Style implements IStyleEntity {
 
   /**
    * Returns if the Style object is valid
-   * @param {IStyle} data
-   * @returns {Joi.ValidationResult<IStyle>}
+   * @param {Style} data
+   * @returns {Joi.ValidationResult<Style>}
    * @memberof Style
    */
-  public validate(data: IStyle): Joi.ValidationResult<IStyle> {
+  public validate(data: Style): Joi.ValidationResult<Style> {
     return Joi.validate(data, this.styleSchema);
   }
 
@@ -113,7 +98,7 @@ export class Style implements IStyleEntity {
    * @memberof Style
    */
   public validateId(id: string): Joi.ValidationResult<string> {
-    return Joi.validate(id, this._validId);
+    return Joi.validate(id, this.validId);
   }
 
   /**
@@ -123,7 +108,7 @@ export class Style implements IStyleEntity {
    * @memberof Style
    */
   public validateName(name: string): Joi.ValidationResult<string> {
-    return Joi.validate(name, this._validName);
+    return Joi.validate(name, this.validName);
   }
 
   /**
@@ -133,7 +118,7 @@ export class Style implements IStyleEntity {
    * @memberof Style
    */
   public validateDescription(description: string): Joi.ValidationResult<string> {
-    return Joi.validate(description, this._validDescription);
+    return Joi.validate(description, this.validDescription);
   }
 
   /**
@@ -143,7 +128,7 @@ export class Style implements IStyleEntity {
    * @memberof Style
    */
   public validateCreatedAt(createdAt: Date): Joi.ValidationResult<Date> {
-    return Joi.validate(createdAt, this._validCreatedAt);
+    return Joi.validate(createdAt, this.validCreatedAt);
   }
 
   /**
@@ -153,18 +138,18 @@ export class Style implements IStyleEntity {
    * @memberof Style
    */
   public validateUpdatedAt(updatedAt: Date): Joi.ValidationResult<Date> {
-    return Joi.validate(updatedAt, this._validUpdatedAt);
+    return Joi.validate(updatedAt, this.validUpdatedAt);
   }
 
   /**
    * Validates profiles property
-   * @param {string[] | IProfile[]} profiles
-   * @returns {Joi.ValidationResult<string[] | IProfile[]>}
+   * @param {string[] | Profile[]} profiles
+   * @returns {Joi.ValidationResult<string[] | Profile[]>}
    * @memberof Style
    */
   public validateProfiles(
-    profiles: string[] | IProfile[]
-  ): Joi.ValidationResult<string[] | IProfile[]> {
-    return Joi.validate(profiles, this._validProfiles);
+    profiles: string[] | Profile[]
+  ): Joi.ValidationResult<string[] | Profile[]> {
+    return Joi.validate(profiles, this.validProfiles);
   }
 }

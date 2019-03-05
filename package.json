@@ -1,20 +1,12 @@
 {
   "name": "@openjam/logic-rules",
   "version": "0.0.0-development",
-  "license": "MIT",
   "description": "A higher-level wrapper around OpenJam's API",
-  "keywords": [
-    "openjam",
-    "npm",
-    "package"
-  ],
-  "main": "dist/openjam-logic-rules.umd.js",
-  "module": "dist/openjam-logic-rules.es5.js",
-  "typings": "dist/types/openjam-logic-rules.d.ts",
-  "files": [
-    "dist"
-  ],
+  "main": "build/main/index.js",
+  "typings": "build/main/index.d.ts",
+  "module": "build/module/index.js",
   "author": "Philippe Matray <pm@techmedev.eu>",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/openjam-eu/openjam-logic-rules.git"
@@ -23,82 +15,65 @@
     "url": "https://github.com/openjam-eu/openjam-logic-rules/issues"
   },
   "homepage": "https://github.com/openjam-eu/openjam-logic-rules#readme",
-  "engines": {
-    "node": ">=6.0.0"
-  },
+  "keywords": [
+    "openjam",
+    "techmedev",
+    "typescript",
+    "library",
+    "ava",
+    "nyc",
+    "tslint",
+    "prettier",
+    "standard-version",
+    "conventional-changelog"
+  ],
   "scripts": {
-    "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
-    "prebuild": "rimraf dist",
-    "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src --exclude \"**/*+(index|.spec|.e2e).ts\"",
-    "start": "rollup -c rollup.config.ts -w",
-    "test": "jest --coverage",
-    "test:watch": "jest --coverage --watch",
-    "test:prod": "npm run lint && npm run test -- --no-cache",
-    "deploy-docs": "ts-node tools/gh-pages-publish",
-    "report-coverage": "cat ./coverage/lcov.info | coveralls",
+    "info": "npm-scripts-info",
+    "build": "run-s clean && run-p build:*",
+    "build:main": "tsc -p tsconfig.json",
+    "build:module": "tsc -p tsconfig.module.json",
+    "fix": "run-s fix:*",
+    "fix:prettier": "prettier \"src/**/*.ts\" --write",
+    "fix:tslint": "tslint --fix --project .",
+    "test": "run-s build test:*",
+    "test:lint": "tslint --project . && prettier \"src/**/*.ts\" --list-different",
+    "test:unit": "nyc --silent ava",
+    "test:nsp": "nsp check",
+    "watch": "run-s clean build:main && run-p \"build:main -- -w\" \"test:unit -- --watch\"",
+    "cov": "run-s build test:unit cov:html && opn coverage/index.html",
+    "cov:html": "nyc report --reporter=html",
+    "cov:send": "nyc report --reporter=lcov > coverage.lcov && codecov",
+    "cov:check": "nyc report && nyc check-coverage --lines 100 --functions 100 --branches 100",
+    "doc": "run-s doc:html && opn build/docs/index.html",
+    "doc:html": "typedoc src/ --exclude **/*.spec.ts --target ES6 --mode file --out build/docs",
+    "doc:json": "typedoc src/ --exclude **/*.spec.ts --target ES6 --mode file --json build/docs/typedoc.json",
+    "doc:publish": "gh-pages -m \"[ci skip] Updates\" -d build/docs",
+    "version": "standard-version",
+    "reset": "git clean -dfx && git reset --hard && npm i",
+    "clean": "trash build test",
+    "all": "run-s reset test cov:check doc:html",
+    "prepare-release": "run-s all version doc:publish",
     "commit": "git-cz",
-    "semantic-release": "semantic-release",
-    "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
     "precommit": "lint-staged",
-    "travis-deploy-once": "travis-deploy-once",
-    "prepush": "npm run test:prod && npm run build",
+    "prepush": "npm run test",
     "commitmsg": "commitlint -E HUSKY_GIT_PARAMS",
     "upgrade-interactive": "npm-check --update"
   },
-  "lint-staged": {
-    "{src,test}/**/*.ts": [
-      "prettier --write",
-      "git add"
-    ]
+  "scripts-info": {
+    "info": "Display information about the package scripts",
+    "build": "Clean and rebuild the project",
+    "fix": "Try to automatically fix any linting problems",
+    "test": "Lint and unit test the project",
+    "watch": "Watch and rebuild the project on save, then rerun relevant tests",
+    "cov": "Rebuild, run tests, then create and open the coverage report",
+    "doc": "Generate HTML API documentation and open it in a browser",
+    "doc:json": "Generate API documentation in typedoc JSON format",
+    "changelog": "Bump package.json version, update CHANGELOG.md, tag release",
+    "reset": "Delete all untracked files and reset the repo to the last commit",
+    "prepare-release": "One-step: clean, build, test, publish docs, and prep a release"
   },
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-conventional-changelog"
-    }
-  },
-  "jest": {
-    "globals": {
-      "ts-jest": {
-        "diagnostics": {
-          "warnOnly": true
-        }
-      }
-    },
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/dist/"
-    ],
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/test/"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 60,
-        "functions": 60,
-        "lines": 60,
-        "statements": 60
-      }
-    }
-  },
-  "prettier": {
-    "singleQuote": true
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
+  "engines": {
+    "node": ">=8.9"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -106,44 +81,71 @@
     "strapi-sdk-javascript": "^0.3.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.3.4",
     "@commitlint/cli": "^7.1.2",
     "@commitlint/config-conventional": "^7.1.2",
-    "@types/jest": "^24.0.9",
     "@types/joi": "^14.3.2",
     "@types/node": "^11.10.4",
-    "babel-preset-jest": "^24.1.0",
+    "@types/sinon": "^7.0.8",
+    "ava": "^1.2.1",
+    "browser-env": "^3.2.6",
+    "codecov": "^3.2.0",
     "colors": "^1.3.2",
     "commitizen": "^3.0.7",
-    "coveralls": "^3.0.3",
-    "cross-env": "^5.2.0",
     "cz-conventional-changelog": "^2.1.0",
+    "gh-pages": "^2.0.1",
     "husky": "^1.0.1",
-    "jest": "^24.1.0",
-    "jest-config": "^24.1.0",
     "lint-staged": "^8.1.5",
-    "lodash.camelcase": "^4.3.0",
-    "make-error": "^1.3.5",
     "npm-check": "^5.9.0",
+    "npm-run-all": "^4.1.5",
+    "npm-scripts-info": "^0.3.9",
+    "nsp": "^3.2.1",
+    "nyc": "^13.3.0",
+    "opn-cli": "^4.0.0",
     "prettier": "^1.14.3",
-    "prompt": "^1.0.0",
-    "replace-in-file": "^3.4.2",
-    "rimraf": "^2.6.2",
-    "rollup": "^1.4.0",
-    "rollup-plugin-commonjs": "^9.2.1",
-    "rollup-plugin-json": "^3.1.0",
-    "rollup-plugin-node-resolve": "^4.0.1",
-    "rollup-plugin-sourcemaps": "^0.4.2",
-    "rollup-plugin-typescript2": "^0.19.3",
-    "semantic-release": "^15.13.3",
-    "shelljs": "^0.8.3",
-    "travis-deploy-once": "^5.0.11",
-    "ts-jest": "^24.0.0",
-    "ts-node": "^8.0.2",
+    "sinon": "^7.2.7",
+    "standard-version": "^5.0.1",
+    "trash-cli": "^1.4.0",
     "tslint": "^5.13.1",
     "tslint-config-prettier": "^1.18.0",
-    "tslint-config-standard": "^8.0.1",
     "typedoc": "^0.14.2",
     "typescript": "^3.3.3333"
+  },
+  "ava": {
+    "failFast": true,
+    "files": [
+      "build/main/**/*.spec.js"
+    ],
+    "sources": [
+      "build/main/**/*.js"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "greenkeeper": {
+    "ignore": [
+      "@types/node"
+    ]
+  },
+  "prettier": {
+    "singleQuote": true
+  },
+  "nyc": {
+    "exclude": [
+      "**/*.spec.js"
+    ]
+  },
+  "lint-staged": {
+    "{src,test}/**/*.ts": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   }
 }

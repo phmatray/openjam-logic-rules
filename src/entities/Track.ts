@@ -1,89 +1,62 @@
 import * as Joi from 'joi';
 
-import { IComment } from './Comment';
-import { ILabel } from './Label';
-import { ILike } from './Like';
-import { IPost } from './Post';
-import { IProfile } from './Profile';
+import { Comment } from './Comment';
+import { Label } from './Label';
+import { Like } from './Like';
+import { Post } from './Post';
+import { Profile } from './Profile';
 
 export type TrackType = 'original' | 'remix';
 
-export interface ITrack {
+export interface Track {
   id?: string;
   type?: TrackType;
   title?: string;
   edit?: string;
   explicit?: boolean;
   description?: string;
-  profiles?: string[] | IProfile[];
+  profiles?: string[] | Profile[];
   createdAt?: Date;
   updatedAt?: Date;
-  label?: string | ILabel;
-  likes?: string[] | ILike[];
-  posts?: string[] | IPost[];
-  comments?: string[] | IComment[];
+  label?: string | Label;
+  likes?: string[] | Like[];
+  posts?: string[] | Post[];
+  comments?: string[] | Comment[];
   audioUrl?: string;
   coverUrl?: string;
 }
-
-export interface ITrackEntity extends ITrack {
-  trackSchema: Joi.ObjectSchema;
-  copyData: (data: ITrack) => ITrackEntity;
-  getRaw: () => ITrack;
-  validate: (data: ITrack) => Joi.ValidationResult<ITrack>;
-  validateId: (id: string) => Joi.ValidationResult<string>;
-  validateType: (type: TrackType) => Joi.ValidationResult<TrackType>;
-  validateTitle: (title: string) => Joi.ValidationResult<string>;
-  validateEdit: (edit: string) => Joi.ValidationResult<string>;
-  validateExplicit: (explicit: boolean) => Joi.ValidationResult<boolean>;
-  validateDescription: (description: string) => Joi.ValidationResult<string>;
-  validateProfiles: (
-    profiles: string[] | IProfile[]
-  ) => Joi.ValidationResult<string[] | IProfile[]>;
-  validateCreatedAt: (createdAt: Date) => Joi.ValidationResult<Date>;
-  validateUpdatedAt: (updatedAt: Date) => Joi.ValidationResult<Date>;
-  validateLabel: (label: string | ILabel) => Joi.ValidationResult<string>;
-  validateLikes: (likes: string[] | ILike[]) => Joi.ValidationResult<string[] | ILike[]>;
-  validatePosts: (posts: string[] | IPost[]) => Joi.ValidationResult<string[] | IPost[]>;
-  validateComments: (
-    comments: string[] | IComment[]
-  ) => Joi.ValidationResult<string[] | IComment[]>;
-  validateAudioUrl: (audioUrl: string) => Joi.ValidationResult<string>;
-  validateCoverUrl: (coverUrl: string) => Joi.ValidationResult<string>;
-}
-
-export class Track implements ITrackEntity {
+export class TrackEntity {
   public id?: string | undefined;
   public type?: TrackType | undefined;
   public title?: string | undefined;
   public edit?: string | undefined;
   public explicit?: boolean | undefined;
   public description?: string | undefined;
-  public profiles?: string[] | IProfile[] | undefined;
+  public profiles?: string[] | Profile[] | undefined;
   public createdAt?: Date | undefined;
   public updatedAt?: Date | undefined;
-  public label?: string | ILabel | undefined;
-  public likes?: string[] | ILike[] | undefined;
-  public posts?: string[] | IPost[] | undefined;
-  public comments?: string[] | IComment[] | undefined;
+  public label?: string | Label | undefined;
+  public likes?: string[] | Like[] | undefined;
+  public posts?: string[] | Post[] | undefined;
+  public comments?: string[] | Comment[] | undefined;
   public audioUrl?: string | undefined;
   public coverUrl?: string | undefined;
 
-  private _validId = Joi.string();
-  private _validType = Joi.string();
-  private _validTitle = Joi.string();
-  private _validEdit = Joi.string();
-  private _validExplicit = Joi.bool();
-  private _validDescription = Joi.string();
-  private _validProfiles = Joi.array();
-  private _validCreatedAt = Joi.date();
-  private _validUpdatedAt = Joi.date();
-  private _validLabel = Joi.string();
-  private _validLikes = Joi.array();
-  private _validPosts = Joi.array();
-  private _validComments = Joi.array();
-  private _validAudioUrl = Joi.string();
-  private _validCoverUrl = Joi.string();
+  private validId = Joi.string();
+  private validType = Joi.string();
+  private validTitle = Joi.string();
+  private validEdit = Joi.string();
+  private validExplicit = Joi.bool();
+  private validDescription = Joi.string();
+  private validProfiles = Joi.array();
+  private validCreatedAt = Joi.date();
+  private validUpdatedAt = Joi.date();
+  private validLabel = Joi.string();
+  private validLikes = Joi.array();
+  private validPosts = Joi.array();
+  private validComments = Joi.array();
+  private validAudioUrl = Joi.string();
+  private validCoverUrl = Joi.string();
 
   /**
    * Joi Track Schema
@@ -92,31 +65,31 @@ export class Track implements ITrackEntity {
    */
   public trackSchema: Joi.ObjectSchema = Joi.object()
     .keys({
-      id: this._validId,
-      type: this._validType,
-      title: this._validTitle,
-      edit: this._validEdit,
-      explicit: this._validExplicit,
-      description: this._validDescription,
-      profiles: this._validProfiles,
-      createdAt: this._validCreatedAt,
-      updatedAt: this._validUpdatedAt,
-      label: this._validLabel,
-      likes: this._validLikes,
-      posts: this._validPosts,
-      comments: this._validComments,
-      audioUrl: this._validAudioUrl,
-      coverUrl: this._validCoverUrl
+      id: this.validId,
+      type: this.validType,
+      title: this.validTitle,
+      edit: this.validEdit,
+      explicit: this.validExplicit,
+      description: this.validDescription,
+      profiles: this.validProfiles,
+      createdAt: this.validCreatedAt,
+      updatedAt: this.validUpdatedAt,
+      label: this.validLabel,
+      likes: this.validLikes,
+      posts: this.validPosts,
+      comments: this.validComments,
+      audioUrl: this.validAudioUrl,
+      coverUrl: this.validCoverUrl
     })
     .with('id', ['createdAt', 'updatedAt']);
 
   /**
    * Copy properties from an object to instance properties
-   * @param {ITrack} data
-   * @returns {ITrackEntity}
+   * @param {Track} data
+   * @returns {TrackEntity}
    * @memberof Track
    */
-  public copyData(data: ITrack): ITrackEntity {
+  public copyData(data: Track): TrackEntity {
     this.id = data.id;
     this.type = data.type;
     this.title = data.title;
@@ -138,10 +111,10 @@ export class Track implements ITrackEntity {
 
   /**
    * Get the raw data of the object
-   * @returns {ITrack}
+   * @returns {Track}
    * @memberof Track
    */
-  public getRaw(): ITrack {
+  public getRaw(): Track {
     return {
       id: this.id,
       type: this.type,
@@ -163,11 +136,11 @@ export class Track implements ITrackEntity {
 
   /**
    * Returns if the Track object is valid
-   * @param {ITrack} data
-   * @returns {Joi.ValidationResult<ITrack>}
+   * @param {Track} data
+   * @returns {Joi.ValidationResult<Track>}
    * @memberof Track
    */
-  public validate(data: ITrack): Joi.ValidationResult<ITrack> {
+  public validate(data: Track): Joi.ValidationResult<Track> {
     return Joi.validate(data, this.trackSchema);
   }
 
@@ -178,7 +151,7 @@ export class Track implements ITrackEntity {
    * @memberof Track
    */
   public validateId(id: string): Joi.ValidationResult<string> {
-    return Joi.validate(id, this._validId);
+    return Joi.validate(id, this.validId);
   }
 
   /**
@@ -188,7 +161,7 @@ export class Track implements ITrackEntity {
    * @memberof Track
    */
   public validateType(type: TrackType): Joi.ValidationResult<TrackType> {
-    return Joi.validate(type, this._validType);
+    return Joi.validate(type, this.validType);
   }
 
   /**
@@ -198,7 +171,7 @@ export class Track implements ITrackEntity {
    * @memberof Track
    */
   public validateTitle(title: string): Joi.ValidationResult<string> {
-    return Joi.validate(title, this._validTitle);
+    return Joi.validate(title, this.validTitle);
   }
 
   /**
@@ -208,7 +181,7 @@ export class Track implements ITrackEntity {
    * @memberof Track
    */
   public validateEdit(edit: string): Joi.ValidationResult<string> {
-    return Joi.validate(edit, this._validEdit);
+    return Joi.validate(edit, this.validEdit);
   }
 
   /**
@@ -218,7 +191,7 @@ export class Track implements ITrackEntity {
    * @memberof Track
    */
   public validateExplicit(explicit: boolean): Joi.ValidationResult<boolean> {
-    return Joi.validate(explicit, this._validExplicit);
+    return Joi.validate(explicit, this.validExplicit);
   }
 
   /**
@@ -228,19 +201,19 @@ export class Track implements ITrackEntity {
    * @memberof Track
    */
   public validateDescription(description: string): Joi.ValidationResult<string> {
-    return Joi.validate(description, this._validDescription);
+    return Joi.validate(description, this.validDescription);
   }
 
   /**
    * Validates profiles property
-   * @param {string[] | IProfile[]} profiles
-   * @returns {Joi.ValidationResult<string[] | IProfile[]>}
+   * @param {string[] | Profile[]} profiles
+   * @returns {Joi.ValidationResult<string[] | Profile[]>}
    * @memberof Track
    */
   public validateProfiles(
-    profiles: string[] | IProfile[]
-  ): Joi.ValidationResult<string[] | IProfile[]> {
-    return Joi.validate(profiles, this._validProfiles);
+    profiles: string[] | Profile[]
+  ): Joi.ValidationResult<string[] | Profile[]> {
+    return Joi.validate(profiles, this.validProfiles);
   }
 
   /**
@@ -250,7 +223,7 @@ export class Track implements ITrackEntity {
    * @memberof Track
    */
   public validateCreatedAt(createdAt: Date): Joi.ValidationResult<Date> {
-    return Joi.validate(createdAt, this._validCreatedAt);
+    return Joi.validate(createdAt, this.validCreatedAt);
   }
 
   /**
@@ -260,50 +233,50 @@ export class Track implements ITrackEntity {
    * @memberof Track
    */
   public validateUpdatedAt(updatedAt: Date): Joi.ValidationResult<Date> {
-    return Joi.validate(updatedAt, this._validUpdatedAt);
+    return Joi.validate(updatedAt, this.validUpdatedAt);
   }
 
   /**
    * Validates label property
-   * @param {string | ILabel} label
+   * @param {string | Label} label
    * @returns {Joi.ValidationResult<string>}
    * @memberof Track
    */
-  public validateLabel(label: string | ILabel): Joi.ValidationResult<string> {
+  public validateLabel(label: string | Label): Joi.ValidationResult<string> {
     const id = typeof label !== 'string' && label.id ? label.id : (label as string);
-    return Joi.validate(id, this._validLabel);
+    return Joi.validate(id, this.validLabel);
   }
 
   /**
    * Validates likes property
-   * @param {string[] | ILike[]} likes
-   * @returns {Joi.ValidationResult<string[] | ILike[]>}
+   * @param {string[] | Like[]} likes
+   * @returns {Joi.ValidationResult<string[] | Like[]>}
    * @memberof Track
    */
-  public validateLikes(likes: string[] | ILike[]): Joi.ValidationResult<string[] | ILike[]> {
-    return Joi.validate(likes, this._validLikes);
+  public validateLikes(likes: string[] | Like[]): Joi.ValidationResult<string[] | Like[]> {
+    return Joi.validate(likes, this.validLikes);
   }
 
   /**
    * Validates posts property
-   * @param {string[] | IPost[]} posts
-   * @returns {Joi.ValidationResult<string[] | IPost[]>}
+   * @param {string[] | Post[]} posts
+   * @returns {Joi.ValidationResult<string[] | Post[]>}
    * @memberof Track
    */
-  public validatePosts(posts: string[] | IPost[]): Joi.ValidationResult<string[] | IPost[]> {
-    return Joi.validate(posts, this._validPosts);
+  public validatePosts(posts: string[] | Post[]): Joi.ValidationResult<string[] | Post[]> {
+    return Joi.validate(posts, this.validPosts);
   }
 
   /**
    * Validates comments property
-   * @param {string[] | IComment[]} comments
-   * @returns {Joi.ValidationResult<string[] | IComment[]>}
+   * @param {string[] | Comment[]} comments
+   * @returns {Joi.ValidationResult<string[] | Comment[]>}
    * @memberof Track
    */
   public validateComments(
-    comments: string[] | IComment[]
-  ): Joi.ValidationResult<string[] | IComment[]> {
-    return Joi.validate(comments, this._validComments);
+    comments: string[] | Comment[]
+  ): Joi.ValidationResult<string[] | Comment[]> {
+    return Joi.validate(comments, this.validComments);
   }
 
   /**
@@ -313,7 +286,7 @@ export class Track implements ITrackEntity {
    * @memberof Track
    */
   public validateAudioUrl(audioUrl: string): Joi.ValidationResult<string> {
-    return Joi.validate(audioUrl, this._validAudioUrl);
+    return Joi.validate(audioUrl, this.validAudioUrl);
   }
 
   /**
@@ -323,6 +296,6 @@ export class Track implements ITrackEntity {
    * @memberof Track
    */
   public validateCoverUrl(coverUrl: string): Joi.ValidationResult<string> {
-    return Joi.validate(coverUrl, this._validCoverUrl);
+    return Joi.validate(coverUrl, this.validCoverUrl);
   }
 }

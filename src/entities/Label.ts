@@ -1,50 +1,34 @@
 import * as Joi from 'joi';
 
-import { ITrack } from './Track';
-import { IProfile } from './Profile';
+import { Profile } from './Profile';
+import { Track } from './Track';
 
-export interface ILabel {
+export interface Label {
   id?: string;
   name?: string;
   description?: string;
   createdAt?: Date;
   updatedAt?: Date;
-  tracks?: string[] | ITrack[];
-  profiles?: string[] | IProfile[];
+  tracks?: string[] | Track[];
+  profiles?: string[] | Profile[];
 }
 
-export interface ILabelEntity extends ILabel {
-  labelSchema: Joi.ObjectSchema;
-  copyData: (data: ILabel) => ILabelEntity;
-  getRaw: () => ILabel;
-  validate: (data: ILabel) => Joi.ValidationResult<ILabel>;
-  validateId: (id: string) => Joi.ValidationResult<string>;
-  validateName: (name: string) => Joi.ValidationResult<string>;
-  validateDescription: (description: string) => Joi.ValidationResult<string>;
-  validateCreatedAt: (createdAt: Date) => Joi.ValidationResult<Date>;
-  validateUpdatedAt: (updatedAt: Date) => Joi.ValidationResult<Date>;
-  validateTracks: (tracks: string[] | ITrack[]) => Joi.ValidationResult<string[] | ITrack[]>;
-  validateProfiles: (
-    profiles: string[] | IProfile[]
-  ) => Joi.ValidationResult<string[] | IProfile[]>;
-}
-
-export class Label implements ILabelEntity {
+export class LabelEntity {
   public id?: string | undefined;
   public name?: string | undefined;
   public description?: string | undefined;
   public createdAt?: Date | undefined;
   public updatedAt?: Date | undefined;
-  public tracks?: string[] | ITrack[] | undefined;
-  public profiles?: string[] | IProfile[] | undefined;
+  public tracks?: string[] | Track[] | undefined;
+  public profiles?: string[] | Profile[] | undefined;
 
-  private _validId = Joi.string();
-  private _validName = Joi.string();
-  private _validDescription = Joi.string();
-  private _validCreatedAt = Joi.date();
-  private _validUpdatedAt = Joi.date();
-  private _validTracks = Joi.array();
-  private _validProfiles = Joi.array();
+  private validId = Joi.string();
+  private validName = Joi.string();
+  private validDescription = Joi.string();
+  private validCreatedAt = Joi.date();
+  private validUpdatedAt = Joi.date();
+  private validTracks = Joi.array();
+  private validProfiles = Joi.array();
 
   /**
    * Joi Label Schema
@@ -53,23 +37,23 @@ export class Label implements ILabelEntity {
    */
   public labelSchema: Joi.ObjectSchema = Joi.object()
     .keys({
-      id: this._validId,
-      name: this._validName,
-      description: this._validDescription,
-      createdAt: this._validCreatedAt,
-      updatedAt: this._validUpdatedAt,
-      tracks: this._validTracks,
-      profiles: this._validProfiles
+      id: this.validId,
+      name: this.validName,
+      description: this.validDescription,
+      createdAt: this.validCreatedAt,
+      updatedAt: this.validUpdatedAt,
+      tracks: this.validTracks,
+      profiles: this.validProfiles
     })
     .with('id', ['createdAt', 'updatedAt']);
 
   /**
    * Copy properties from an object to instance properties
-   * @param {ILabel} data
-   * @returns {ILabelEntity}
+   * @param {Label} data
+   * @returns {LabelEntity}
    * @memberof Label
    */
-  public copyData(data: ILabel): ILabelEntity {
+  public copyData(data: Label): LabelEntity {
     this.id = data.id;
     this.name = data.name;
     this.description = data.description;
@@ -83,10 +67,10 @@ export class Label implements ILabelEntity {
 
   /**
    * Get the raw data of the object
-   * @returns {ILabel}
+   * @returns {Label}
    * @memberof Label
    */
-  public getRaw(): ILabel {
+  public getRaw(): Label {
     return {
       id: this.id,
       name: this.name,
@@ -100,11 +84,11 @@ export class Label implements ILabelEntity {
 
   /**
    * Returns if the Label object is valid
-   * @param {ILabel} data
-   * @returns {Joi.ValidationResult<ILabel>}
+   * @param {Label} data
+   * @returns {Joi.ValidationResult<Label>}
    * @memberof Label
    */
-  public validate(data: ILabel): Joi.ValidationResult<ILabel> {
+  public validate(data: Label): Joi.ValidationResult<Label> {
     return Joi.validate(data, this.labelSchema);
   }
 
@@ -115,7 +99,7 @@ export class Label implements ILabelEntity {
    * @memberof Label
    */
   public validateId(id: string): Joi.ValidationResult<string> {
-    return Joi.validate(id, this._validId);
+    return Joi.validate(id, this.validId);
   }
 
   /**
@@ -125,7 +109,7 @@ export class Label implements ILabelEntity {
    * @memberof Label
    */
   public validateName(name: string): Joi.ValidationResult<string> {
-    return Joi.validate(name, this._validName);
+    return Joi.validate(name, this.validName);
   }
 
   /**
@@ -135,7 +119,7 @@ export class Label implements ILabelEntity {
    * @memberof Label
    */
   public validateDescription(description: string): Joi.ValidationResult<string> {
-    return Joi.validate(description, this._validDescription);
+    return Joi.validate(description, this.validDescription);
   }
 
   /**
@@ -145,7 +129,7 @@ export class Label implements ILabelEntity {
    * @memberof Label
    */
   public validateCreatedAt(createdAt: Date): Joi.ValidationResult<Date> {
-    return Joi.validate(createdAt, this._validCreatedAt);
+    return Joi.validate(createdAt, this.validCreatedAt);
   }
 
   /**
@@ -155,28 +139,28 @@ export class Label implements ILabelEntity {
    * @memberof Label
    */
   public validateUpdatedAt(updatedAt: Date): Joi.ValidationResult<Date> {
-    return Joi.validate(updatedAt, this._validUpdatedAt);
+    return Joi.validate(updatedAt, this.validUpdatedAt);
   }
 
   /**
    * Validates tracks property
-   * @param {string[] | ITrack[]} tracks
-   * @returns {Joi.ValidationResult<string[] | ITrack[]>}
+   * @param {string[] | Track[]} tracks
+   * @returns {Joi.ValidationResult<string[] | Track[]>}
    * @memberof Label
    */
-  public validateTracks(tracks: string[] | ITrack[]): Joi.ValidationResult<string[] | ITrack[]> {
-    return Joi.validate(tracks, this._validTracks);
+  public validateTracks(tracks: string[] | Track[]): Joi.ValidationResult<string[] | Track[]> {
+    return Joi.validate(tracks, this.validTracks);
   }
 
   /**
    * Validates profiles property
-   * @param {string[] | IProfile[]} profiles
-   * @returns {Joi.ValidationResult<string[] | IProfile[]>}
+   * @param {string[] | Profile[]} profiles
+   * @returns {Joi.ValidationResult<string[] | Profile[]>}
    * @memberof Label
    */
   public validateProfiles(
-    profiles: string[] | IProfile[]
-  ): Joi.ValidationResult<string[] | IProfile[]> {
-    return Joi.validate(profiles, this._validProfiles);
+    profiles: string[] | Profile[]
+  ): Joi.ValidationResult<string[] | Profile[]> {
+    return Joi.validate(profiles, this.validProfiles);
   }
 }

@@ -1,23 +1,23 @@
 import * as Joi from 'joi';
 
-import { IComment } from './Comment';
-import { ILabel } from './Label';
-import { ILike } from './Like';
-import { IMedia } from './Media';
-import { IPost } from './Post';
-import { IStyle } from './Style';
-import { ITrack } from './Track';
-import { IUser } from './User';
+import { Comment } from './Comment';
+import { Label } from './Label';
+import { Like } from './Like';
+import { Media } from './Media';
+import { Post } from './Post';
+import { Style } from './Style';
+import { Track } from './Track';
+import { User } from './User';
 
 export type ProfileType = 'artist' | 'listener';
 
-export interface IProfile {
+export interface Profile {
   id?: string;
   handle?: string;
   type?: ProfileType;
-  labels?: string[] | ILabel[];
+  labels?: string[] | Label[];
   name?: string;
-  styles?: string[] | IStyle[];
+  styles?: string[] | Style[];
   latitude?: number;
   longitude?: number;
   bio?: string;
@@ -28,62 +28,24 @@ export interface IProfile {
   country?: string;
   createdAt?: Date;
   updatedAt?: Date;
-  user?: string | IUser;
-  coverPicture?: string | IMedia;
-  profilePicture?: string | IMedia;
-  subscriptions?: string[] | IProfile[];
-  subscribers?: string[] | IProfile[];
-  likes?: string[] | ILike[];
-  posts?: string[] | IPost[];
+  user?: string | User;
+  coverPicture?: string | Media;
+  profilePicture?: string | Media;
+  subscriptions?: string[] | Profile[];
+  subscribers?: string[] | Profile[];
+  likes?: string[] | Like[];
+  posts?: string[] | Post[];
   comments?: string[] | Comment[];
-  tracks?: string[] | ITrack[];
+  tracks?: string[] | Track[];
 }
 
-export interface IProfileEntity extends IProfile {
-  profileSchema: Joi.ObjectSchema;
-  copyData?: (data: IProfile) => IProfileEntity;
-  getRaw: () => IProfile;
-  validate: (data: IProfile) => Joi.ValidationResult<IProfile>;
-  validateId: (id: string) => Joi.ValidationResult<string>;
-  validateHandle: (handle: string) => Joi.ValidationResult<string>;
-  validateType: (type: ProfileType) => Joi.ValidationResult<ProfileType>;
-  validateLabels: (labels: string[] | ILabel[]) => Joi.ValidationResult<string[] | ILabel[]>;
-  validateName: (name: string) => Joi.ValidationResult<string>;
-  validateStyles: (styles: string[] | IStyle[]) => Joi.ValidationResult<string[] | IStyle[]>;
-  validateLatitude: (latitude: number) => Joi.ValidationResult<number>;
-  validateLongitude: (longitude: number) => Joi.ValidationResult<number>;
-  validateBio: (bio: string) => Joi.ValidationResult<string>;
-  validateBioShort: (bioShort: string) => Joi.ValidationResult<string>;
-  validatePrivate: (isPrivate: boolean) => Joi.ValidationResult<boolean>;
-  validateCity: (city: string) => Joi.ValidationResult<string>;
-  validateState: (state: string) => Joi.ValidationResult<string>;
-  validateCountry: (country: string) => Joi.ValidationResult<string>;
-  validateCreatedAt: (createdAt: Date) => Joi.ValidationResult<Date>;
-  validateUpdatedAt: (updatedAt: Date) => Joi.ValidationResult<Date>;
-  validateUser: (user: string | IUser) => Joi.ValidationResult<string>;
-  validateCoverPicture: (coverPicture: string) => Joi.ValidationResult<string>;
-  validateProfilePicture: (profilePicture: string) => Joi.ValidationResult<string>;
-  validateSubscriptions: (
-    subscriptions: string[] | IProfile[]
-  ) => Joi.ValidationResult<string[] | IProfile[]>;
-  validateSubscribers: (
-    subscribers: string[] | IProfile[]
-  ) => Joi.ValidationResult<string[] | IProfile[]>;
-  validateLikes: (likes: string[] | ILike[]) => Joi.ValidationResult<string[] | ILike[]>;
-  validatePosts: (posts: string[] | IPost[]) => Joi.ValidationResult<string[] | IPost[]>;
-  validateComments: (
-    comments: string[] | IComment[]
-  ) => Joi.ValidationResult<string[] | IComment[]>;
-  validateTracks: (tracks: string[] | ITrack[]) => Joi.ValidationResult<string[] | ITrack[]>;
-}
-
-export class Profile implements IProfileEntity {
+export class ProfileEntity {
   public id?: string | undefined;
   public handle?: string | undefined;
   public type?: 'artist' | 'listener' | undefined;
-  public labels?: string[] | ILabel[] | undefined;
+  public labels?: string[] | Label[] | undefined;
   public name?: string | undefined;
-  public styles?: string[] | IStyle[] | undefined;
+  public styles?: string[] | Style[] | undefined;
   public latitude?: number | undefined;
   public longitude?: number | undefined;
   public bio?: string | undefined;
@@ -94,44 +56,44 @@ export class Profile implements IProfileEntity {
   public country?: string | undefined;
   public createdAt?: Date | undefined;
   public updatedAt?: Date | undefined;
-  public user?: string | IUser | undefined;
-  public coverPicture?: string | IMedia | undefined;
-  public profilePicture?: string | IMedia | undefined;
-  public subscriptions?: string[] | IProfile[] | undefined;
-  public subscribers?: string[] | IProfile[] | undefined;
-  public likes?: string[] | ILike[] | undefined;
-  public posts?: string[] | IPost[] | undefined;
+  public user?: string | User | undefined;
+  public coverPicture?: string | Media | undefined;
+  public profilePicture?: string | Media | undefined;
+  public subscriptions?: string[] | Profile[] | undefined;
+  public subscribers?: string[] | Profile[] | undefined;
+  public likes?: string[] | Like[] | undefined;
+  public posts?: string[] | Post[] | undefined;
   public comments?: string[] | Comment[] | undefined;
-  public tracks?: string[] | ITrack[] | undefined;
+  public tracks?: string[] | Track[] | undefined;
 
-  private _validId = Joi.string();
-  private _validHandle = Joi.string()
+  private validId = Joi.string();
+  private validHandle = Joi.string()
     .alphanum()
     .min(2)
     .max(30);
-  private _validType = Joi.string();
-  private _validLabels = Joi.array();
-  private _validName = Joi.string();
-  private _validStyles = Joi.array();
-  private _validLatitude = Joi.number();
-  private _validLongitude = Joi.number();
-  private _validBio = Joi.string().max(2000);
-  private _validBioShort = Joi.string().max(300);
-  private _validPrivate = Joi.bool();
-  private _validCity = Joi.string();
-  private _validState = Joi.string();
-  private _validCountry = Joi.string();
-  private _validCreatedAt = Joi.date();
-  private _validUpdatedAt = Joi.date();
-  private _validUser = Joi.string();
-  private _validCoverPicture = Joi.string();
-  private _validProfilePicture = Joi.string();
-  private _validSubscriptions = Joi.array();
-  private _validSubscribers = Joi.array();
-  private _validLikes = Joi.array();
-  private _validPosts = Joi.array();
-  private _validComments = Joi.array();
-  private _validTracks = Joi.array();
+  private validType = Joi.string();
+  private validLabels = Joi.array();
+  private validName = Joi.string();
+  private validStyles = Joi.array();
+  private validLatitude = Joi.number();
+  private validLongitude = Joi.number();
+  private validBio = Joi.string().max(2000);
+  private validBioShort = Joi.string().max(300);
+  private validPrivate = Joi.bool();
+  private validCity = Joi.string();
+  private validState = Joi.string();
+  private validCountry = Joi.string();
+  private validCreatedAt = Joi.date();
+  private validUpdatedAt = Joi.date();
+  private validUser = Joi.string();
+  private validCoverPicture = Joi.string();
+  private validProfilePicture = Joi.string();
+  private validSubscriptions = Joi.array();
+  private validSubscribers = Joi.array();
+  private validLikes = Joi.array();
+  private validPosts = Joi.array();
+  private validComments = Joi.array();
+  private validTracks = Joi.array();
 
   /**
    * Joi Profile Schema
@@ -140,41 +102,41 @@ export class Profile implements IProfileEntity {
    */
   public profileSchema: Joi.ObjectSchema = Joi.object()
     .keys({
-      id: this._validId,
-      handle: this._validHandle,
-      type: this._validType,
-      labels: this._validLabels,
-      name: this._validName,
-      styles: this._validStyles,
-      latitude: this._validLatitude,
-      longitude: this._validLongitude,
-      bio: this._validBio,
-      bioShort: this._validBioShort,
-      isPrivate: this._validPrivate,
-      city: this._validCity,
-      state: this._validState,
-      country: this._validCountry,
-      createdAt: this._validCreatedAt,
-      updatedAt: this._validUpdatedAt,
-      user: this._validUser,
-      coverPicture: this._validCoverPicture,
-      profilePicture: this._validProfilePicture,
-      subscriptions: this._validSubscriptions,
-      subscribers: this._validSubscribers,
-      likes: this._validLikes,
-      posts: this._validPosts,
-      comments: this._validComments,
-      tracks: this._validTracks
+      id: this.validId,
+      handle: this.validHandle,
+      type: this.validType,
+      labels: this.validLabels,
+      name: this.validName,
+      styles: this.validStyles,
+      latitude: this.validLatitude,
+      longitude: this.validLongitude,
+      bio: this.validBio,
+      bioShort: this.validBioShort,
+      isPrivate: this.validPrivate,
+      city: this.validCity,
+      state: this.validState,
+      country: this.validCountry,
+      createdAt: this.validCreatedAt,
+      updatedAt: this.validUpdatedAt,
+      user: this.validUser,
+      coverPicture: this.validCoverPicture,
+      profilePicture: this.validProfilePicture,
+      subscriptions: this.validSubscriptions,
+      subscribers: this.validSubscribers,
+      likes: this.validLikes,
+      posts: this.validPosts,
+      comments: this.validComments,
+      tracks: this.validTracks
     })
     .with('id', ['createdAt', 'updatedAt']);
 
   /**
    * Copy properties from an object to instance properties
-   * @param {IProfile} data
-   * @returns {IProfileEntity}
+   * @param {Profile} data
+   * @returns {ProfileEntity}
    * @memberof Profile
    */
-  public copyData(data: IProfile): IProfileEntity {
+  public copyData(data: Profile): ProfileEntity {
     this.id = data.id;
     this.handle = data.handle;
     this.type = data.type;
@@ -206,10 +168,10 @@ export class Profile implements IProfileEntity {
 
   /**
    * Get the raw data of the object
-   * @returns {IProfile}
+   * @returns {Profile}
    * @memberof Profile
    */
-  public getRaw(): IProfile {
+  public getRaw(): Profile {
     return {
       id: this.id,
       handle: this.handle,
@@ -241,11 +203,11 @@ export class Profile implements IProfileEntity {
 
   /**
    * Returns if the Profile object is valid
-   * @param {IProfile} data
-   * @returns {Joi.ValidationResult<IProfile>}
+   * @param {Profile} data
+   * @returns {Joi.ValidationResult<Profile>}
    * @memberof Profile
    */
-  public validate(data: IProfile): Joi.ValidationResult<IProfile> {
+  public validate(data: Profile): Joi.ValidationResult<Profile> {
     return Joi.validate(data, this.profileSchema);
   }
 
@@ -256,7 +218,7 @@ export class Profile implements IProfileEntity {
    * @memberof Profile
    */
   public validateId(id: string): Joi.ValidationResult<string> {
-    return Joi.validate(id, this._validId);
+    return Joi.validate(id, this.validId);
   }
 
   /**
@@ -266,7 +228,7 @@ export class Profile implements IProfileEntity {
    * @memberof Profile
    */
   public validateHandle(handle: string): Joi.ValidationResult<string> {
-    return Joi.validate(handle, this._validHandle);
+    return Joi.validate(handle, this.validHandle);
   }
 
   /**
@@ -276,17 +238,17 @@ export class Profile implements IProfileEntity {
    * @memberof Profile
    */
   public validateType(type: ProfileType): Joi.ValidationResult<ProfileType> {
-    return Joi.validate(type, this._validType);
+    return Joi.validate(type, this.validType);
   }
 
   /**
    * Validates labels property
-   * @param {string[] | ILabel[]} labels
-   * @returns {Joi.ValidationResult<string[] | ILabel[]>}
+   * @param {string[] | Label[]} labels
+   * @returns {Joi.ValidationResult<string[] | Label[]>}
    * @memberof Profile
    */
-  public validateLabels(labels: string[] | ILabel[]): Joi.ValidationResult<string[] | ILabel[]> {
-    return Joi.validate(labels, this._validLabels);
+  public validateLabels(labels: string[] | Label[]): Joi.ValidationResult<string[] | Label[]> {
+    return Joi.validate(labels, this.validLabels);
   }
 
   /**
@@ -296,17 +258,17 @@ export class Profile implements IProfileEntity {
    * @memberof Profile
    */
   public validateName(name: string): Joi.ValidationResult<string> {
-    return Joi.validate(name, this._validName);
+    return Joi.validate(name, this.validName);
   }
 
   /**
    * Validates styles property
-   * @param {string[] | IStyle[]} styles
-   * @returns {Joi.ValidationResult<string[] | IStyle[]>}
+   * @param {string[] | Style[]} styles
+   * @returns {Joi.ValidationResult<string[] | Style[]>}
    * @memberof Profile
    */
-  public validateStyles(styles: string[] | IStyle[]): Joi.ValidationResult<string[] | IStyle[]> {
-    return Joi.validate(styles, this._validStyles);
+  public validateStyles(styles: string[] | Style[]): Joi.ValidationResult<string[] | Style[]> {
+    return Joi.validate(styles, this.validStyles);
   }
 
   /**
@@ -316,7 +278,7 @@ export class Profile implements IProfileEntity {
    * @memberof Profile
    */
   public validateLatitude(latitude: number): Joi.ValidationResult<number> {
-    return Joi.validate(latitude, this._validLatitude);
+    return Joi.validate(latitude, this.validLatitude);
   }
 
   /**
@@ -326,7 +288,7 @@ export class Profile implements IProfileEntity {
    * @memberof Profile
    */
   public validateLongitude(longitude: number): Joi.ValidationResult<number> {
-    return Joi.validate(longitude, this._validLongitude);
+    return Joi.validate(longitude, this.validLongitude);
   }
 
   /**
@@ -336,7 +298,7 @@ export class Profile implements IProfileEntity {
    * @memberof Profile
    */
   public validateBio(bio: string): Joi.ValidationResult<string> {
-    return Joi.validate(bio, this._validBio);
+    return Joi.validate(bio, this.validBio);
   }
 
   /**
@@ -346,7 +308,7 @@ export class Profile implements IProfileEntity {
    * @memberof Profile
    */
   public validateBioShort(bioShort: string): Joi.ValidationResult<string> {
-    return Joi.validate(bioShort, this._validBioShort);
+    return Joi.validate(bioShort, this.validBioShort);
   }
 
   /**
@@ -356,7 +318,7 @@ export class Profile implements IProfileEntity {
    * @memberof Profile
    */
   public validatePrivate(isPrivate: boolean): Joi.ValidationResult<boolean> {
-    return Joi.validate(isPrivate, this._validPrivate);
+    return Joi.validate(isPrivate, this.validPrivate);
   }
 
   /**
@@ -366,7 +328,7 @@ export class Profile implements IProfileEntity {
    * @memberof Profile
    */
   public validateCity(city: string): Joi.ValidationResult<string> {
-    return Joi.validate(city, this._validCity);
+    return Joi.validate(city, this.validCity);
   }
 
   /**
@@ -376,7 +338,7 @@ export class Profile implements IProfileEntity {
    * @memberof Profile
    */
   public validateState(state: string): Joi.ValidationResult<string> {
-    return Joi.validate(state, this._validState);
+    return Joi.validate(state, this.validState);
   }
 
   /**
@@ -386,7 +348,7 @@ export class Profile implements IProfileEntity {
    * @memberof Profile
    */
   public validateCountry(country: string): Joi.ValidationResult<string> {
-    return Joi.validate(country, this._validCountry);
+    return Joi.validate(country, this.validCountry);
   }
 
   /**
@@ -396,7 +358,7 @@ export class Profile implements IProfileEntity {
    * @memberof Profile
    */
   public validateCreatedAt(createdAt: Date): Joi.ValidationResult<Date> {
-    return Joi.validate(createdAt, this._validCreatedAt);
+    return Joi.validate(createdAt, this.validCreatedAt);
   }
 
   /**
@@ -406,18 +368,18 @@ export class Profile implements IProfileEntity {
    * @memberof Profile
    */
   public validateUpdatedAt(updatedAt: Date): Joi.ValidationResult<Date> {
-    return Joi.validate(updatedAt, this._validUpdatedAt);
+    return Joi.validate(updatedAt, this.validUpdatedAt);
   }
 
   /**
    * Validates user property
-   * @param {string | IUser} user
+   * @param {string | User} user
    * @returns {Joi.ValidationResult<string>}
    * @memberof Profile
    */
-  public validateUser(user: string | IUser): Joi.ValidationResult<string> {
+  public validateUser(user: string | User): Joi.ValidationResult<string> {
     const id = typeof user !== 'string' && user.id ? user.id : (user as string);
-    return Joi.validate(id, this._validUser);
+    return Joi.validate(id, this.validUser);
   }
 
   /**
@@ -427,7 +389,7 @@ export class Profile implements IProfileEntity {
    * @memberof Profile
    */
   public validateCoverPicture(coverPicture: string): Joi.ValidationResult<string> {
-    return Joi.validate(coverPicture, this._validCoverPicture);
+    return Joi.validate(coverPicture, this.validCoverPicture);
   }
 
   /**
@@ -437,72 +399,72 @@ export class Profile implements IProfileEntity {
    * @memberof Profile
    */
   public validateProfilePicture(profilePicture: string): Joi.ValidationResult<string> {
-    return Joi.validate(profilePicture, this._validProfilePicture);
+    return Joi.validate(profilePicture, this.validProfilePicture);
   }
 
   /**
    * Validates subscriptions property
-   * @param {string[] | IProfile[]} subscriptions
-   * @returns {Joi.ValidationResult<string[] | IProfile[]>}
+   * @param {string[] | Profile[]} subscriptions
+   * @returns {Joi.ValidationResult<string[] | Profile[]>}
    * @memberof Profile
    */
   public validateSubscriptions(
-    subscriptions: string[] | IProfile[]
-  ): Joi.ValidationResult<string[] | IProfile[]> {
-    return Joi.validate(subscriptions, this._validSubscriptions);
+    subscriptions: string[] | Profile[]
+  ): Joi.ValidationResult<string[] | Profile[]> {
+    return Joi.validate(subscriptions, this.validSubscriptions);
   }
 
   /**
    * Validates subscribers property
-   * @param {string[] | IProfile[]} subscribers
-   * @returns {Joi.ValidationResult<string[] | IProfile[]>}
+   * @param {string[] | Profile[]} subscribers
+   * @returns {Joi.ValidationResult<string[] | Profile[]>}
    * @memberof Profile
    */
   public validateSubscribers(
-    subscribers: string[] | IProfile[]
-  ): Joi.ValidationResult<string[] | IProfile[]> {
-    return Joi.validate(subscribers, this._validSubscribers);
+    subscribers: string[] | Profile[]
+  ): Joi.ValidationResult<string[] | Profile[]> {
+    return Joi.validate(subscribers, this.validSubscribers);
   }
 
   /**
    * Validates likes property
-   * @param {string[] | ILike[]} likes
-   * @returns {Joi.ValidationResult<string[] | ILike[]>}
+   * @param {string[] | Like[]} likes
+   * @returns {Joi.ValidationResult<string[] | Like[]>}
    * @memberof Profile
    */
-  public validateLikes(likes: string[] | ILike[]): Joi.ValidationResult<string[] | ILike[]> {
-    return Joi.validate(likes, this._validLikes);
+  public validateLikes(likes: string[] | Like[]): Joi.ValidationResult<string[] | Like[]> {
+    return Joi.validate(likes, this.validLikes);
   }
 
   /**
    * Validates posts property
-   * @param {string[] | IPost[]} posts
-   * @returns {Joi.ValidationResult<string[] | IPost[]>}
+   * @param {string[] | Post[]} posts
+   * @returns {Joi.ValidationResult<string[] | Post[]>}
    * @memberof Profile
    */
-  public validatePosts(posts: string[] | IPost[]): Joi.ValidationResult<string[] | IPost[]> {
-    return Joi.validate(posts, this._validPosts);
+  public validatePosts(posts: string[] | Post[]): Joi.ValidationResult<string[] | Post[]> {
+    return Joi.validate(posts, this.validPosts);
   }
 
   /**
    * Validates comments property
-   * @param {string[] | IComment[]} comments
-   * @returns {Joi.ValidationResult<string[] | IComment[]>}
+   * @param {string[] | Comment[]} comments
+   * @returns {Joi.ValidationResult<string[] | Comment[]>}
    * @memberof Profile
    */
   public validateComments(
-    comments: string[] | IComment[]
-  ): Joi.ValidationResult<string[] | IComment[]> {
-    return Joi.validate(comments, this._validComments);
+    comments: string[] | Comment[]
+  ): Joi.ValidationResult<string[] | Comment[]> {
+    return Joi.validate(comments, this.validComments);
   }
 
   /**
    * Validates tracks property
-   * @param {string[] | ITrack[]} tracks
-   * @returns {Joi.ValidationResult<string[] | ITrack[]>}
+   * @param {string[] | Track[]} tracks
+   * @returns {Joi.ValidationResult<string[] | Track[]>}
    * @memberof Profile
    */
-  public validateTracks(tracks: string[] | ITrack[]): Joi.ValidationResult<string[] | ITrack[]> {
-    return Joi.validate(tracks, this._validTracks);
+  public validateTracks(tracks: string[] | Track[]): Joi.ValidationResult<string[] | Track[]> {
+    return Joi.validate(tracks, this.validTracks);
   }
 }

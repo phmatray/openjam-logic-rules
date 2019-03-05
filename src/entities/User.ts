@@ -1,8 +1,8 @@
 import * as Joi from 'joi';
 
-import { IProfile } from './Profile';
+import { Profile } from './Profile';
 
-export interface IUser {
+export interface User {
   id?: string;
   confirmed?: boolean;
   blocked?: boolean;
@@ -12,29 +12,10 @@ export interface IUser {
   lastName?: string;
   provider?: string;
   role?: string;
-  profiles?: string[] | IProfile[];
+  profiles?: string[] | Profile[];
 }
 
-export interface IUserEntity extends IUser {
-  userSchema: Joi.ObjectSchema;
-  copyData: (data: IUser) => IUserEntity;
-  getRaw: () => IUser;
-  validate: (data: IUser) => Joi.ValidationResult<IUser>;
-  validateId: (id: string) => Joi.ValidationResult<string>;
-  validateConfirmed: (confirmed: boolean) => Joi.ValidationResult<boolean>;
-  validateBlocked: (blocked: boolean) => Joi.ValidationResult<boolean>;
-  validateUsername: (username: string) => Joi.ValidationResult<string>;
-  validateEmail: (email: string) => Joi.ValidationResult<string>;
-  validateFirstName: (firstName: string) => Joi.ValidationResult<string>;
-  validateLastName: (lastName: string) => Joi.ValidationResult<string>;
-  validateProvider: (provider: string) => Joi.ValidationResult<string>;
-  validateRole: (role: string) => Joi.ValidationResult<string>;
-  validateProfiles: (
-    profiles: string[] | IProfile[]
-  ) => Joi.ValidationResult<string[] | IProfile[]>;
-}
-
-export class User implements IUserEntity {
+export class UserEntity {
   public id?: string | undefined;
   public confirmed?: boolean | undefined;
   public blocked?: boolean | undefined;
@@ -44,22 +25,22 @@ export class User implements IUserEntity {
   public lastName?: string | undefined;
   public provider?: string | undefined;
   public role?: string | undefined;
-  public profiles?: string[] | IProfile[] | undefined;
+  public profiles?: string[] | Profile[] | undefined;
 
-  private _validId = Joi.string().required();
-  private _validConfirmed = Joi.bool().required();
-  private _validBlocked = Joi.bool().required();
-  private _validUsername = Joi.string()
+  private validId = Joi.string().required();
+  private validConfirmed = Joi.bool().required();
+  private validBlocked = Joi.bool().required();
+  private validUsername = Joi.string()
     .alphanum()
     .required();
-  private _validEmail = Joi.string()
+  private validEmail = Joi.string()
     .email()
     .required();
-  private _validFirstName = Joi.string().max(30);
-  private _validLastName = Joi.string().max(30);
-  private _validProvider = Joi.string().required();
-  private _validRole = Joi.string().required();
-  private _validProfiles = Joi.array();
+  private validFirstName = Joi.string().max(30);
+  private validLastName = Joi.string().max(30);
+  private validProvider = Joi.string().required();
+  private validRole = Joi.string().required();
+  private validProfiles = Joi.array();
 
   /**
    * Joi User Schema
@@ -68,26 +49,26 @@ export class User implements IUserEntity {
    */
   public userSchema: Joi.ObjectSchema = Joi.object()
     .keys({
-      id: this._validId,
-      confirmed: this._validConfirmed,
-      blocked: this._validBlocked,
-      username: this._validUsername,
-      email: this._validEmail,
-      firstName: this._validFirstName,
-      lastName: this._validLastName,
-      provider: this._validProvider,
-      role: this._validRole,
-      profiles: this._validProfiles
+      id: this.validId,
+      confirmed: this.validConfirmed,
+      blocked: this.validBlocked,
+      username: this.validUsername,
+      email: this.validEmail,
+      firstName: this.validFirstName,
+      lastName: this.validLastName,
+      provider: this.validProvider,
+      role: this.validRole,
+      profiles: this.validProfiles
     })
     .with('id', ['createdAt', 'updatedAt']);
 
   /**
    * Copy properties from an object to instance properties
-   * @param {IUser} data
-   * @returns {IUserEntity}
+   * @param {User} data
+   * @returns {UserEntity}
    * @memberof User
    */
-  public copyData(data: IUser): IUserEntity {
+  public copyData(data: User): UserEntity {
     this.id = data.id;
     this.confirmed = data.confirmed;
     this.blocked = data.blocked;
@@ -104,10 +85,10 @@ export class User implements IUserEntity {
 
   /**
    * Get the raw data of the object
-   * @returns {IUser}
+   * @returns {User}
    * @memberof User
    */
-  public getRaw(): IUser {
+  public getRaw(): User {
     return {
       id: this.id,
       confirmed: this.confirmed,
@@ -124,11 +105,11 @@ export class User implements IUserEntity {
 
   /**
    * Returns if the User object is valid
-   * @param {IUser} data
-   * @returns {Joi.ValidationResult<IUser>}
+   * @param {User} data
+   * @returns {Joi.ValidationResult<User>}
    * @memberof User
    */
-  public validate(data: IUser): Joi.ValidationResult<IUser> {
+  public validate(data: User): Joi.ValidationResult<User> {
     return Joi.validate(data, this.userSchema);
   }
 
@@ -139,7 +120,7 @@ export class User implements IUserEntity {
    * @memberof User
    */
   public validateId(id: string): Joi.ValidationResult<string> {
-    return Joi.validate(id, this._validId);
+    return Joi.validate(id, this.validId);
   }
 
   /**
@@ -149,7 +130,7 @@ export class User implements IUserEntity {
    * @memberof User
    */
   public validateConfirmed(confirmed: boolean): Joi.ValidationResult<boolean> {
-    return Joi.validate(confirmed, this._validConfirmed);
+    return Joi.validate(confirmed, this.validConfirmed);
   }
 
   /**
@@ -159,7 +140,7 @@ export class User implements IUserEntity {
    * @memberof User
    */
   public validateBlocked(blocked: boolean): Joi.ValidationResult<boolean> {
-    return Joi.validate(blocked, this._validBlocked);
+    return Joi.validate(blocked, this.validBlocked);
   }
 
   /**
@@ -169,7 +150,7 @@ export class User implements IUserEntity {
    * @memberof User
    */
   public validateUsername(username: string): Joi.ValidationResult<string> {
-    return Joi.validate(username, this._validUsername);
+    return Joi.validate(username, this.validUsername);
   }
 
   /**
@@ -179,7 +160,7 @@ export class User implements IUserEntity {
    * @memberof User
    */
   public validateEmail(email: string): Joi.ValidationResult<string> {
-    return Joi.validate(email, this._validEmail);
+    return Joi.validate(email, this.validEmail);
   }
 
   /**
@@ -189,7 +170,7 @@ export class User implements IUserEntity {
    * @memberof User
    */
   public validateFirstName(firstName: string): Joi.ValidationResult<string> {
-    return Joi.validate(firstName, this._validFirstName);
+    return Joi.validate(firstName, this.validFirstName);
   }
 
   /**
@@ -199,7 +180,7 @@ export class User implements IUserEntity {
    * @memberof User
    */
   public validateLastName(lastName: string): Joi.ValidationResult<string> {
-    return Joi.validate(lastName, this._validLastName);
+    return Joi.validate(lastName, this.validLastName);
   }
 
   /**
@@ -209,7 +190,7 @@ export class User implements IUserEntity {
    * @memberof User
    */
   public validateProvider(provider: string): Joi.ValidationResult<string> {
-    return Joi.validate(provider, this._validProvider);
+    return Joi.validate(provider, this.validProvider);
   }
 
   /**
@@ -219,18 +200,18 @@ export class User implements IUserEntity {
    * @memberof User
    */
   public validateRole(role: string): Joi.ValidationResult<string> {
-    return Joi.validate(role, this._validRole);
+    return Joi.validate(role, this.validRole);
   }
 
   /**
    * Validates profiles property
-   * @param {string[] | IProfile[]} profiles
-   * @returns {Joi.ValidationResult<string[] | IProfile[]>}
+   * @param {string[] | Profile[]} profiles
+   * @returns {Joi.ValidationResult<string[] | Profile[]>}
    * @memberof User
    */
   public validateProfiles(
-    profiles: string[] | IProfile[]
-  ): Joi.ValidationResult<string[] | IProfile[]> {
-    return Joi.validate(profiles, this._validProfiles);
+    profiles: string[] | Profile[]
+  ): Joi.ValidationResult<string[] | Profile[]> {
+    return Joi.validate(profiles, this.validProfiles);
   }
 }
