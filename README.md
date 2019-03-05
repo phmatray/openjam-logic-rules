@@ -18,33 +18,6 @@
 
 - https://openjam-eu.github.io/openjam-logic-rules/
 
-### Notes
-
-- _This package is inspired from the article [Front End Architecture — Making rebuild from scratch not so painful](https://medium.com/car2godevs/front-end-architecture-making-rebuild-from-scratch-not-so-painful-7b2232dc1666)._
-- _It also use [TypeScript library starter](https://travis-ci.org/alexjoverm/typescript-library-starter) to bootstrap this libray._
-
-# Folders
-
-## Common
-
-This folder contains shared adapters to use inside different layers. _e.g: HttpClient class — creates an instance of axios library and abstract some methods of it as well._
-
-## Entities
-
-In this group, we will create our Business Objects interfaces and classes. If the object needs to own some rules, it would be nice (not mandatory) to implement them here. But it is also acceptable to just export data interfaces and let all validations to the Interactors layer.
-
-## Services
-
-The Services are classes to load/send data from/to APIs, handle localStorage operations, socket connections.
-
-## Interactors
-
-The Interactors are classes that handle business rules. They are responsible to verify if all conditions for a specific user request are fulfilled — basically, they implement use cases.
-
-## Exposers
-
-We are now ready to expose our package to applications. The reasons to use exposers are that we publish an API which can be consumed independently of the implementation, export just a set of methods based on environment or application and use different names for them.
-
 # How to use?
 
 ```ts
@@ -65,30 +38,9 @@ const artists = oj.getArtists();
 
 ```bash
 
- # Run test suite
- npm t
-
- # Run `npm run build` in watch mode
- npm start
-
- # Run test suite in [interactive watch mode](http://facebook.github.io/jest/docs/cli.html#watch)
- npm run test:watch
-
- # Run linting and generate coverage
- npm run test:prod
-
- # Generate bundles and typings, create docs
- npm run build
-
- # Lints code
- npm run lint
+ # Read the manual ;-)
+ npm info
 
  # Commit using conventional commit style ([husky](https://github.com/typicode/husky) will tell you to use it if you haven't :wink:)
  npm run commit
 ```
-
-# Todo
-
-- [ ] Add track entity
-- [ ] Add user entity
-- [ ] Add axios config override to the entry point
