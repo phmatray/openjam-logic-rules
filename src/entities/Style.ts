@@ -21,13 +21,10 @@ export class StyleEntity {
 
   private validId = Joi.string();
   private validName = Joi.string()
-    .alphanum()
     .min(2)
     .max(50)
     .required();
-  private validDescription = Joi.string()
-    .alphanum()
-    .max(2000);
+  private validDescription = Joi.string().max(2000);
   private validCreatedAt = Joi.date();
   private validUpdatedAt = Joi.date();
   private validProfiles = Joi.array();

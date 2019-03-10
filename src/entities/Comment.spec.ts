@@ -1,4 +1,5 @@
 import test from 'ava';
+
 import { Comment, CommentEntity } from './Comment';
 
 const now = new Date(Date.now());
@@ -48,10 +49,10 @@ test('should return the raw data', t => {
   t.is(rawData.text, 'This is a comment');
   t.is(rawData.by, 'idProfile1');
   t.is(rawData.post, 'idPost1');
-  t.is(comment.track, 'idTrack1');
-  t.is(comment.trackAt, 60000);
-  t.is(comment.createdAt, now);
-  t.is(comment.updatedAt, now);
+  t.is(rawData.track, 'idTrack1');
+  t.is(rawData.trackAt, 60000);
+  t.is(rawData.createdAt, now);
+  t.is(rawData.updatedAt, now);
   t.pass();
 });
 

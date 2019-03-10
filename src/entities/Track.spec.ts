@@ -1,5 +1,6 @@
 import test from 'ava';
-import { Track, TrackEntity } from './Track';
+
+import { Track, TrackEntity, TrackType } from './Track';
 
 const now = new Date(Date.now());
 
@@ -70,6 +71,124 @@ test('should return the raw data', t => {
   t.deepEqual(rawData.comments, ['idComment1', 'idComment2']);
   t.is(rawData.audioUrl, 'audiourl');
   t.is(rawData.coverUrl, 'coverurl');
+  t.pass();
+});
+
+test('should return id is invalid for empty string', t => {
+  const validationResult = track.validateId('');
+  t.truthy(validationResult.error);
+  t.pass();
+});
+
+test('should return id is valid', t => {
+  const id = trackData.id as string;
+  const validationResult = track.validateId(id);
+  t.is(validationResult.error, null);
+  t.pass();
+});
+
+test('should return type is valid', t => {
+  const type = trackData.type as TrackType;
+  const validationResult = track.validateType(type);
+  t.is(validationResult.error, null);
+  t.pass();
+});
+
+test('should return title is valid', t => {
+  const title = trackData.title as string;
+  const validationResult = track.validateTitle(title);
+  t.is(validationResult.error, null);
+  t.pass();
+});
+
+test('should return edit is valid', t => {
+  const edit = trackData.edit as string;
+  const validationResult = track.validateEdit(edit);
+  t.is(validationResult.error, null);
+  t.pass();
+});
+
+test('should return explicit is valid', t => {
+  const explicit = trackData.explicit as boolean;
+  const validationResult = track.validateExplicit(explicit);
+  t.is(validationResult.error, null);
+  t.pass();
+});
+
+test('should return description is valid', t => {
+  const description = trackData.description as string;
+  const validationResult = track.validateDescription(description);
+  t.is(validationResult.error, null);
+  t.pass();
+});
+
+test('should return profiles is valid', t => {
+  const profiles = trackData.profiles as string[];
+  const validationResult = track.validateProfiles(profiles);
+  t.is(validationResult.error, null);
+  t.pass();
+});
+
+test('should return createdAt is valid', t => {
+  const createdAt = trackData.createdAt as Date;
+  const validationResult = track.validateCreatedAt(createdAt);
+  t.is(validationResult.error, null);
+  t.pass();
+});
+
+test('should return updatedAt is valid', t => {
+  const updatedAt = trackData.updatedAt as Date;
+  const validationResult = track.validateUpdatedAt(updatedAt);
+  t.is(validationResult.error, null);
+  t.pass();
+});
+
+test('should return label is valid', t => {
+  const label = trackData.label as string;
+  const validationResult = track.validateLabel(label);
+  t.is(validationResult.error, null);
+  t.pass();
+});
+
+test('should return label (object) is valid', t => {
+  const label = { id: trackData.label as string };
+  const validationResult = track.validateLabel(label);
+  t.is(validationResult.error, null);
+  t.pass();
+});
+
+test('should return likes is valid', t => {
+  const likes = trackData.likes as string[];
+  const validationResult = track.validateLikes(likes);
+  t.is(validationResult.error, null);
+  t.pass();
+});
+
+test('should return posts is valid', t => {
+  const posts = trackData.posts as string[];
+  const validationResult = track.validatePosts(posts);
+  t.is(validationResult.error, null);
+  t.pass();
+});
+
+test('should return comments is valid', t => {
+  const comments = trackData.comments as string[];
+  const validationResult = track.validateComments(comments);
+  t.is(validationResult.error, null);
+  t.pass();
+});
+
+test('should return audioUrl is valid', t => {
+  const audioUrl = trackData.audioUrl as string;
+  const validationResult = track.validateAudioUrl(audioUrl);
+  t.is(validationResult.error, null);
+  t.pass();
+});
+
+test('should return coverUrl is valid', t => {
+  const coverUrl = trackData.coverUrl as string;
+  const validationResult = track.validateCoverUrl(coverUrl);
+  t.is(validationResult.error, null);
   t.pass();
 });
 

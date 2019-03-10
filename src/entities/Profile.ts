@@ -68,7 +68,6 @@ export class ProfileEntity {
 
   private validId = Joi.string();
   private validHandle = Joi.string()
-    .alphanum()
     .min(2)
     .max(30);
   private validType = Joi.string();
