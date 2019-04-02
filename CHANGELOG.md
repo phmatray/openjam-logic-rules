@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.1"></a>
+## [4.0.1](https://github.com/openjam-eu/openjam-logic-rules/compare/v4.0.0...v4.0.1) (2019-04-02)
+
+
+
 <a name="4.0.0"></a>
 # [4.0.0](https://github.com/openjam-eu/openjam-logic-rules/compare/v3.0.7...v4.0.0) (2019-04-02)
 
