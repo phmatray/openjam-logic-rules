@@ -3,17 +3,17 @@ export type ProfileType = 'artist' | 'listener';
 export type TrackType = 'original' | 'remix';
 
 interface ObjectWithId {
-  id?: string;
+  id: string;
 }
 
 interface ObjectWithDate {
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface CommentProps {
-  type?: string;
-  text?: string;
+  type: string;
+  text: string;
   trackAt?: number;
 }
 
@@ -26,7 +26,7 @@ interface CommentRelations {
 export interface Comment extends ObjectWithId, ObjectWithDate, CommentProps, CommentRelations {}
 
 interface LabelProps {
-  name?: string;
+  name: string;
   description?: string;
 }
 
@@ -38,8 +38,8 @@ interface LabelRelations {
 export interface Label extends ObjectWithId, ObjectWithDate, LabelProps, LabelRelations {}
 
 interface LikeProps {
-  emotion?: string;
-  intensity?: number;
+  emotion: string;
+  intensity: number;
 }
 
 interface LikeRelations {
@@ -50,24 +50,22 @@ interface LikeRelations {
 export interface Like extends ObjectWithId, ObjectWithDate, LikeProps, LikeRelations {}
 
 interface MediaProps {
-  name?: string;
-  sha256?: string;
-  hash?: string;
-  ext?: string;
-  mime?: string;
-  size?: string;
-  url?: string;
-  provider?: string;
-  related?: string[];
+  name: string;
+  sha256: string;
+  hash: string;
+  ext: string;
+  mime: string;
+  size: string;
+  url: string;
+  provider: string;
+  related: string[];
 }
 
-interface MediaRelations {}
-
-export interface Media extends ObjectWithId, ObjectWithDate, MediaProps, MediaRelations {}
+export interface Media extends ObjectWithId, ObjectWithDate, MediaProps {}
 
 interface PostProps {
-  type?: string;
-  content?: string;
+  type: PostType;
+  content: string;
 }
 
 interface PostRelations {
@@ -80,14 +78,14 @@ interface PostRelations {
 export interface Post extends ObjectWithId, ObjectWithDate, PostProps, PostRelations {}
 
 interface ProfileProps {
-  handle?: string;
-  type?: ProfileType;
-  name?: string;
+  handle: string;
+  type: ProfileType;
+  name: string;
+  isPrivate: boolean;
   latitude?: number;
   longitude?: number;
   bio?: string;
   bioShort?: string;
-  isPrivate?: boolean;
   city?: string;
   state?: string;
   country?: string;
@@ -110,7 +108,7 @@ interface ProfileRelations {
 export interface Profile extends ObjectWithId, ObjectWithDate, ProfileProps, ProfileRelations {}
 
 interface StyleProps {
-  name?: string;
+  name: string;
   description?: string;
 }
 
@@ -121,13 +119,13 @@ interface StyleRelations {
 export interface Style extends ObjectWithId, ObjectWithDate, StyleProps, StyleRelations {}
 
 interface TrackProps {
-  type?: TrackType;
-  title?: string;
+  type: TrackType;
+  title: string;
+  explicit: boolean;
+  audioUrl: string;
+  coverUrl: string;
   edit?: string;
-  explicit?: boolean;
   description?: string;
-  audioUrl?: string;
-  coverUrl?: string;
 }
 
 interface TrackRelations {
