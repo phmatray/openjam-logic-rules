@@ -1,23 +1,13 @@
 import test from 'ava';
 
-import { Style } from '../types/entities';
+import { styleData } from './getSample';
 import { StyleEntity } from './Style';
 
-const now = new Date(Date.now());
+const now = styleData.createdAt;
 
 let style: StyleEntity;
-let styleData: Style;
-
 test.beforeEach(() => {
-  style = new StyleEntity();
-  styleData = {
-    id: 'idStyle1',
-    name: 'Electro',
-    description: 'This is a style',
-    createdAt: now,
-    updatedAt: now,
-    profiles: ['idProfile1', 'idProfile2']
-  };
+  style = new StyleEntity(styleData);
 });
 
 test('should copy an object data into a Style instance', t => {

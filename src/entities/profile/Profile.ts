@@ -5,31 +5,32 @@ import {
   Label,
   Like,
   Media,
+  ObjectWithId,
   Post,
   Profile,
   ProfileType,
   Style,
   Track,
   User
-} from '../types/entities';
+} from '../../types/entities';
 
-export class ProfileEntity {
-  public id?: string | undefined;
-  public handle?: string | undefined;
-  public type?: 'artist' | 'listener' | undefined;
-  public labels?: string[] | Label[] | undefined;
-  public name?: string | undefined;
-  public styles?: string[] | Style[] | undefined;
+export class ProfileEntity implements Profile {
+  public id!: string;
+  public createdAt!: Date;
+  public updatedAt!: Date;
+  public handle!: string;
+  public type!: ProfileType;
+  public name!: string;
+  public isPrivate!: boolean;
   public latitude?: number | undefined;
   public longitude?: number | undefined;
   public bio?: string | undefined;
   public bioShort?: string | undefined;
-  public isPrivate?: boolean | undefined;
   public city?: string | undefined;
   public state?: string | undefined;
   public country?: string | undefined;
-  public createdAt?: Date | undefined;
-  public updatedAt?: Date | undefined;
+  public labels?: string[] | Label[] | undefined;
+  public styles?: string[] | Style[] | undefined;
   public user?: string | User | undefined;
   public coverPicture?: string | Media | undefined;
   public profilePicture?: string | Media | undefined;
@@ -102,6 +103,15 @@ export class ProfileEntity {
       tracks: this.validTracks
     })
     .with('id', ['createdAt', 'updatedAt']);
+
+  /**
+   * Creates an instance of ProfileEntity.
+   * @param {Profile} data
+   * @memberof ProfileEntity
+   */
+  constructor(data: Profile) {
+    this.copyData(data);
+  }
 
   /**
    * Copy properties from an object to instance properties
@@ -346,11 +356,11 @@ export class ProfileEntity {
 
   /**
    * Validates user property
-   * @param {string | User} user
+   * @param {string | ObjectWithId} user
    * @returns {Joi.ValidationResult<string>}
    * @memberof Profile
    */
-  public validateUser(user: string | User): Joi.ValidationResult<string> {
+  public validateUser(user: string | ObjectWithId): Joi.ValidationResult<string> {
     const id = typeof user !== 'string' && user.id ? user.id : (user as string);
     return Joi.validate(id, this.validUser);
   }

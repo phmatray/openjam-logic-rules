@@ -1,13 +1,13 @@
 import * as Joi from 'joi';
 
-import { Like, Profile, Track } from '../types/entities';
+import { Like, ObjectWithId, Profile, Track } from '../../types/entities';
 
-export class LikeEntity {
-  public id?: string | undefined;
-  public emotion?: string | undefined;
-  public intensity?: number | undefined;
-  public createdAt?: Date | undefined;
-  public updatedAt?: Date | undefined;
+export class LikeEntity implements Like {
+  public id!: string;
+  public createdAt!: Date;
+  public updatedAt!: Date;
+  public emotion!: string;
+  public intensity!: number;
   public profile?: string | Profile | undefined;
   public track?: string | Track | undefined;
 
@@ -37,6 +37,15 @@ export class LikeEntity {
       track: this.validTrack
     })
     .with('id', ['createdAt', 'updatedAt']);
+
+  /**
+   * Creates an instance of LikeEntity.
+   * @param {Like} data
+   * @memberof LikeEntity
+   */
+  constructor(data: Like) {
+    this.copyData(data);
+  }
 
   /**
    * Copy properties from an object to instance properties
@@ -135,22 +144,22 @@ export class LikeEntity {
 
   /**
    * Validates profile property
-   * @param {string | Profile} profile
+   * @param {string | ObjectWithId} profile
    * @returns {Joi.ValidationResult<string>}
    * @memberof Like
    */
-  public validateProfile(profile: string | Profile): Joi.ValidationResult<string> {
+  public validateProfile(profile: string | ObjectWithId): Joi.ValidationResult<string> {
     const id = typeof profile !== 'string' && profile.id ? profile.id : (profile as string);
     return Joi.validate(id, this.validProfile);
   }
 
   /**
    * Validates track property
-   * @param {string | Track} track
+   * @param {string | ObjectWithId} track
    * @returns {Joi.ValidationResult<string>}
    * @memberof Like
    */
-  public validateTrack(track: string | Track): Joi.ValidationResult<string> {
+  public validateTrack(track: string | ObjectWithId): Joi.ValidationResult<string> {
     const id = typeof track !== 'string' && track.id ? track.id : (track as string);
     return Joi.validate(id, this.validTrack);
   }

@@ -1,26 +1,13 @@
 import test from 'ava';
 
-import { Comment } from '../types/entities';
 import { CommentEntity } from './Comment';
+import { commentData } from './getSample';
 
-const now = new Date(Date.now());
+const now = commentData.createdAt;
 
 let comment: CommentEntity;
-let commentData: Comment;
-
 test.beforeEach(() => {
-  comment = new CommentEntity();
-  commentData = {
-    id: 'idComment1',
-    type: 'post',
-    text: 'This is a comment',
-    by: 'idProfile1',
-    post: 'idPost1',
-    track: 'idTrack1',
-    trackAt: 60000, // 1 minute
-    createdAt: now,
-    updatedAt: now
-  };
+  comment = new CommentEntity(commentData);
 });
 
 test('should copy an object data into a Comment instance', t => {

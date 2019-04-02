@@ -1,32 +1,14 @@
 import test from 'ava';
 
-import { Track, TrackType } from '../types/entities';
+import { TrackType } from '../../types/entities';
+import { trackData } from './getSample';
 import { TrackEntity } from './Track';
 
-const now = new Date(Date.now());
+const now = trackData.createdAt;
 
 let track: TrackEntity;
-let trackData: Track;
-
 test.beforeEach(() => {
-  track = new TrackEntity();
-  trackData = {
-    id: 'idTrack1',
-    type: 'original',
-    title: 'Track Title',
-    edit: 'original',
-    explicit: false,
-    description: 'This is a description',
-    profiles: ['idProfile1'],
-    createdAt: now,
-    updatedAt: now,
-    label: 'idLabel1',
-    likes: ['idLike1', 'idLike2'],
-    posts: ['idPost1', 'idpost2'],
-    comments: ['idComment1', 'idComment2'],
-    audioUrl: 'audiourl',
-    coverUrl: 'coverurl'
-  };
+  track = new TrackEntity(trackData);
 });
 
 test('should copy an object data into a Track instance', t => {

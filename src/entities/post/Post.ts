@@ -1,13 +1,13 @@
 import * as Joi from 'joi';
 
-import { Comment, Like, Post, Profile, Track } from '../types/entities';
+import { Comment, Like, ObjectWithId, Post, Profile, Track } from '../../types/entities';
 
-export class PostEntity {
-  public id?: string | undefined;
-  public type?: string | undefined;
-  public content?: string | undefined;
-  public createdAt?: Date | undefined;
-  public updatedAt?: Date | undefined;
+export class PostEntity implements Post {
+  public id!: string;
+  public createdAt!: Date;
+  public updatedAt!: Date;
+  public type!: import('../../types/entities').PostType;
+  public content!: string;
   public profile?: string | Profile | undefined;
   public likes?: string[] | Like[] | undefined;
   public comments?: string[] | Comment[] | undefined;
@@ -41,6 +41,15 @@ export class PostEntity {
       track: this.validTrack
     })
     .with('id', ['createdAt', 'updatedAt']);
+
+  /**
+   * Creates an instance of PostEntity.
+   * @param {Post} data
+   * @memberof PostEntity
+   */
+  constructor(data: Post) {
+    this.copyData(data);
+  }
 
   /**
    * Copy properties from an object to instance properties
@@ -143,11 +152,11 @@ export class PostEntity {
 
   /**
    * Validates profile property
-   * @param {string | Profile} profile
+   * @param {string | ObjectWithId} profile
    * @returns {Joi.ValidationResult<string>}
    * @memberof Post
    */
-  public validateProfile(profile: string | Profile): Joi.ValidationResult<string> {
+  public validateProfile(profile: string | ObjectWithId): Joi.ValidationResult<string> {
     const id = typeof profile !== 'string' && profile.id ? profile.id : (profile as string);
     return Joi.validate(id, this.validProfile);
   }
@@ -176,11 +185,11 @@ export class PostEntity {
 
   /**
    * Validates track property
-   * @param {string | Track} track
+   * @param {string | ObjectWithId} track
    * @returns {Joi.ValidationResult<string>}
    * @memberof Post
    */
-  public validateTrack(track: string | Track): Joi.ValidationResult<string> {
+  public validateTrack(track: string | ObjectWithId): Joi.ValidationResult<string> {
     const id = typeof track !== 'string' && track.id ? track.id : (track as string);
     return Joi.validate(id, this.validTrack);
   }

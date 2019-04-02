@@ -1,23 +1,32 @@
 import * as Joi from 'joi';
 
-import { Comment, Label, Like, Post, Profile, Track, TrackType } from '../types/entities';
+import {
+  Comment,
+  Label,
+  Like,
+  ObjectWithId,
+  Post,
+  Profile,
+  Track,
+  TrackType
+} from '../../types/entities';
 
-export class TrackEntity {
-  public id?: string | undefined;
-  public type?: TrackType | undefined;
-  public title?: string | undefined;
+export class TrackEntity implements Track {
+  public id!: string;
+  public createdAt!: Date;
+  public updatedAt!: Date;
+  public type!: TrackType;
+  public title!: string;
+  public explicit!: boolean;
+  public audioUrl!: string;
+  public coverUrl!: string;
   public edit?: string | undefined;
-  public explicit?: boolean | undefined;
   public description?: string | undefined;
   public profiles?: string[] | Profile[] | undefined;
-  public createdAt?: Date | undefined;
-  public updatedAt?: Date | undefined;
   public label?: string | Label | undefined;
   public likes?: string[] | Like[] | undefined;
   public posts?: string[] | Post[] | undefined;
   public comments?: string[] | Comment[] | undefined;
-  public audioUrl?: string | undefined;
-  public coverUrl?: string | undefined;
 
   private validId = Joi.string();
   private validType = Joi.string();
@@ -59,6 +68,15 @@ export class TrackEntity {
       coverUrl: this.validCoverUrl
     })
     .with('id', ['createdAt', 'updatedAt']);
+
+  /**
+   * Creates an instance of TrackEntity.
+   * @param {Track} data
+   * @memberof TrackEntity
+   */
+  constructor(data: Track) {
+    this.copyData(data);
+  }
 
   /**
    * Copy properties from an object to instance properties
@@ -215,11 +233,11 @@ export class TrackEntity {
 
   /**
    * Validates label property
-   * @param {string | Label} label
+   * @param {string | ObjectWithId} label
    * @returns {Joi.ValidationResult<string>}
    * @memberof Track
    */
-  public validateLabel(label: string | Label): Joi.ValidationResult<string> {
+  public validateLabel(label: string | ObjectWithId): Joi.ValidationResult<string> {
     const id = typeof label !== 'string' && label.id ? label.id : (label as string);
     return Joi.validate(id, this.validLabel);
   }

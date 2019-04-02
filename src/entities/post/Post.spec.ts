@@ -1,26 +1,13 @@
 import test from 'ava';
 
-import { Post } from '../types/entities';
+import { postData } from './getSample';
 import { PostEntity } from './Post';
 
-const now = new Date(Date.now());
+const now = postData.createdAt;
 
 let post: PostEntity;
-let postData: Post;
-
 test.beforeEach(() => {
-  post = new PostEntity();
-  postData = {
-    id: 'idPost1',
-    type: 'post',
-    content: 'This is a post',
-    createdAt: now,
-    updatedAt: now,
-    profile: 'idProfile1',
-    likes: ['idLike1', 'idLike2'],
-    comments: ['idComment1', 'idComment2'],
-    track: 'idTrack1'
-  };
+  post = new PostEntity(postData);
 });
 
 test('should copy an object data into a Post instance', t => {
@@ -28,7 +15,7 @@ test('should copy an object data into a Post instance', t => {
   post.copyData(data);
 
   t.is(post.id, 'idPost1');
-  t.is(post.type, 'post');
+  t.is(post.type, 'text');
   t.is(post.content, 'This is a post');
   t.is(post.createdAt, now);
   t.is(post.updatedAt, now);
@@ -46,7 +33,7 @@ test('should return the raw data', t => {
   const rawData = post.getRaw();
 
   t.is(rawData.id, 'idPost1');
-  t.is(rawData.type, 'post');
+  t.is(rawData.type, 'text');
   t.is(rawData.content, 'This is a post');
   t.is(rawData.createdAt, now);
   t.is(rawData.updatedAt, now);

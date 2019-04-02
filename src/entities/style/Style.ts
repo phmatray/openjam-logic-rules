@@ -1,54 +1,62 @@
 import * as Joi from 'joi';
 
-import { Label, Profile, Track } from '../types/entities';
+import { Profile, Style } from '../../types/entities';
 
-export class LabelEntity {
-  public id?: string | undefined;
-  public name?: string | undefined;
+export class StyleEntity implements Style {
+  public id!: string;
+  public createdAt!: Date;
+  public updatedAt!: Date;
+  public name!: string;
   public description?: string | undefined;
-  public createdAt?: Date | undefined;
-  public updatedAt?: Date | undefined;
-  public tracks?: string[] | Track[] | undefined;
   public profiles?: string[] | Profile[] | undefined;
 
   private validId = Joi.string();
-  private validName = Joi.string();
-  private validDescription = Joi.string();
+  private validName = Joi.string()
+    .min(2)
+    .max(50)
+    .required();
+  private validDescription = Joi.string().max(2000);
   private validCreatedAt = Joi.date();
   private validUpdatedAt = Joi.date();
-  private validTracks = Joi.array();
   private validProfiles = Joi.array();
 
   /**
-   * Joi Label Schema
+   * Joi Style Schema
    * @type {Joi.ObjectSchema}
-   * @memberof Label
+   * @memberof Style
    */
-  public labelSchema: Joi.ObjectSchema = Joi.object()
+  public styleSchema: Joi.ObjectSchema = Joi.object()
     .keys({
       id: this.validId,
       name: this.validName,
       description: this.validDescription,
       createdAt: this.validCreatedAt,
       updatedAt: this.validUpdatedAt,
-      tracks: this.validTracks,
       profiles: this.validProfiles
     })
     .with('id', ['createdAt', 'updatedAt']);
 
   /**
-   * Copy properties from an object to instance properties
-   * @param {Label} data
-   * @returns {LabelEntity}
-   * @memberof Label
+   * Creates an instance of StyleEntity.
+   * @param {Style} data
+   * @memberof StyleEntity
    */
-  public copyData(data: Label): LabelEntity {
+  constructor(data: Style) {
+    this.copyData(data);
+  }
+
+  /**
+   * Copy properties from an object to instance properties
+   * @param {Style} data
+   * @returns {StyleEntity}
+   * @memberof Style
+   */
+  public copyData(data: Style): StyleEntity {
     this.id = data.id;
     this.name = data.name;
     this.description = data.description;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
-    this.tracks = data.tracks;
     this.profiles = data.profiles;
 
     return this;
@@ -56,36 +64,35 @@ export class LabelEntity {
 
   /**
    * Get the raw data of the object
-   * @returns {Label}
-   * @memberof Label
+   * @returns {Style}
+   * @memberof Style
    */
-  public getRaw(): Label {
+  public getRaw(): Style {
     return {
       id: this.id,
       name: this.name,
       description: this.description,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      tracks: this.tracks,
       profiles: this.profiles
     };
   }
 
   /**
-   * Returns if the Label object is valid
-   * @param {Label} data
-   * @returns {Joi.ValidationResult<Label>}
-   * @memberof Label
+   * Returns if the Style object is valid
+   * @param {Style} data
+   * @returns {Joi.ValidationResult<Style>}
+   * @memberof Style
    */
-  public validate(data: Label): Joi.ValidationResult<Label> {
-    return Joi.validate(data, this.labelSchema);
+  public validate(data: Style): Joi.ValidationResult<Style> {
+    return Joi.validate(data, this.styleSchema);
   }
 
   /**
    * Validates id property
    * @param {string} id
    * @returns {Joi.ValidationResult<string>}
-   * @memberof Label
+   * @memberof Style
    */
   public validateId(id: string): Joi.ValidationResult<string> {
     return Joi.validate(id, this.validId);
@@ -95,7 +102,7 @@ export class LabelEntity {
    * Validates name property
    * @param {string} name
    * @returns {Joi.ValidationResult<string>}
-   * @memberof Label
+   * @memberof Style
    */
   public validateName(name: string): Joi.ValidationResult<string> {
     return Joi.validate(name, this.validName);
@@ -105,7 +112,7 @@ export class LabelEntity {
    * Validates description property
    * @param {string} description
    * @returns {Joi.ValidationResult<string>}
-   * @memberof Label
+   * @memberof Style
    */
   public validateDescription(description: string): Joi.ValidationResult<string> {
     return Joi.validate(description, this.validDescription);
@@ -115,7 +122,7 @@ export class LabelEntity {
    * Validates createdAt property
    * @param {Date} createdAt
    * @returns {Joi.ValidationResult<Date>}
-   * @memberof Label
+   * @memberof Style
    */
   public validateCreatedAt(createdAt: Date): Joi.ValidationResult<Date> {
     return Joi.validate(createdAt, this.validCreatedAt);
@@ -125,27 +132,17 @@ export class LabelEntity {
    * Validates updatedAt property
    * @param {Date} updatedAt
    * @returns {Joi.ValidationResult<Date>}
-   * @memberof Label
+   * @memberof Style
    */
   public validateUpdatedAt(updatedAt: Date): Joi.ValidationResult<Date> {
     return Joi.validate(updatedAt, this.validUpdatedAt);
   }
 
   /**
-   * Validates tracks property
-   * @param {string[] | Track[]} tracks
-   * @returns {Joi.ValidationResult<string[] | Track[]>}
-   * @memberof Label
-   */
-  public validateTracks(tracks: string[] | Track[]): Joi.ValidationResult<string[] | Track[]> {
-    return Joi.validate(tracks, this.validTracks);
-  }
-
-  /**
    * Validates profiles property
    * @param {string[] | Profile[]} profiles
    * @returns {Joi.ValidationResult<string[] | Profile[]>}
-   * @memberof Label
+   * @memberof Style
    */
   public validateProfiles(
     profiles: string[] | Profile[]

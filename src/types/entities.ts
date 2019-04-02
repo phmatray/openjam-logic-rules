@@ -2,22 +2,22 @@ export type PostType = 'text' | 'track';
 export type ProfileType = 'artist' | 'listener';
 export type TrackType = 'original' | 'remix';
 
-interface ObjectWithId {
+export interface ObjectWithId {
   id: string;
 }
 
-interface ObjectWithDate {
+export interface ObjectWithDate {
   createdAt: Date;
   updatedAt: Date;
 }
 
-interface CommentProps {
+export interface CommentProps {
   type: string;
   text: string;
   trackAt?: number;
 }
 
-interface CommentRelations {
+export interface CommentRelations {
   by?: string | Profile;
   post?: string | Post;
   track?: string | Track;
@@ -25,31 +25,31 @@ interface CommentRelations {
 
 export interface Comment extends ObjectWithId, ObjectWithDate, CommentProps, CommentRelations {}
 
-interface LabelProps {
+export interface LabelProps {
   name: string;
   description?: string;
 }
 
-interface LabelRelations {
+export interface LabelRelations {
   tracks?: string[] | Track[];
   profiles?: string[] | Profile[];
 }
 
 export interface Label extends ObjectWithId, ObjectWithDate, LabelProps, LabelRelations {}
 
-interface LikeProps {
+export interface LikeProps {
   emotion: string;
   intensity: number;
 }
 
-interface LikeRelations {
+export interface LikeRelations {
   profile?: string | Profile;
   track?: string | Track;
 }
 
 export interface Like extends ObjectWithId, ObjectWithDate, LikeProps, LikeRelations {}
 
-interface MediaProps {
+export interface MediaProps {
   name: string;
   sha256: string;
   hash: string;
@@ -63,12 +63,12 @@ interface MediaProps {
 
 export interface Media extends ObjectWithId, ObjectWithDate, MediaProps {}
 
-interface PostProps {
+export interface PostProps {
   type: PostType;
   content: string;
 }
 
-interface PostRelations {
+export interface PostRelations {
   profile?: string | Profile;
   likes?: string[] | Like[];
   comments?: string[] | Comment[];
@@ -77,7 +77,7 @@ interface PostRelations {
 
 export interface Post extends ObjectWithId, ObjectWithDate, PostProps, PostRelations {}
 
-interface ProfileProps {
+export interface ProfileProps {
   handle: string;
   type: ProfileType;
   name: string;
@@ -91,7 +91,7 @@ interface ProfileProps {
   country?: string;
 }
 
-interface ProfileRelations {
+export interface ProfileRelations {
   labels?: string[] | Label[];
   styles?: string[] | Style[];
   user?: string | User;
@@ -107,18 +107,18 @@ interface ProfileRelations {
 
 export interface Profile extends ObjectWithId, ObjectWithDate, ProfileProps, ProfileRelations {}
 
-interface StyleProps {
+export interface StyleProps {
   name: string;
   description?: string;
 }
 
-interface StyleRelations {
+export interface StyleRelations {
   profiles?: string[] | Profile[];
 }
 
 export interface Style extends ObjectWithId, ObjectWithDate, StyleProps, StyleRelations {}
 
-interface TrackProps {
+export interface TrackProps {
   type: TrackType;
   title: string;
   explicit: boolean;
@@ -128,7 +128,7 @@ interface TrackProps {
   description?: string;
 }
 
-interface TrackRelations {
+export interface TrackRelations {
   profiles?: string[] | Profile[];
   label?: string | Label;
   likes?: string[] | Like[];
@@ -138,18 +138,18 @@ interface TrackRelations {
 
 export interface Track extends ObjectWithId, ObjectWithDate, TrackProps, TrackRelations {}
 
-interface UserProps {
-  confirmed?: boolean;
-  blocked?: boolean;
-  username?: string;
-  email?: string;
-  firstName?: string;
-  lastName?: string;
-  provider?: string;
-  role?: string;
+export interface UserProps {
+  confirmed: boolean;
+  blocked: boolean;
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  provider: string;
+  role: string;
 }
 
-interface UserRelations {
+export interface UserRelations {
   profiles?: string[] | Profile[];
 }
 

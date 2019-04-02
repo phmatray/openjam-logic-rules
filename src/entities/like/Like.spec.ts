@@ -1,24 +1,13 @@
 import test from 'ava';
 
-import { Like } from '../types/entities';
+import { likeData } from './getSample';
 import { LikeEntity } from './Like';
 
-const now = new Date(Date.now());
+const now = likeData.createdAt;
 
 let like: LikeEntity;
-let likeData: Like;
-
 test.beforeEach(() => {
-  like = new LikeEntity();
-  likeData = {
-    id: 'idLike1',
-    emotion: 'Haha',
-    intensity: 5,
-    createdAt: now,
-    updatedAt: now,
-    track: 'idTrack1',
-    profile: 'idProfile1'
-  };
+  like = new LikeEntity(likeData);
 });
 
 test('should copy an object data into a Like instance', t => {

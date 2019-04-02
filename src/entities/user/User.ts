@@ -1,17 +1,17 @@
 import * as Joi from 'joi';
 
-import { Profile, User } from '../types/entities';
+import { Profile, User } from '../../types/entities';
 
-export class UserEntity {
-  public id?: string | undefined;
-  public confirmed?: boolean | undefined;
-  public blocked?: boolean | undefined;
-  public username?: string | undefined;
-  public email?: string | undefined;
-  public firstName?: string | undefined;
-  public lastName?: string | undefined;
-  public provider?: string | undefined;
-  public role?: string | undefined;
+export class UserEntity implements User {
+  public id!: string;
+  public confirmed!: boolean;
+  public blocked!: boolean;
+  public username!: string;
+  public email!: string;
+  public firstName!: string;
+  public lastName!: string;
+  public provider!: string;
+  public role!: string;
   public profiles?: string[] | Profile[] | undefined;
 
   private validId = Joi.string().required();
@@ -48,6 +48,15 @@ export class UserEntity {
       profiles: this.validProfiles
     })
     .with('id', ['createdAt', 'updatedAt']);
+
+  /**
+   * Creates an instance of UserEntity.
+   * @param {User} data
+   * @memberof UserEntity
+   */
+  constructor(data: User) {
+    this.copyData(data);
+  }
 
   /**
    * Copy properties from an object to instance properties

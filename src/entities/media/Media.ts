@@ -1,20 +1,20 @@
 import * as Joi from 'joi';
 
-import { Media } from '../types/entities';
+import { Media } from '../../types/entities';
 
-export class MediaEntity {
-  public id?: string | undefined;
-  public name?: string | undefined;
-  public sha256?: string | undefined;
-  public hash?: string | undefined;
-  public ext?: string | undefined;
-  public mime?: string | undefined;
-  public size?: string | undefined;
-  public url?: string | undefined;
-  public provider?: string | undefined;
-  public related?: string[] | undefined;
-  public createdAt?: Date | undefined;
-  public updatedAt?: Date | undefined;
+export class MediaEntity implements Media {
+  public id!: string;
+  public createdAt!: Date;
+  public updatedAt!: Date;
+  public name!: string;
+  public sha256!: string;
+  public hash!: string;
+  public ext!: string;
+  public mime!: string;
+  public size!: string;
+  public url!: string;
+  public provider!: string;
+  public related!: string[];
 
   private validId = Joi.string();
   private validName = Joi.string();
@@ -50,6 +50,15 @@ export class MediaEntity {
       updatedAt: this.validUpdatedAt
     })
     .with('id', ['createdAt', 'updatedAt']);
+
+  /**
+   * Creates an instance of MediaEntity.
+   * @param {Media} data
+   * @memberof MediaEntity
+   */
+  constructor(data: Media) {
+    this.copyData(data);
+  }
 
   /**
    * Copy properties from an object to instance properties

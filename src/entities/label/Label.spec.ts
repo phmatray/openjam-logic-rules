@@ -1,24 +1,13 @@
 import test from 'ava';
 
-import { Label } from '../types/entities';
+import { labelData } from './getSample';
 import { LabelEntity } from './Label';
 
-const now = new Date(Date.now());
+const now = labelData.createdAt;
 
 let label: LabelEntity;
-let labelData: Label;
-
 test.beforeEach(() => {
-  label = new LabelEntity();
-  labelData = {
-    id: 'idLabel1',
-    name: 'LabelName',
-    description: 'This is a label',
-    createdAt: now,
-    updatedAt: now,
-    tracks: ['idTrack1', 'idTrack2'],
-    profiles: ['idProfile1', 'idProfile2']
-  };
+  label = new LabelEntity(labelData);
 });
 
 test('should copy an object data into a Label instance', t => {

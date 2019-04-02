@@ -1,17 +1,17 @@
 import * as Joi from 'joi';
 
-import { Comment, Post, Profile, Track } from '../types/entities';
+import { Comment, ObjectWithId, Post, Profile, Track } from '../../types/entities';
 
-export class CommentEntity {
-  public id?: string | undefined;
-  public type?: string | undefined;
-  public text?: string | undefined;
+export class CommentEntity implements Comment {
+  public id!: string;
+  public createdAt!: Date;
+  public updatedAt!: Date;
+  public type!: string;
+  public text!: string;
+  public trackAt?: number | undefined;
   public by?: string | Profile | undefined;
   public post?: string | Post | undefined;
   public track?: string | Track | undefined;
-  public trackAt?: number | undefined;
-  public createdAt?: Date | undefined;
-  public updatedAt?: Date | undefined;
 
   private validId = Joi.string();
   private validType = Joi.string().valid('post', 'track');
@@ -43,12 +43,21 @@ export class CommentEntity {
     .with('id', ['createdAt', 'updatedAt']);
 
   /**
+   * Creates an instance of CommentEntity.
+   * @param {Comment} data
+   * @memberof CommentEntity
+   */
+  constructor(data: Comment) {
+    this.copyData(data);
+  }
+
+  /**
    * Copy properties from an object to instance properties
    * @param {Comment} data
    * @returns {CommentEntity}
    * @memberof Comment
    */
-  public copyData(data: Comment): CommentEntity {
+  public copyData(data: Comment) {
     this.id = data.id;
     this.type = data.type;
     this.text = data.text;
@@ -58,8 +67,6 @@ export class CommentEntity {
     this.trackAt = data.trackAt;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
-
-    return this;
   }
 
   /**
@@ -123,33 +130,33 @@ export class CommentEntity {
 
   /**
    * Validates by property
-   * @param {string | Profile} by
+   * @param {string | ObjectWithId} by
    * @returns {Joi.ValidationResult<string>}
    * @memberof Comment
    */
-  public validateBy(by: string | Profile): Joi.ValidationResult<string> {
+  public validateBy(by: string | ObjectWithId): Joi.ValidationResult<string> {
     const id = typeof by !== 'string' && by.id ? by.id : (by as string);
     return Joi.validate(id, this.validBy);
   }
 
   /**
    * Validates post property
-   * @param {string | Post} post
+   * @param {string | ObjectWithId} post
    * @returns {Joi.ValidationResult<string>}
    * @memberof Comment
    */
-  public validatePost(post: string | Post): Joi.ValidationResult<string> {
+  public validatePost(post: string | ObjectWithId): Joi.ValidationResult<string> {
     const id = typeof post !== 'string' && post.id ? post.id : (post as string);
     return Joi.validate(id, this.validPost);
   }
 
   /**
    * Validates track property
-   * @param {string | Track} track
+   * @param {string | ObjectWithId} track
    * @returns {Joi.ValidationResult<string>}
    * @memberof Comment
    */
-  public validateTrack(track: string | Track): Joi.ValidationResult<string> {
+  public validateTrack(track: string | ObjectWithId): Joi.ValidationResult<string> {
     const id = typeof track !== 'string' && track.id ? track.id : (track as string);
     return Joi.validate(id, this.validTrack);
   }
