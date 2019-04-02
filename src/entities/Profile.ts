@@ -1,43 +1,17 @@
 import * as Joi from 'joi';
 
-import { Comment } from './Comment';
-import { Label } from './Label';
-import { Like } from './Like';
-import { Media } from './Media';
-import { Post } from './Post';
-import { Style } from './Style';
-import { Track } from './Track';
-import { User } from './User';
-
-export type ProfileType = 'artist' | 'listener';
-
-export interface Profile {
-  id?: string;
-  handle?: string;
-  type?: ProfileType;
-  labels?: string[] | Label[];
-  name?: string;
-  styles?: string[] | Style[];
-  latitude?: number;
-  longitude?: number;
-  bio?: string;
-  bioShort?: string;
-  isPrivate?: boolean;
-  city?: string;
-  state?: string;
-  country?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-  user?: string | User;
-  coverPicture?: string | Media;
-  profilePicture?: string | Media;
-  subscriptions?: string[] | Profile[];
-  subscribers?: string[] | Profile[];
-  likes?: string[] | Like[];
-  posts?: string[] | Post[];
-  comments?: string[] | Comment[];
-  tracks?: string[] | Track[];
-}
+import {
+  Comment,
+  Label,
+  Like,
+  Media,
+  Post,
+  Profile,
+  ProfileType,
+  Style,
+  Track,
+  User
+} from '../types/entities';
 
 export class ProfileEntity {
   public id?: string | undefined;

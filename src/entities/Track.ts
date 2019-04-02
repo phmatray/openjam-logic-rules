@@ -1,30 +1,7 @@
 import * as Joi from 'joi';
 
-import { Comment } from './Comment';
-import { Label } from './Label';
-import { Like } from './Like';
-import { Post } from './Post';
-import { Profile } from './Profile';
+import { Comment, Label, Like, Post, Profile, Track, TrackType } from '../types/entities';
 
-export type TrackType = 'original' | 'remix';
-
-export interface Track {
-  id?: string;
-  type?: TrackType;
-  title?: string;
-  edit?: string;
-  explicit?: boolean;
-  description?: string;
-  profiles?: string[] | Profile[];
-  createdAt?: Date;
-  updatedAt?: Date;
-  label?: string | Label;
-  likes?: string[] | Like[];
-  posts?: string[] | Post[];
-  comments?: string[] | Comment[];
-  audioUrl?: string;
-  coverUrl?: string;
-}
 export class TrackEntity {
   public id?: string | undefined;
   public type?: TrackType | undefined;

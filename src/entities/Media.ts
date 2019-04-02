@@ -1,19 +1,6 @@
 import * as Joi from 'joi';
 
-export interface Media {
-  id?: string;
-  name?: string;
-  sha256?: string;
-  hash?: string;
-  ext?: string;
-  mime?: string;
-  size?: string;
-  url?: string;
-  provider?: string;
-  related?: string[];
-  createdAt?: Date;
-  updatedAt?: Date;
-}
+import { Media } from '../types/entities';
 
 export class MediaEntity {
   public id?: string | undefined;

@@ -1,6 +1,7 @@
 import test from 'ava';
 
-import { Post, PostEntity } from './Post';
+import { Post } from '../types/entities';
+import { PostEntity } from './Post';
 
 const now = new Date(Date.now());
 

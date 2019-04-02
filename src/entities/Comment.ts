@@ -1,20 +1,6 @@
 import * as Joi from 'joi';
 
-import { Post } from './Post';
-import { Profile } from './Profile';
-import { Track } from './Track';
-
-export interface Comment {
-  id?: string;
-  type?: string;
-  text?: string;
-  by?: string | Profile;
-  post?: string | Post;
-  track?: string | Track;
-  trackAt?: number;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
+import { Comment, Post, Profile, Track } from '../types/entities';
 
 export class CommentEntity {
   public id?: string | undefined;

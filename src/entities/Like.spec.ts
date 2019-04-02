@@ -1,6 +1,7 @@
 import test from 'ava';
 
-import { Like, LikeEntity } from './Like';
+import { Like } from '../types/entities';
+import { LikeEntity } from './Like';
 
 const now = new Date(Date.now());
 

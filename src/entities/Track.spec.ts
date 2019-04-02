@@ -1,6 +1,7 @@
 import test from 'ava';
 
-import { Track, TrackEntity, TrackType } from './Track';
+import { Track, TrackType } from '../types/entities';
+import { TrackEntity } from './Track';
 
 const now = new Date(Date.now());
 

@@ -1,15 +1,6 @@
 import * as Joi from 'joi';
 
-import { Profile } from './Profile';
-
-export interface Style {
-  id?: string;
-  name?: string;
-  description?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-  profiles?: string[] | Profile[];
-}
+import { Profile, Style } from '../types/entities';
 
 export class StyleEntity {
   public id?: string | undefined;

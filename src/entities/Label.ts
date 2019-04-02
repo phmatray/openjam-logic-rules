@@ -1,17 +1,6 @@
 import * as Joi from 'joi';
 
-import { Profile } from './Profile';
-import { Track } from './Track';
-
-export interface Label {
-  id?: string;
-  name?: string;
-  description?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-  tracks?: string[] | Track[];
-  profiles?: string[] | Profile[];
-}
+import { Label, Profile, Track } from '../types/entities';
 
 export class LabelEntity {
   public id?: string | undefined;

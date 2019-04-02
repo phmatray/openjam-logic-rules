@@ -1,19 +1,6 @@
 import * as Joi from 'joi';
 
-import { Profile } from './Profile';
-
-export interface User {
-  id?: string;
-  confirmed?: boolean;
-  blocked?: boolean;
-  username?: string;
-  email?: string;
-  firstName?: string;
-  lastName?: string;
-  provider?: string;
-  role?: string;
-  profiles?: string[] | Profile[];
-}
+import { Profile, User } from '../types/entities';
 
 export class UserEntity {
   public id?: string | undefined;

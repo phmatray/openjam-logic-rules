@@ -1,17 +1,6 @@
 import * as Joi from 'joi';
 
-import { Profile } from './Profile';
-import { Track } from './Track';
-
-export interface Like {
-  id?: string;
-  emotion?: string;
-  intensity?: number;
-  createdAt?: Date;
-  updatedAt?: Date;
-  profile?: string | Profile;
-  track?: string | Track;
-}
+import { Like, Profile, Track } from '../types/entities';
 
 export class LikeEntity {
   public id?: string | undefined;

@@ -1,6 +1,7 @@
 import test from 'ava';
 
-import { Comment, CommentEntity } from './Comment';
+import { Comment } from '../types/entities';
+import { CommentEntity } from './Comment';
 
 const now = new Date(Date.now());
 

@@ -1,6 +1,7 @@
 import test from 'ava';
 
-import { Style, StyleEntity } from './Style';
+import { Style } from '../types/entities';
+import { StyleEntity } from './Style';
 
 const now = new Date(Date.now());
 

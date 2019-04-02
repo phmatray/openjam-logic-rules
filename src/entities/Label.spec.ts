@@ -1,6 +1,7 @@
 import test from 'ava';
 
-import { Label, LabelEntity } from './Label';
+import { Label } from '../types/entities';
+import { LabelEntity } from './Label';
 
 const now = new Date(Date.now());
 

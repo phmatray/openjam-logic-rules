@@ -1,14 +1,6 @@
 import Strapi from 'strapi-sdk-javascript';
 
-import { Comment } from '../entities/Comment';
-import { Label } from '../entities/Label';
-import { Like } from '../entities/Like';
-import { Media } from '../entities/Media';
-import { Post } from '../entities/Post';
-import { Profile } from '../entities/Profile';
-import { Style } from '../entities/Style';
-import { Track } from '../entities/Track';
-import { User } from '../entities/User';
+import { Comment, Label, Like, Media, Post, Profile, Style, Track, User } from '../types/entities';
 
 export default class OpenJam {
   public strapi: Strapi;
