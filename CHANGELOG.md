@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.0"></a>
+# [4.0.0](https://github.com/openjam-eu/openjam-logic-rules/compare/v3.0.7...v4.0.0) (2019-04-02)
+
+
+### Bug Fixes
+
+* **entities:** update the types for required fields ([6a3ecfe](https://github.com/openjam-eu/openjam-logic-rules/commit/6a3ecfe))
+
+
+### BREAKING CHANGES
+
+* **entities:** some properties are now required
+
+
+
 <a name="3.0.7"></a>
 ## [3.0.7](https://github.com/openjam-eu/openjam-logic-rules/compare/v3.0.6...v3.0.7) (2019-04-02)
 
