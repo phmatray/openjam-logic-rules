@@ -82,7 +82,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^7.1.2",
-    "@commitlint/config-conventional": "^7.1.2",
+    "@commitlint/config-conventional": "^7.6.0",
     "@types/joi": "^14.3.2",
     "@types/node": "^11.13.0",
     "@types/sinon": "^7.0.11",
