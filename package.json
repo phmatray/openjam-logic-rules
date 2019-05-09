@@ -81,7 +81,7 @@
     "strapi-sdk-javascript": "^0.3.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^7.1.2",
+    "@commitlint/cli": "^7.6.1",
     "@commitlint/config-conventional": "^7.1.2",
     "@types/joi": "^14.3.2",
     "@types/node": "^11.13.0",
